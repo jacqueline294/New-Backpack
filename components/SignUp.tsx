@@ -4,9 +4,10 @@ import { Alert, StyleSheet, View, Text } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import { Button, Snackbar } from "react-native-paper";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore/lite";
-import firebase from '@react-native-firebase/app'
-import '@react-native-firebase/auth'
+//import { doc, setDoc } from "firebase/firestore/lite";
+//import firebase from '@react-native-firebase/app'
+//import '@react-native-firebase/auth'
+import {auth, db} from "./Firebase"
 
 
 
@@ -15,29 +16,29 @@ import '@react-native-firebase/auth'
 
 const SignUp = () => {
     const [email, setEmail] = useState<string>('');
-    const [username, setUsername] = useState<string>('');
-    const [displayName, setDisplayname] = useState<string>('');
-    const [photoURL, setPhotoURL] = useState<string>('');
     const [password, setPassword] = useState<string>('');
-    const [visible, setVisible] = useState<boolean>(false);
-    const [visible2, setVisible2] = useState<boolean>(false);
+    const [password2, setPassword2] = useState<string>('');
+    const [showSuccessMessage, setShowSuccessMessage] = useState<boolean>(false);
+    const [showWarningPasswordMessage, setShowWarningPasswordMessage] = useState<boolean>(false);
+    const [x, setX] = useState<boolean>(false);
 
     const handleSignUp = async () => {
 
         try {
 
-            const auth = firebase.auth()
+            //const auth = firebase.auth()
             
-            const user = await auth.createUserWithEmailAndPassword(email, password)
-            user.additionalUserInfo
-            console.log("user additional info" , user.additionalUserInfo)
+            //const user = await auth.createUserWithEmailAndPassword(email, password)
+            //user.additionalUserInfo
+            //console.log("user additional info" , user.additionalUserInfo)
+            const user = await createUserWithEmailAndPassword(auth, email, password)
 
             // this creates a new user with email and password using the auth configuration 
     
 
             //notifying that the registration was successful
             Alert.alert('Registrering lyckades', `Välkommen, ${email}!`);
-            setVisible(true)
+            setShowSuccessMessage(true)
 
             // creates a database entry for the newly registered user, makes an object containing user's email and username.
             //  This is used as a reference to log in using the username instead/alongside email
@@ -50,7 +51,7 @@ const SignUp = () => {
         } catch (error: any) {
 
           Alert.alert('Error', error.message);
-          setVisible2(true)
+          setShowWarningPasswordMessage(true)
           console.log("Error registering user: ", error.message)
         }
       };
@@ -75,23 +76,39 @@ const SignUp = () => {
                 secureTextEntry
             />
 
+            <TextInput
+                style={styles.input}
+                placeholder="confirm password"
+                value={password2}
+                onChangeText={setPassword2}
+                secureTextEntry
+            />
+
             <Button mode="contained" onPress={handleSignUp} style={styles.loginButton}>
                 Submit
             </Button>
 
             <Snackbar style={styles.snackbar}
-                visible={visible}
-                onDismiss={() => setVisible(false)}
+                visible={showSuccessMessage}
+                onDismiss={() => setShowSuccessMessage(false)}
                 duration={Snackbar.DURATION_SHORT}>
-                    Registrerad, {email}!
+                    <Text>Registrerad, {email}!</Text>
 
             </Snackbar>
 
             <Snackbar style={styles.input}
-                visible={visible2}
-                onDismiss={() => setVisible2(false)}
+                visible={showWarningPasswordMessage}
+                onDismiss={() => setShowWarningPasswordMessage(false)}
                 duration={Snackbar.DURATION_SHORT}>
-                     Måste ange användarnamn och lösenord
+                     <Text>Måste ange användarnamn och lösenord</Text>
+
+            </Snackbar>
+
+            <Snackbar style={styles.input}
+                visible={x}
+                onDismiss={() => setX(false)}
+                duration={Snackbar.DURATION_SHORT}>
+                     <Text>Lösenord stämmer ej överens</Text>
 
             </Snackbar>
 
