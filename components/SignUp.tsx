@@ -8,11 +8,12 @@ import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 //import firebase from '@react-native-firebase/app'
 //import '@react-native-firebase/auth'
 import {auth, db} from "./Firebase"
+import { useNavigation } from "@react-navigation/native";
 
 
 
-// To successfully register, or sign up, you need a properly typed email and password containing at least 6 characters, that is part of Firebase initial setup
 
+// To successfully register, or sign up, you need a properly typed email, a password containing at least 6 characters and matching confirmed, that is part of Firebase initial setup
 
 const SignUp = () => {
     const [email, setEmail] = useState<string>('');
@@ -22,7 +23,8 @@ const SignUp = () => {
     const [showSuccessMessage, setShowSuccessMessage] = useState<boolean>(false);
     const [showWarningPasswordMessage, setShowWarningPasswordMessage] = useState<boolean>(false);
     const [showUnmatchedPassword, setUnmatchedPassword] = useState<boolean>(false);
-
+    const navigation = useNavigation();
+    
     const handleSignUp = async () => {
         try {
           const emailRegex: RegExp = /^[\w-.]+@([\w-]+.)+[\w-]{2,4}$/;
@@ -31,7 +33,9 @@ const SignUp = () => {
           if (emailRegex.test(email) && password.length > 5  && password === password2)  {              
                   const user = await createUserWithEmailAndPassword(auth, email, password)
                   Alert.alert('Registrering lyckades', `Välkommen, ${email}!`);
-                  setShowSuccessMessage(true)           
+                  setShowSuccessMessage(true)  
+                       navigation.navigate("ChooseRole")
+
                   console.log("user registered successfully");
 
                 } else if(password !== password2) {
@@ -47,7 +51,8 @@ const SignUp = () => {
                 } else if(!emailRegex.test(email)) {
                   Alert.alert('email wrong format')
                   
-                }         
+                }   
+                
                                         
           } catch (error: any) {
           Alert.alert('Error', error.message);
@@ -58,6 +63,7 @@ const SignUp = () => {
           }
       };
 
+      
     return (
         <View style={styles.container}>
             <Text style={styles.header}>Sign up</Text>
@@ -87,8 +93,9 @@ const SignUp = () => {
             />
 
             <Button mode="contained" onPress={handleSignUp} style={styles.loginButton}>
-                Submit
+                Submit                
             </Button>
+            
 
             <Snackbar style={styles.snackbar}
                 visible={showSuccessMessage}
