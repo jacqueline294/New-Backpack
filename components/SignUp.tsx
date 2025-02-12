@@ -18,42 +18,44 @@ const SignUp = () => {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [password2, setPassword2] = useState<string>('');
+    const [shortPassword, setShortPassword] = useState<boolean>(false);
     const [showSuccessMessage, setShowSuccessMessage] = useState<boolean>(false);
     const [showWarningPasswordMessage, setShowWarningPasswordMessage] = useState<boolean>(false);
-    const [x, setX] = useState<boolean>(false);
+    const [showUnmatchedPassword, setUnmatchedPassword] = useState<boolean>(false);
 
     const handleSignUp = async () => {
-
         try {
+          const emailRegex: RegExp = /^[\w-.]+@([\w-]+.)+[\w-]{2,4}$/;
+          console.log("Email wrong format")
 
-            //const auth = firebase.auth()
-            
-            //const user = await auth.createUserWithEmailAndPassword(email, password)
-            //user.additionalUserInfo
-            //console.log("user additional info" , user.additionalUserInfo)
-            const user = await createUserWithEmailAndPassword(auth, email, password)
+          if (emailRegex.test(email) && password.length > 5  && password === password2)  {              
+                  const user = await createUserWithEmailAndPassword(auth, email, password)
+                  Alert.alert('Registrering lyckades', `Välkommen, ${email}!`);
+                  setShowSuccessMessage(true)           
+                  console.log("user registered successfully");
 
-            // this creates a new user with email and password using the auth configuration 
-    
+                } else if(password !== password2) {
+                  Alert.alert('password and password2 does not match,')
+                  setUnmatchedPassword(true)
+                  console.log("Error")  
 
-            //notifying that the registration was successful
-            Alert.alert('Registrering lyckades', `Välkommen, ${email}!`);
-            setShowSuccessMessage(true)
+                } else if(password.length < 6) {
+                  Alert.alert('password is to short')
+                  setShortPassword(true)
+                  console.log("Error length")
 
-            // creates a database entry for the newly registered user, makes an object containing user's email and username.
-            //  This is used as a reference to log in using the username instead/alongside email
-           
-
-            // after the user is created its displayName is updated
-           
-            console.log("user registered successfully");
-          
-        } catch (error: any) {
-
+                } else if(!emailRegex.test(email)) {
+                  Alert.alert('email wrong format')
+                  
+                }         
+                                        
+          } catch (error: any) {
           Alert.alert('Error', error.message);
           setShowWarningPasswordMessage(true)
           console.log("Error registering user: ", error.message)
-        }
+          // this creates a new user with email and password using the auth configuration
+          //notifying that the registration was successful         
+          }
       };
 
     return (
@@ -105,8 +107,8 @@ const SignUp = () => {
             </Snackbar>
 
             <Snackbar style={styles.input}
-                visible={x}
-                onDismiss={() => setX(false)}
+                visible={showUnmatchedPassword}
+                onDismiss={() => setUnmatchedPassword(false)}
                 duration={Snackbar.DURATION_SHORT}>
                      <Text>Lösenord stämmer ej överens</Text>
 
