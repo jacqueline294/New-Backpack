@@ -67,11 +67,11 @@ const SignUp = () => {
       
     return (
         <View style={styles.container}>
-            <Text style={styles.header}>Sign up</Text>
+            <Text style={styles.header}>Registrera användare</Text>
 
             <TextInput
                 style={styles.input}
-                placeholder="Email"
+                placeholder="Mail-adress"
                 value={email}
                 onChangeText={setEmail}
                 
@@ -79,7 +79,7 @@ const SignUp = () => {
 
             <TextInput
                 style={styles.input}
-                placeholder="password"
+                placeholder="Lösenord"
                 value={password}
                 onChangeText={setPassword}
                 secureTextEntry
@@ -87,14 +87,18 @@ const SignUp = () => {
 
             <TextInput
                 style={styles.input}
-                placeholder="confirm password"
+                placeholder="Repetera lösenord"
                 value={password2}
                 onChangeText={setPassword2}
                 secureTextEntry
             />
 
             <Button mode="contained" onPress={handleSignUp} style={styles.loginButton}>
-                Submit                
+                Verkställ                
+            </Button>
+
+            <Button mode="outlined" onPress={handleSignUp} style={styles.loginButton}>
+                Existerande användare                
             </Button>
             
 
@@ -102,7 +106,7 @@ const SignUp = () => {
                 visible={showSuccessMessage}
                 onDismiss={() => setShowSuccessMessage(false)}
                 duration={Snackbar.DURATION_SHORT}>
-                    <Text>Registrerad, {email}!</Text>
+                    <Text>Registrering lyckad {email}!</Text>
 
             </Snackbar>
 

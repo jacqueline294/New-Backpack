@@ -12,6 +12,7 @@ import HomeScreen from './components/HomeScreen';
 import TestPage from './components/TestPage';
 import ChooseRole from './components/ChooseRole';
 import Loading from './components/Loading';
+import MainPage from './components/MainPage';
 
 const Stack =createStackNavigator();
 
@@ -31,8 +32,8 @@ export default function App() {
       <Stack.Screen name="SignUp" component={SignUp} />
       <Stack.Screen name="ChooseRole" component={ChooseRole} />
       <Stack.Screen name="Loading" component={Loading} />
-      {/*<Stack.Screen name="Child" component={Child} />
-      <Stack.Screen name="Parent" component={Parent} /> */}
+      <Stack.Screen name="MainPage" component={MainPage} />
+      {/*<Stack.Screen name="Parent" component={Parent} /> */}
     </Stack.Navigator>
     </NavigationContainer>
 

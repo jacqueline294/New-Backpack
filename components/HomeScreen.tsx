@@ -3,9 +3,9 @@ import { Button, View, Text} from 'react-native';
 function HomeScreen({ navigation }) {
     return (
         <View>
-            <Text>Man kan inte!</Text>
+            <Text>Huvudmeny</Text>
             <Button
-            title="Man kan alltid"
+            title="Registrerings val"
             onPress={() => navigation.navigate('TestPg')}
         />
         </View>

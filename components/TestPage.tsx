@@ -5,13 +5,13 @@ import SignUp from "./SignUp";
 function TestPage({navigation}) {
     return (
         <View>
-                    <Text>Man kan inte!</Text>
+                    <Text>Menyval:</Text>
                     <Button
-                    title="Man kan menu"
+                    title="Hem meny"
                     onPress={() => navigation.navigate('Home')}
                 />
                 <Button
-                    title="Man kan signup"
+                    title="Registrera"
                     onPress={() => navigation.navigate('SignUp')}
                 />
                 </View>

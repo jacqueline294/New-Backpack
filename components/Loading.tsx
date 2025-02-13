@@ -4,9 +4,8 @@ import SignUp from "./SignUp";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useNavigation } from "@react-navigation/native";
 
-const Loading = () => {
-    const [emailVerified, setEmailVerified] = useState("test");
-    console.log("Email verified", emailVerified); 
+const SendEmailVerificationListener = () => {
+    const [emailVerified, setEmailVerified] = useState(false);
 const navigation = useNavigation();
         
     useEffect(() => {
@@ -16,7 +15,9 @@ const navigation = useNavigation();
             try {            
             await user?.reload();
             if (user.emailVerified) {
+                setEmailVerified(true);
                 navigation.navigate("ChooseRole");
+                clearInterval(intervalId);
             }
             } catch (error) {
                 console.error("Error reloading user data:", error);
@@ -24,13 +25,19 @@ const navigation = useNavigation();
         });                     
               console.log("This runs every 5 seconds");   
             }, 5000);
-            return () => clearInterval(intervalId);
+            return () => {clearInterval(intervalId)
+            unsubscribe()};
         },[]);        
     return (
         <View>
-            <Text>Waiting for verification</Text>                    
+            <Text style={{ fontFamily: 'Roboto', fontSize: 16}}>Väntar på mail-verifikation</Text>   
+
+            
+
+
         </View>
     );
 }
 
-export default Loading;
+export default SendEmailVerificationListener;
+
