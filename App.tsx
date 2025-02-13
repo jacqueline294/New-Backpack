@@ -1,29 +1,20 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import SignUp from './components/SignUp';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import SignUp from "./components/SignUp";
+import Login from "./components/Login";
+import Parent from "./components/Parent"; 
 
+const Stack = createStackNavigator();
 
 export default function App() {
   return (
-    <SafeAreaProvider>
-    <GestureHandlerRootView style ={{ flex: 1}}>
-    <View style={styles.container}>
-      <SignUp></SignUp>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-    </GestureHandlerRootView>
-    </SafeAreaProvider>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="SignUp">
+        <Stack.Screen name="SignUp" component={SignUp} />
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Parent" component={Parent} /> 
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'cyan',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
