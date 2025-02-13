@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Alert, StyleSheet, View, Text } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import { Button, Snackbar } from "react-native-paper";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from "firebase/auth";
 //import { doc, setDoc } from "firebase/firestore/lite";
 //import firebase from '@react-native-firebase/app'
 //import '@react-native-firebase/auth'
@@ -24,7 +24,7 @@ const SignUp = () => {
     const [showWarningPasswordMessage, setShowWarningPasswordMessage] = useState<boolean>(false);
     const [showUnmatchedPassword, setUnmatchedPassword] = useState<boolean>(false);
     const navigation = useNavigation();
-    
+
     const handleSignUp = async () => {
         try {
           const emailRegex: RegExp = /^[\w-.]+@([\w-]+.)+[\w-]{2,4}$/;
@@ -34,7 +34,8 @@ const SignUp = () => {
                   const user = await createUserWithEmailAndPassword(auth, email, password)
                   Alert.alert('Registrering lyckades', `Välkommen, ${email}!`);
                   setShowSuccessMessage(true)  
-                       navigation.navigate("ChooseRole")
+                  sendEmailVerification(user.user)
+                        navigation.navigate("Loading")
 
                   console.log("user registered successfully");
 
