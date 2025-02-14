@@ -26,7 +26,7 @@ const navigation = useNavigation();
               console.log("This runs every 5 seconds");   
             }, 5000);
             return () => {clearInterval(intervalId)
-            unsubscribe()};
+            };
         },[]);        
     return (
         <View>
