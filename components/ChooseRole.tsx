@@ -15,6 +15,7 @@ function ChooseRole({navigation}) {
           title="Barn"
           onPress={() => navigation.navigate("MainPage")}
         />
+       
         
         <Button 
           title="Förälder"

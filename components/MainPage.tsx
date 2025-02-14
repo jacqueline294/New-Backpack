@@ -2,7 +2,7 @@ import React from "react";
 import { Button, View, Text } from "react-native";
 import SignUp from "./SignUp";
 
-function TestPage() {
+function MainPage() {
     return (
         <View>
                     <Text>Välkommen till din egen Backpack, ha så kul med Emmo</Text>
@@ -15,4 +15,4 @@ function TestPage() {
     );
 }
 
-export default TestPage;
+export default MainPage;
