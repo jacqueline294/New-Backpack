@@ -3,16 +3,17 @@ import { useState } from "react";
 import { Alert, StyleSheet, View, Text } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import { Button, Snackbar } from "react-native-paper";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from "firebase/auth";
 //import { doc, setDoc } from "firebase/firestore/lite";
 //import firebase from '@react-native-firebase/app'
 //import '@react-native-firebase/auth'
 import {auth, db} from "./Firebase"
+import { useNavigation } from "@react-navigation/native";
 
 
 
-// To successfully register, or sign up, you need a properly typed email and password containing at least 6 characters, that is part of Firebase initial setup
 
+// To successfully register, or sign up, you need a properly typed email, a password containing at least 6 characters and matching confirmed, that is part of Firebase initial setup
 
 const SignUp = () => {
     const [email, setEmail] = useState<string>('');
@@ -22,6 +23,7 @@ const SignUp = () => {
     const [showSuccessMessage, setShowSuccessMessage] = useState<boolean>(false);
     const [showWarningPasswordMessage, setShowWarningPasswordMessage] = useState<boolean>(false);
     const [showUnmatchedPassword, setUnmatchedPassword] = useState<boolean>(false);
+    const navigation = useNavigation();
 
     const handleSignUp = async () => {
         try {
@@ -31,7 +33,10 @@ const SignUp = () => {
           if (emailRegex.test(email) && password.length > 5  && password === password2)  {              
                   const user = await createUserWithEmailAndPassword(auth, email, password)
                   Alert.alert('Registrering lyckades', `Välkommen, ${email}!`);
-                  setShowSuccessMessage(true)           
+                  setShowSuccessMessage(true)  
+                  sendEmailVerification(user.user)
+                        navigation.navigate("Loading")
+
                   console.log("user registered successfully");
 
                 } else if(password !== password2) {
@@ -47,7 +52,8 @@ const SignUp = () => {
                 } else if(!emailRegex.test(email)) {
                   Alert.alert('email wrong format')
                   
-                }         
+                }   
+                
                                         
           } catch (error: any) {
           Alert.alert('Error', error.message);
@@ -58,13 +64,14 @@ const SignUp = () => {
           }
       };
 
+      
     return (
         <View style={styles.container}>
-            <Text style={styles.header}>Sign up</Text>
+            <Text style={styles.header}>Registrera användare</Text>
 
             <TextInput
                 style={styles.input}
-                placeholder="Email"
+                placeholder="Mail-adress"
                 value={email}
                 onChangeText={setEmail}
                 
@@ -72,7 +79,7 @@ const SignUp = () => {
 
             <TextInput
                 style={styles.input}
-                placeholder="password"
+                placeholder="Lösenord"
                 value={password}
                 onChangeText={setPassword}
                 secureTextEntry
@@ -80,21 +87,26 @@ const SignUp = () => {
 
             <TextInput
                 style={styles.input}
-                placeholder="confirm password"
+                placeholder="Repetera lösenord"
                 value={password2}
                 onChangeText={setPassword2}
                 secureTextEntry
             />
 
             <Button mode="contained" onPress={handleSignUp} style={styles.loginButton}>
-                Submit
+                Verkställ                
             </Button>
+
+            <Button mode="outlined" onPress={handleSignUp} style={styles.loginButton}>
+                Existerande användare                
+            </Button>
+            
 
             <Snackbar style={styles.snackbar}
                 visible={showSuccessMessage}
                 onDismiss={() => setShowSuccessMessage(false)}
                 duration={Snackbar.DURATION_SHORT}>
-                    <Text>Registrerad, {email}!</Text>
+                    <Text>Registrering lyckad {email}!</Text>
 
             </Snackbar>
 
