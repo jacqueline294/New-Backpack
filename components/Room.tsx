@@ -569,7 +569,7 @@ const Room: React.FC<RoomProps> = () => {
 
         <Earth position={[-1.2, 0.5, -1]}/>
 
-        <BlenderModel position={[-0.5, -2.2, 2]}/>
+        <BlenderModel position={[-0.3, -2.185, 2.7]}/>
 
         {/* <primitive object={scene}/> */}
 
