@@ -25,6 +25,17 @@ const BlenderModel = ({position} : {position : [number, number, number]}) => {
 
   const {scene, animations } = useLoader(GLTFLoader, earth);
 
+  const boxRef = useRef();
+  useFrame(() => {
+    const time = performance.now() * 0.0055
+    if (boxRef.current) {
+      // Circular motion
+      /* boxRef.current.position.x = Math.sin(time) * 1
+      boxRef.current.position.z = Math.cos(time) * 1 */
+      boxRef.current.position.y = Math.cos(time)-0.97 * 1.3
+    }
+  })
+
   // Creates a ref to store the mixer and bind it to the animation
   const mixer = useRef();
 
@@ -51,7 +62,7 @@ const BlenderModel = ({position} : {position : [number, number, number]}) => {
   });
 
   return(
-    <primitive object={scene} position={position} scale={[1, 1, 1]} rotation={[0, Math.PI + 6.2, 0]}/>
+    <primitive object={scene} ref={boxRef} position={position} scale={[1, 1, 1]} rotation={[0, Math.PI + 6.2, 0]}/>
   )
 }
 
