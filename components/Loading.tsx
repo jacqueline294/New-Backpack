@@ -6,27 +6,27 @@ import { useNavigation } from "@react-navigation/native";
 
 const SendEmailVerificationListener = () => {
     const [emailVerified, setEmailVerified] = useState(false);
-const navigation = useNavigation();
+    const navigation = useNavigation();
         
     useEffect(() => {
         const intervalId=setInterval(() => {
             const auth = getAuth();
-        const unsubscribe = onAuthStateChanged(auth, async(user) => {
+            const unsubscribe = onAuthStateChanged(auth, async(user) => {
             try {            
-            await user?.reload();
-            if (user.emailVerified) {
-                setEmailVerified(true);
-                navigation.navigate("ChooseRole");
-                clearInterval(intervalId);
-            }
+                await user?.reload();
+                if (user.emailVerified) {
+                    setEmailVerified(true);
+                    navigation.navigate("ChooseRole");
+                    clearInterval(intervalId);
+                }
             } catch (error) {
                 console.error("Error reloading user data:", error);
             }     
         });                     
               console.log("This runs every 5 seconds");   
             }, 5000);
-            return () => {clearInterval(intervalId)
-            };
+            return () => {clearInterval(intervalId)};
+            //unsubscribe()};
         },[]);        
     return (
         <View>
