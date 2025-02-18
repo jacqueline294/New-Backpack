@@ -51,7 +51,7 @@ const BlenderModel = ({position} : {position : [number, number, number]}) => {
   });
 
   return(
-    <primitive object={scene} position={position} scale={[0.5, 0.5, 0.5]} rotation={[0, Math.PI + 6.2, 0]}/>
+    <primitive object={scene} position={position} scale={[1, 1, 1]} rotation={[0, Math.PI + 6.2, 0]}/>
   )
 }
 
@@ -569,7 +569,7 @@ const Room: React.FC<RoomProps> = () => {
 
         <Earth position={[-1.2, 0.5, -1]}/>
 
-        <BlenderModel position={[-0.3, -2.185, 2.7]}/>
+        <BlenderModel position={[0, 0, 0]}/>
 
         {/* <primitive object={scene}/> */}
 
