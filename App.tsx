@@ -6,8 +6,8 @@ import TestNavPage from './components/TestNavPage';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import React from 'react';
-import { NavigationContainer} from '@react-navigation/native';
-import { createStackNavigator} from '@react-navigation/stack'
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack'
 import HomeScreen from './components/HomeScreen';
 import TestPage from './components/TestPage';
 import ChooseRole from './components/ChooseRole';
@@ -16,36 +16,36 @@ import MainPage from './components/MainPage';
 import Room from './components/Room';
 import RoomScreen from './components/RoomScreen';
 
-const Stack =createStackNavigator();
+const Stack = createStackNavigator();
 
 export default function App() {
 
   /* headerLeft: () => null removes the back button, headerShown: false removes the entire header  */
   return (
     <SafeAreaProvider>
-    <GestureHandlerRootView style ={{ flex: 1}}>
-    {/* <View style={styles.container}>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        {/* <View style={styles.container}>
       <Text>Open up App.tsx to start working on your app!</Text>
       <StatusBar style="auto" />
     </View> */}
 
-    <NavigationContainer>
-    <Stack.Navigator initialRouteName="Home">
-      <Stack.Screen name="Home" component={HomeScreen} />
-      <Stack.Screen name="TestPg" component={TestPage} />
-      <Stack.Screen name="SignUp" component={SignUp} />
-      <Stack.Screen name="ChooseRole" component={ChooseRole} />
-      <Stack.Screen name="Loading" component={Loading} />
-      <Stack.Screen name="MainPage" component={MainPage} />
-      <Stack.Screen name="Room" component={RoomScreen}  options={{headerLeft: () => null, headerShown: false}}/> 
-      {/*<Stack.Screen name="Parent" component={Parent} /> */}
-    </Stack.Navigator>
-    </NavigationContainer>
+        <NavigationContainer>
+          <Stack.Navigator initialRouteName="Home">
+            <Stack.Screen name="Home" component={HomeScreen} />
+            <Stack.Screen name="TestPg" component={TestPage} />
+            <Stack.Screen name="SignUp" component={SignUp} />
+            <Stack.Screen name="ChooseRole" component={ChooseRole} />
+            <Stack.Screen name="Loading" component={Loading} />
+            <Stack.Screen name="MainPage" component={MainPage} />
+            <Stack.Screen name="Room" component={RoomScreen}  /* options={{headerLeft: () => null, headerShown: false}} */ />
+            {/*<Stack.Screen name="Parent" component={Parent} /> */}
+          </Stack.Navigator>
+        </NavigationContainer>
 
-    </GestureHandlerRootView>
+      </GestureHandlerRootView>
     </SafeAreaProvider>
 
-    
+
   );
 }
 

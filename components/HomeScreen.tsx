@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, View, Text} from 'react-native';
 import Room from './Room';
+import UsageStats from './UsageStats';
 
 function HomeScreen({ navigation }) {
     return (
@@ -15,6 +16,7 @@ function HomeScreen({ navigation }) {
                 title="Room"
                 onPress={() => navigation.navigate('Room')}
             />
+            <UsageStats></UsageStats>
             {/* <Room></Room>  */}
         </View>
         

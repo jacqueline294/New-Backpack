@@ -9,6 +9,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@brighthustle/react-native-usage-stats-manager": "^0.1.5",
     "@react-native-firebase/app": "^21.8.0",
     "@react-native-firebase/auth": "^21.8.0",
     "@react-navigation/elements": "^2.2.5",

@@ -598,7 +598,7 @@ const Room: React.FC<RoomProps> = () => {
         <primitive position={[-2.4, -2.5, 0.5]} object={model3.scene} scale={[2, 2, 2]} rotation={[0, 1.57, 0]}/>
 
         {/* Camera controls for navigating the scene */}
-        <OrbitControls enablePan={false} minDistance={1} maxDistance={5} enableRotate={!isDragging} />
+        <OrbitControls enablePan={false} minDistance={1} maxDistance={50} enableRotate={!isDragging} />
 
         <PerspectiveCamera makeDefault position={[0, 1000000, -3000000]} />
 
