@@ -13,6 +13,7 @@ import TestPage from './components/TestPage';
 import ChooseRole from './components/ChooseRole';
 import Loading from './components/Loading';
 import MainPage from './components/MainPage';
+import Calender from './components/Calender';
 
 const Stack =createStackNavigator();
 
@@ -33,6 +34,7 @@ export default function App() {
       <Stack.Screen name="ChooseRole" component={ChooseRole} />
       <Stack.Screen name="Loading" component={Loading} />
       <Stack.Screen name="MainPage" component={MainPage} />
+      <Stack.Screen name="Calender" component={Calender} />
       {/*<Stack.Screen name="Parent" component={Parent} /> */}
     </Stack.Navigator>
     </NavigationContainer>
