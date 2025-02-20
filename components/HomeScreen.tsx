@@ -23,8 +23,8 @@ type Props = {
 function HomeScreen({ navigation }: Props) {
   return (
     <View style={styles.container}>
-      <Text style={styles.welcomeText}>Välkommen till BackPack</Text>
-      <Text style={styles.title}>Huvudmeny</Text>
+      <Text style={styles.welcomeText}>VÄLKOMMEN TILL BACKPACK</Text>
+      
 
       <Button mode="contained" onPress={() => navigation.navigate("SignUp")} style={styles.button}>
         Registrering
