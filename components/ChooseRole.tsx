@@ -1,11 +1,22 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useNavigation } from "@react-navigation/native";
 
-function ChooseRole({ navigation }) {
+// Define navigation prop type
+type RootStackParamList = {
+  MainPage: undefined;
+  Parent: undefined;
+};
+
+type ChooseRoleScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, "MainPage">;
+
+const ChooseRole: React.FC = () => {
+  const navigation = useNavigation<ChooseRoleScreenNavigationProp>();
+
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Välj Roll</Text>
+      <Text style={styles.header}>Välj roll</Text>
       <Text style={styles.description}>
         Välj om du vill logga in som barn eller förälder.{"\n"}Barn behöver endast logga in en gång.{"\n"}Förälder behöver email och lösenord.
       </Text>
@@ -19,7 +30,7 @@ function ChooseRole({ navigation }) {
       </TouchableOpacity>
     </View>
   );
-}
+};
 
 export default ChooseRole;
 
