@@ -45,7 +45,8 @@ const AppUsageStats = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <View /* style={styles.container} */>
+      <Text>Usage</Text>
       {loading ? (
         <ActivityIndicator size="large" color="#0000ff" />
       ) : permissionGranted ? (

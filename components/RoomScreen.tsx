@@ -10,9 +10,9 @@ const RoomScreen = () => {
     return(
         <View style={styles.container}>
             <Suspense fallback={<Text>Laddar...</Text>}>
-                <ErrorBoundry>
+                
                     <Room></Room>
-                </ErrorBoundry>
+               
             </Suspense>
         </View>
     )

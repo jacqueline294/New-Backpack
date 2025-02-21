@@ -37,7 +37,7 @@ export default function App() {
             <Stack.Screen name="ChooseRole" component={ChooseRole} />
             <Stack.Screen name="Loading" component={Loading} />
             <Stack.Screen name="MainPage" component={MainPage} />
-            <Stack.Screen name="Room" component={RoomScreen}  /* options={{headerLeft: () => null, headerShown: false}} */ />
+            <Stack.Screen name="Room" component={RoomScreen}   /* options={{headerLeft: () => null, headerShown: false}} */  /> 
             {/*<Stack.Screen name="Parent" component={Parent} /> */}
           </Stack.Navigator>
         </NavigationContainer>

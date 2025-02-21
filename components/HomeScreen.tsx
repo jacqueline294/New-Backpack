@@ -8,7 +8,7 @@ function HomeScreen({ navigation }) {
     return (
         <View>
             <Text>Huvudmeny</Text>
-            <Button
+           {/*  <Button
                 title="Registrerings val"
                 onPress={() => navigation.navigate('TestPg')}
             />
@@ -16,9 +16,9 @@ function HomeScreen({ navigation }) {
             <Button
                 title="Room"
                 onPress={() => navigation.navigate('Room')}
-            />
+            /> */}
             <UsageStats></UsageStats>
-            <Dashboard></Dashboard>
+            {/* <Dashboard></Dashboard> */}
             {/* <Room></Room>  */}
         </View>
         
