@@ -8,7 +8,12 @@ const AppUsageStats = () => {
   const [permissionGranted, setPermissionGranted] = useState(false);
 
   useEffect(() => {
-    checkPermissionAndFetchStats();
+    const interval = setInterval(() => {
+        checkPermissionAndFetchStats();
+    }, 5000);
+    
+    return () => clearInterval(interval);
+    //checkPermissionAndFetchStats();
   }, []);
 
   const checkPermissionAndFetchStats = async () => {
@@ -17,9 +22,12 @@ const AppUsageStats = () => {
       const hasPermission = await UsageStats.checkPermission();
       setPermissionGranted(hasPermission);
       if (hasPermission) {
-        const startDate = new Date('2025-02-01').getTime();
-        const endDate = new Date('2025-02-28').getTime();
-        const result = await UsageStats.queryUsageStats( startDate, endDate);
+        const startDate = new Date('2025-02-21').getTime();
+        const endDate = new Date('2025-02-22').getTime();
+
+        const endTime = new Date().getTime();  // Current time in milliseconds
+        const startTime = endTime - (60 * 60 * 1000);
+        const result = await UsageStats.queryUsageStats( startTime, endTime);
         setUsageStats(result);
       } else {
         console.error("Permission not granted");
