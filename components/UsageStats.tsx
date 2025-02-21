@@ -1,16 +1,36 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Button, ActivityIndicator, StyleSheet } from 'react-native';
+import { View, Text, Button, ActivityIndicator, StyleSheet, AppState } from 'react-native';
 import { checkForPermission, EventFrequency, queryUsageStats, showUsageAccessSettings } from '@brighthustle/react-native-usage-stats-manager';
+import DeviceInfo from 'react-native-device-info';
+import UsageStats from 'react-native-usage-stats';
 
 const AppUsageStats = () => {
   const [loading, setLoading] = useState(false);
   const [permissionGranted, setPermissionGranted] = useState(false);
   const [usageStats, setUsageStats] = useState(null);
   const [error, setError] = useState(null);
+  const [appState, setAppState] = useState(AppState.currentState);
+  const [deviceInfo, setDeviceInfo] = useState(DeviceInfo.getAndroidId);
+
 
   useEffect(() => {
     checkPermissionAndFetchStats();
-  }, []);
+
+    console.log("appState", appState);
+    console.log("deviceInfo", deviceInfo);
+
+    const appStateListener = AppState.addEventListener("change", nextAppStep => {
+      if (appState.match("/inactive | background/")   && nextAppStep === "active") {
+        checkPermissionAndFetchStats();
+      }
+      setAppState(nextAppStep);
+    });
+
+    return ()=> {
+      appStateListener.remove();
+    }
+
+  }, [appState]);
 
   const checkPermissionAndFetchStats = async () => {
     setLoading(true);
@@ -20,11 +40,15 @@ const AppUsageStats = () => {
       setPermissionGranted(hasPermission);
 
       if (hasPermission) {
+
+        
         // Define the date range
-        const startDateString = '2023-06-11T12:34:56';
-        const endDateString = '2023-07-11T12:34:56';
+        const startDateString = '2025-01-20T12:34:56';
+        const endDateString = '2023-02-20T12:34:56';
         const startMilliseconds = new Date(startDateString).getTime();
         const endMilliseconds = new Date(endDateString).getTime();
+
+        
 
         // Query usage stats for the specified period
         const result = await queryUsageStats(EventFrequency.INTERVAL_DAILY, startMilliseconds, endMilliseconds);
@@ -41,6 +65,7 @@ const AppUsageStats = () => {
   };
 
   const handleEnablePermission = () => {
+    console.log("test handleEnablePermission")
     showUsageAccessSettings("");
   };
 
