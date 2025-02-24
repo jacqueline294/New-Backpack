@@ -1,20 +1,90 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Button, ActivityIndicator, ScrollView } from 'react-native';
 import UsageStats from 'react-native-usage-stats';
+import { checkForPermission, EventFrequency, queryUsageStats, showUsageAccessSettings } from '@brighthustle/react-native-usage-stats-manager';
+
+
+interface UsageStatsData {
+  lastTimeStamp: number;
+  firstTimeStamp: number;
+  totalTimeVisible: number;
+  lastTimeUsed: number;
+  packageName: string;
+  totalTimeInForeground: number;
+  lastTimeForegroundServiceUsed: number;
+  totalTimeForegroundServiceUsed: number;
+  lastTimeVisible: number;
+
+}
+
+function millisecondsToTime(milliseconds: number): string {
+  const date = new Date(milliseconds); // Create a Date object from the milliseconds
+  const hours = date.getUTCHours();    // Get hours (UTC)
+  const minutes = date.getUTCMinutes(); // Get minutes (UTC)
+  const seconds = date.getUTCSeconds(); // Get seconds (UTC)
+
+  // Pad single digits with leading zeros
+  const paddedHours = String(hours).padStart(2, '0');
+  const paddedMinutes = String(minutes).padStart(2, '0');
+  const paddedSeconds = String(seconds).padStart(2, '0');
+
+  return `${paddedHours}:${paddedMinutes}:${paddedSeconds}`;
+}
+
+function millisecondsToFullDate(milliseconds: number): string {
+  const date = new Date(milliseconds); // Create a Date object from the milliseconds
+
+  // Get the components of the date
+  const year = date.getUTCFullYear();
+  const month = String(date.getUTCMonth() + 1).padStart(2, '0'); // Months are zero-indexed (0-11)
+  const day = String(date.getUTCDate()).padStart(2, '0');
+  const hours = String(date.getUTCHours()).padStart(2, '0');
+  const minutes = String(date.getUTCMinutes()).padStart(2, '0');
+  const seconds = String(date.getUTCSeconds()).padStart(2, '0');
+
+  // Format the date and time
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+};
 
 const AppUsageStats = () => {
   const [loading, setLoading] = useState(false);
-  const [usageStats, setUsageStats] = useState(null);
+  const [usageStats, setUsageStats] = useState<any>();
   const [permissionGranted, setPermissionGranted] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
         checkPermissionAndFetchStats();
-    }, 5000);
+        checkPermissionAndFetchStatsFor24Hours();
+    }, 1000 );
     
     return () => clearInterval(interval);
     //checkPermissionAndFetchStats();
   }, []);
+
+  const checkPermissionAndFetchStatsFor24Hours = async () => {
+    const currentDate = new Date();
+    const startOfDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate()).getTime();
+    const currentTime = new Date().getTime();
+    
+    // Query for hourly intervals
+    const intervals = [];
+    const intervalDuration = 60 * 60 * 1000; // 1 hour in milliseconds
+    let startInterval = startOfDay;
+  
+    while (startInterval < currentTime) {
+      const endInterval = Math.min(startInterval + intervalDuration, currentTime);
+      intervals.push([startInterval, endInterval]);
+      startInterval = endInterval;
+    }
+  
+    const allUsageStats = [];
+    for (let [start, end] of intervals) {
+      const result = await UsageStats.queryUsageStats(start, end);
+      allUsageStats.push(...result);
+    }
+  
+    console.log(allUsageStats[2].totalTimeInForeground); // Combine or aggregate results as needed
+  };
 
   const checkPermissionAndFetchStats = async () => {
     setLoading(true);
@@ -22,13 +92,36 @@ const AppUsageStats = () => {
       const hasPermission = await UsageStats.checkPermission();
       setPermissionGranted(hasPermission);
       if (hasPermission) {
-        const startDate = new Date('2025-02-21').getTime();
-        const endDate = new Date('2025-02-22').getTime();
+        /* const startDate = new Date('2025-02-21').getTime();
+        const endDate = new Date('2025-02-22').getTime(); */
+
+        const currentDate = new Date();
+        const currentTime = currentDate.getTime();
+
+        const startOfDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate()).getTime();//new Date(currentDate.setHours(0, 0, 0, 0)).getTime();
 
         const endTime = new Date().getTime();  // Current time in milliseconds
         const startTime = endTime - (60 * 60 * 1000);
-        const result = await UsageStats.queryUsageStats( startTime, endTime);
-        setUsageStats(result);
+
+        console.log("startOfDay: ", millisecondsToTime(startOfDay));
+        console.log("currentTime: ", millisecondsToTime(currentTime));
+
+        console.log("startTime: ", millisecondsToTime(startTime));
+        console.log("endTime: ", millisecondsToTime(endTime));
+        // UsageStats.queryUsageStats(beginTime, endTime) counts in milliseconds
+        const result2: UsageStatsData[] = await UsageStats.queryUsageStats(startOfDay, currentTime);
+        const result: UsageStatsData[] = await UsageStats.queryUsageStats( startTime, endTime);
+
+        // queryUsageStats(interval, beginTime, endTime) from @brighthustle counts in seconds
+        const result3 = await queryUsageStats(0, startOfDay, currentTime ); // 0 = daily, 1 = weekly, 2 = monthly, 3 = yearly, 4 = best considering the time period
+        const index = 62   //33 new-backpack
+
+        const resultInHumanTime = millisecondsToTime(result[index].totalTimeInForeground);
+        const resultInFullDate = millisecondsToFullDate(result[2].totalTimeInForeground);
+        setUsageStats(result[index].packageName + ": " + resultInHumanTime);
+        //setUsageStats(result[index]);
+        setUsageStats(result3["com.hsv.freeadblockerbrowser"].appName + ": " + result3["com.hsv.freeadblockerbrowser"].totalTimeInForeground + " seconds");
+        console.log("result3: ", result3);
       } else {
         console.error("Permission not granted");
       }
@@ -41,7 +134,7 @@ const AppUsageStats = () => {
 
   return (
     <View>
-      <Text>Usage Stats for 2025:02:01 - 2025:02:28:</Text>
+      <Text>Usage Stats for last hour</Text>
       {loading ? <ActivityIndicator /> : (
         permissionGranted ? (
             <ScrollView>

@@ -51,7 +51,7 @@ const AppUsageStats = () => {
         
 
         // Query usage stats for the specified period
-        const result = await queryUsageStats(EventFrequency.INTERVAL_DAILY, startMilliseconds, endMilliseconds);
+        const result = await queryUsageStats(1, startMilliseconds, endMilliseconds);
         setUsageStats(result);
       } else {
         setError('Permission not granted');
