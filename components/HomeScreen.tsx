@@ -35,6 +35,11 @@ function HomeScreen({ navigation }: Props) {
         Har du redan ett konto? Logga in här
       </Button>
 
+      <Button mode="outlined" onPress={() => navigation.navigate("Stats")} style={styles.button}>
+        AppUsageStats
+      </Button>
+      
+
       {/* <Dashboard></Dashboard> */}
     </View>
   );

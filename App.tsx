@@ -15,6 +15,7 @@ import Loading from './components/Loading';
 import MainPage from './components/MainPage';
 import Login from './components/Login';
 import Parent from './components/Parent';
+import AppUsageStats from './components/AppUsageStats';
 
 const Stack = createStackNavigator();
 
@@ -39,6 +40,7 @@ export default function App() {
       <Stack.Screen name="Loading" component={Loading} />
       <Stack.Screen name="MainPage" component={MainPage} />
       <Stack.Screen name="Parent" component={Parent} /> 
+      <Stack.Screen name="Stats" component={AppUsageStats} />
     </Stack.Navigator>
     </NavigationContainer>
 
