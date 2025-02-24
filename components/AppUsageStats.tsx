@@ -123,7 +123,18 @@ const AppUsageStats = () => {
         setUsageStats(result[index].packageName + ": " + resultInHumanTime);
         //setUsageStats(result[index]);
         setUsageStats(result3["com.hsv.freeadblockerbrowser"].appName + ": " + result3["com.hsv.freeadblockerbrowser"].totalTimeInForeground + " seconds");
+        
         //console.log("result3: ", result3);
+
+
+        const apps = Object.entries(result3).map(([packageName, appData]) => ({
+          packageName,
+          ...appData
+        }));
+
+        const sortedApps = apps.sort((a, b) => b.totalTimeInForeground - a.totalTimeInForeground);
+
+        console.log("sortedApps: ", sortedApps[1]);
       } else {
         console.error("Permission not granted");
       }
