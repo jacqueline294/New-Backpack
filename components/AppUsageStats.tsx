@@ -103,17 +103,19 @@ const AppUsageStats = () => {
         const endTime = new Date().getTime();  // Current time in milliseconds
         const startTime = endTime - (60 * 60 * 1000);
 
-        console.log("startOfDay: ", millisecondsToTime(startOfDay));
+        /* console.log("startOfDay: ", millisecondsToTime(startOfDay));
         console.log("currentTime: ", millisecondsToTime(currentTime));
 
         console.log("startTime: ", millisecondsToTime(startTime));
-        console.log("endTime: ", millisecondsToTime(endTime));
+        console.log("endTime: ", millisecondsToTime(endTime)); */
         // UsageStats.queryUsageStats(beginTime, endTime) counts in milliseconds
         const result2: UsageStatsData[] = await UsageStats.queryUsageStats(startOfDay, currentTime);
         const result: UsageStatsData[] = await UsageStats.queryUsageStats( startTime, endTime);
 
-        // queryUsageStats(interval, beginTime, endTime) from @brighthustle counts in seconds
+        // queryUsageStats(interval, beginTime, endTime) from @brighthustle counts in seconds, last 24 hours
         const result3 = await queryUsageStats(0, startOfDay, currentTime ); // 0 = daily, 1 = weekly, 2 = monthly, 3 = yearly, 4 = best considering the time period
+        const result4 = await queryUsageStats(0, startTime, endTime);
+        
         const index = 62   //33 new-backpack
 
         const resultInHumanTime = millisecondsToTime(result[index].totalTimeInForeground);
@@ -121,7 +123,7 @@ const AppUsageStats = () => {
         setUsageStats(result[index].packageName + ": " + resultInHumanTime);
         //setUsageStats(result[index]);
         setUsageStats(result3["com.hsv.freeadblockerbrowser"].appName + ": " + result3["com.hsv.freeadblockerbrowser"].totalTimeInForeground + " seconds");
-        console.log("result3: ", result3);
+        //console.log("result3: ", result3);
       } else {
         console.error("Permission not granted");
       }
