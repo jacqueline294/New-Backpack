@@ -1,22 +1,18 @@
 import React, { Suspense } from "react";
 import { Button, View, Text, StyleSheet } from "react-native";
 import SignUp from "./SignUp";
-import ErrorBoundry from "./ErrorBoundry";
-import Room from "./Room";
+import Dashboard from "./Dashboard";
 
 function TestPage() {
     return (
-        <View style={styles.container}>
+        <View>
             <Text>Välkommen till din egen Backpack, ha så kul med Emmo</Text>
-            <Button
+            {/* <Button
                 title="Du kan inte trycka button"
 
-            />
-            <Suspense fallback={<Text>Laddar...</Text>}>
-                <ErrorBoundry>
-                    <Room></Room>
-                </ErrorBoundry>
-            </Suspense>
+            /> */}
+
+            <Dashboard></Dashboard>
 
         </View>
     );

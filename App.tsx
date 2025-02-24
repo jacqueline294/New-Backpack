@@ -13,8 +13,8 @@ import TestPage from './components/TestPage';
 import ChooseRole from './components/ChooseRole';
 import Loading from './components/Loading';
 import MainPage from './components/MainPage';
-import Room from './components/Room';
-import RoomScreen from './components/RoomScreen';
+import Login from './components/Login';
+import Parent from './components/Parent';
 
 const Stack = createStackNavigator();
 
@@ -29,18 +29,18 @@ export default function App() {
       <StatusBar style="auto" />
     </View> */}
 
-        <NavigationContainer>
-          <Stack.Navigator initialRouteName="Home">
-            <Stack.Screen name="Home" component={HomeScreen} />
-            <Stack.Screen name="TestPg" component={TestPage} />
-            <Stack.Screen name="SignUp" component={SignUp} />
-            <Stack.Screen name="ChooseRole" component={ChooseRole} />
-            <Stack.Screen name="Loading" component={Loading} />
-            <Stack.Screen name="MainPage" component={MainPage} />
-            <Stack.Screen name="Room" component={RoomScreen}   /* options={{headerLeft: () => null, headerShown: false}} */  /> 
-            {/*<Stack.Screen name="Parent" component={Parent} /> */}
-          </Stack.Navigator>
-        </NavigationContainer>
+    <NavigationContainer>
+    <Stack.Navigator initialRouteName="Home">
+      <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen name="TestPg" component={TestPage} />
+      <Stack.Screen name="SignUp" component={SignUp} />
+      <Stack.Screen name="Login" component={Login} />
+      <Stack.Screen name="ChooseRole" component={ChooseRole} />
+      <Stack.Screen name="Loading" component={Loading} />
+      <Stack.Screen name="MainPage" component={MainPage} />
+      <Stack.Screen name="Parent" component={Parent} /> 
+    </Stack.Navigator>
+    </NavigationContainer>
 
       </GestureHandlerRootView>
     </SafeAreaProvider>
