@@ -6,15 +6,15 @@ import { useNavigation } from "@react-navigation/native"
 import RNPickerSelect from "react-native-picker-select"
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-
-
-
 const Calender = () => {
     const [selectedDate, setSelectedDate] = useState("");
     const [selectedEmotion, setSelectedEmotion] = useState(null);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [emotionData, setEmotionData] = useState({});
+    const [morningEmotionData, setMorningEmotionData] = useState({});
     const navigation = useNavigation();
+    const [selectedTimeOfDay, setSelectedTimeOfDay] = useState("evening");
+    const [locale, setLocale] = useState("sv");
 
     useEffect(() => {
         const loadEmotionData = async () => {
@@ -27,11 +27,22 @@ const Calender = () => {
                 console.log("Failed to load emotion data from Asyncstorage", error);
             }
         };
+        const loadMorningEmotionData = async () => {
+            try {
+                const storedMorningEmotionData = await AsyncStorage.getItem('morningEmotionData');
+                if(storedMorningEmotionData) {
+                    setMorningEmotionData(JSON.parse(storedMorningEmotionData));
+                }
+            } catch (error) {
+                console.log("Failed to load emotion data from Asyncstorage", error);
+            }
+        };        
         loadEmotionData();
+        loadMorningEmotionData();
     }, []);
 
-    const calenderDayPress = (day) => {
-        setSelectedDate(day.dateString);
+    const handleCalenderDayPress = (day) => {
+        setSelectedDate(day.dateString); 
       };
   
     const handleDayPress = (day) => {
@@ -40,55 +51,87 @@ const Calender = () => {
     };
 
     const emotions = [
-        { label: "Happy", value: "happy"},
-        { label: "Sad", value: "sad"},
-        { label: "Angry", value: "angry"},
-        { label: "Tired", value: "Tired"},
+        { label: "😊", value: "😊"},
+        { label: "❤️", value: "❤️"},
+        { label: "😌", value: "😌"},
+        { label: "😠", value: "😠"},
+        { label: "😢", value: "😢"},
     ];
 
     const handleSaveEmotion = async () => {
         if (selectedEmotion) {
-            const newEmotionData = {...emotionData, [selectedDate]: selectedEmotion};
-            try {
-                await AsyncStorage.setItem('emotionData', JSON.stringify(newEmotionData));
-                setEmotionData (newEmotionData);
-                console.log('Emotion saved:', selectedEmotion);
-            } catch(error) {
-                console.error("Failed to save emotion data to asyncstorage", error);
-            }
+            let newEmotionData;
+      if (selectedTimeOfDay === "evening") {
+        newEmotionData = { ...emotionData, [selectedDate]: selectedEmotion };
+        try {
+          await AsyncStorage.setItem('emotionData', JSON.stringify(newEmotionData));
+          setEmotionData(newEmotionData);
+          console.log('Evening emotion saved:', selectedEmotion);
+        } catch (error) {
+          console.error("Failed to save emotion data to AsyncStorage", error);
         }
+      } else {
+        const newMorningEmotionData = { ...morningEmotionData, [selectedDate]: selectedEmotion };
+        try {
+          await AsyncStorage.setItem('morningEmotionData', JSON.stringify(newMorningEmotionData));
+          setMorningEmotionData(newMorningEmotionData);
+          console.log('Morning emotion saved:', selectedEmotion);
+        } catch (error) {
+          console.error("Failed to save morning emotion data to AsyncStorage", error);
+        }
+        }
+    }
         setIsModalVisible(false);
     }
   
     return (
       <View style={{ flex: 1, marginTop: 10 }}>
         <Text style={{ textAlign: "center", fontSize: 20 }}>
-          Selected Date: {selectedDate}
+          Dagens datum: {selectedDate}
         </Text>
         <Text style={{ textAlign: "center", fontSize: 20 }}>
-          Emotion: {emotionData[selectedDate] || "No emotion selected"}
+          Morgonkänsla: {morningEmotionData[selectedDate] || "😶"}
+        </Text>
+        <Text style={{ textAlign: "center", fontSize: 20 }}>
+          Kvällskänsla: {emotionData[selectedDate] || "😶"}
         </Text>
         <Calendar
-          onDayPress={calenderDayPress}
+          onDayPress={handleCalenderDayPress}
           markedDates={{
             [selectedDate]: { selected: true, selectedColor: "purple" },
           }}
           markingType={"multi-dot"}
           firstDay={1}
+          locale={locale}
         />
-            <Button
-            title="Välj dagens känsla"   
-            onPress={handleDayPress}  
-                   
-        />
-        <Button
-            title="Hem test"   
-            onPress={() => navigation.navigate("MainPage")}         
-        />
+        {selectedDate && (
+        <>
+        <View style={styles.buttonContainer}>
+          <Button
+            title="Idag känner jag mig"
+            onPress={() => {
+              setSelectedTimeOfDay("morning");
+              setIsModalVisible(true);
+            }}
+          />
+          <Button
+            title="Idag har jag känt mig"
+            onPress={() => {
+              setSelectedTimeOfDay("evening");
+              setIsModalVisible(true);
+            }}
+          />
+          </View>
+        </>
+      )}       
         <Image 
-                source={{ uri: 'https://static.vecteezy.com/ti/gratis-vektor/t1/6828456-ljusa-smiley-ansikte-emoji-vektor-uttryck-gratis-vector.jpg' }} 
-                style={styles.image}
+                //source={{ uri: 'https://static.vecteezy.com/ti/gratis-vektor/t1/6828456-ljusa-smiley-ansikte-emoji-vektor-uttryck-gratis-vector.jpg' }} 
+                //style={styles.image}
               />
+              <Text style={{ textAlign: "center", fontSize: 150 }}>
+          {morningEmotionData[selectedDate] || "😶"}
+          {emotionData[selectedDate] || "😶"}
+        </Text>
 
 <Modal
 animationType="slide"
@@ -98,25 +141,30 @@ onRequestClose={() => setIsModalVisible(false)}
 >
 <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Pick an Emotion for {selectedDate}</Text>
+            <Text style={styles.modalTitle}>Idag känner jag mig</Text>
             <RNPickerSelect
               onValueChange={(value) => setSelectedEmotion(value)}
               items={emotions}
               style={pickerSelectStyles}
             />
             <TouchableOpacity onPress={handleSaveEmotion} style={styles.saveButton}>
-              <Text style={styles.saveButtonText}>Save Emotion</Text>
+              <Text style={styles.saveButtonText}>Spara</Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => setIsModalVisible(false)}
               style={styles.cancelButton}
             >
-              <Text style={styles.cancelButtonText}>Cancel</Text>
+              <Text style={styles.cancelButtonText}>Avbryt</Text>
             </TouchableOpacity>
           </View>
         </View>
 </Modal>
-
+<View style={styles.hemKnapp}>
+        <Button
+          title="Tillbaka till Dashboard"
+          onPress={() => navigation.navigate("MainPage")}
+        />
+      </View>
       </View>
     );
   };
@@ -162,6 +210,18 @@ const styles = StyleSheet.create({
   cancelButtonText: {
     color: "white",
     fontSize: 16,
+  },
+  hemKnapp: {
+    position: 'absolute',
+    bottom: 10, 
+    left: 0,
+    right: 0,
+    paddingHorizontal: 20,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    marginTop: 20,
   },
 });
 
