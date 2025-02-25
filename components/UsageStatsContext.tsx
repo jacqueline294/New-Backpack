@@ -1,5 +1,6 @@
 import { queryUsageStats } from '@brighthustle/react-native-usage-stats-manager';
 import React, {createContext, useContext, useEffect, useState } from 'react';
+import UsageStats from 'react-native-usage-stats';
 
 interface UsageStatsContextProps {
     usageStats: any;
@@ -41,6 +42,7 @@ async function fetchAndUpdateUsageStats(setUsageStats: React.Dispatch<React.SetS
 
     const startOfDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate()).getTime();//new Date(currentDate.setHours(0, 0, 0, 0)).getTime();
 
+    const result2 = await UsageStats.queryUsageStats(startOfDay, currentTime);
     
     const result3 = await queryUsageStats(0, startOfDay, currentTime );
 
@@ -51,6 +53,7 @@ async function fetchAndUpdateUsageStats(setUsageStats: React.Dispatch<React.SetS
 
     const sortedApps = apps.sort((a, b) => b.totalTimeInForeground - a.totalTimeInForeground);
 
+    const sortedApps2 = result2?.sort((a, b) => b.totalTimeInForeground - a.totalTimeInForeground);
     setUsageStats(sortedApps)
     
     

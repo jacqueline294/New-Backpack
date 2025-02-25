@@ -5,6 +5,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { RouteProp } from "@react-navigation/native";
 import Dashboard from "./Dashboard";
 import { useUsageStats } from "./UsageStatsContext";
+import EnergyBar from "./EnergyBar";
 
 
 // Define the navigation type for the stack
@@ -29,6 +30,7 @@ function HomeScreen({ navigation }: Props) {
   
   return (
     <View style={styles.container}>
+      {/* <EnergyBar value={0}></EnergyBar> */}
       <Text style={styles.welcomeText}>VÄLKOMMEN TILL BACKPACK</Text>
       
 
@@ -44,7 +46,12 @@ function HomeScreen({ navigation }: Props) {
         AppUsageStats
       </Button>
 
+      <Button mode="outlined" onPress={() => navigation.navigate("MainPage")} style={styles.button}>
+        Daesh
+      </Button>
+
       <ScrollView>
+        <EnergyBar value={100 - usageStats[0].totalTimeInForeground / 1000}></EnergyBar>
         <Text>{JSON.stringify(usageStats, null, 2)}</Text>
       </ScrollView>
       

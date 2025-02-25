@@ -17,6 +17,7 @@ import Login from './components/Login';
 import Parent from './components/Parent';
 import AppUsageStats from './components/AppUsageStats';
 import { UsageStatsProvider } from './components/UsageStatsContext';
+import Dashboard from './components/Dashboard';
 
 const Stack = createStackNavigator();
 
@@ -43,6 +44,7 @@ export default function App() {
       <Stack.Screen name="MainPage" component={MainPage} />
       <Stack.Screen name="Parent" component={Parent} /> 
       <Stack.Screen name="Stats" component={AppUsageStats} />
+      <Stack.Screen name="Dash" component={Dashboard} />
     </Stack.Navigator>
     </NavigationContainer>
 

@@ -1,15 +1,19 @@
 import React from 'react';
 import { View, Image, Button, StyleSheet, TouchableOpacity } from 'react-native';
+import EnergyBar from './EnergyBar';
 
 const App = () => {
   return (
-    <View style={styles.container}>
+    <View >
+      
+      
       {/* Image in the center */}
       <Image 
         source={{ uri: 'https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp' }} 
         style={styles.image} 
       />
 
+      
       {/* Buttons */}
       <TouchableOpacity style={[styles.button, styles.rightTop]}>
         <Button title="----------......" onPress={() => alert("Top Button Pressed")} />
@@ -33,6 +37,10 @@ const App = () => {
         <Button title="Games" onPress={() => alert("Right Button Pressed")} />
       </TouchableOpacity>
 
+      <View>
+        <EnergyBar value={30}/>
+      </View>
+
     </View>
   );
 };
@@ -40,6 +48,7 @@ const App = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginTop: 230,
     justifyContent: 'center',
     alignItems: 'center',
     position: 'relative', // Ensure all child elements are positioned relative to this container
