@@ -1,9 +1,11 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { Button } from "react-native-paper";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RouteProp } from "@react-navigation/native";
 import Dashboard from "./Dashboard";
+import { useUsageStats } from "./UsageStatsContext";
+
 
 // Define the navigation type for the stack
 type RootStackParamList = {
@@ -22,6 +24,9 @@ type Props = {
 };
 
 function HomeScreen({ navigation }: Props) {
+  const {usageStats, setUsageStats} = useUsageStats();
+  
+  
   return (
     <View style={styles.container}>
       <Text style={styles.welcomeText}>VÄLKOMMEN TILL BACKPACK</Text>
@@ -38,8 +43,16 @@ function HomeScreen({ navigation }: Props) {
       <Button mode="outlined" onPress={() => navigation.navigate("Stats")} style={styles.button}>
         AppUsageStats
       </Button>
-      
 
+      <ScrollView>
+        <Text>{JSON.stringify(usageStats, null, 2)}</Text>
+      </ScrollView>
+      
+      
+      {/* <AppUsageStats></AppUsageStats> */}
+      
+      
+    
       {/* <Dashboard></Dashboard> */}
     </View>
   );

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, Button, ActivityIndicator, ScrollView } from 'react-native';
 import UsageStats from 'react-native-usage-stats';
 import { checkForPermission, EventFrequency, queryUsageStats, showUsageAccessSettings } from '@brighthustle/react-native-usage-stats-manager';
+import { useUsageStats } from './UsageStatsContext';
 
 
 interface UsageStatsData {
@@ -48,7 +49,8 @@ function millisecondsToFullDate(milliseconds: number): string {
 
 const AppUsageStats = () => {
   const [loading, setLoading] = useState(false);
-  const [usageStats, setUsageStats] = useState<any>();
+  //const [usageStats, setUsageStats] = useState<any>();
+  const {usageStats, setUsageStats} = useUsageStats();
   const [permissionGranted, setPermissionGranted] = useState(false);
 
   useEffect(() => {
@@ -134,7 +136,8 @@ const AppUsageStats = () => {
 
         const sortedApps = apps.sort((a, b) => b.totalTimeInForeground - a.totalTimeInForeground);
 
-        console.log("sortedApps: ", sortedApps[1]);
+        setUsageStats(sortedApps)
+        console.log("sortedApps: ", sortedApps);
       } else {
         console.error("Permission not granted");
       }
@@ -147,16 +150,20 @@ const AppUsageStats = () => {
 
   return (
     <View>
-      <Text>Usage Stats for last hour</Text>
+     {/*  <Text>Usage Stats for last hour</Text>
       {loading ? <ActivityIndicator /> : (
         permissionGranted ? (
-            <ScrollView>
-                <Text>{JSON.stringify(usageStats, null, 2)}</Text>
-            </ScrollView>
+          <ScrollView>
+            <Text>{JSON.stringify(usageStats, null, 2)}</Text>
+          </ScrollView>
         ) : (
           <Text>Permission required to access usage stats</Text>
         )
-      )}
+      )} */}
+
+      <ScrollView>
+        <Text>{JSON.stringify(usageStats, null, 2)}</Text>
+      </ScrollView>
     </View>
   );
 };

@@ -16,6 +16,7 @@ import MainPage from './components/MainPage';
 import Login from './components/Login';
 import Parent from './components/Parent';
 import AppUsageStats from './components/AppUsageStats';
+import { UsageStatsProvider } from './components/UsageStatsContext';
 
 const Stack = createStackNavigator();
 
@@ -23,6 +24,7 @@ export default function App() {
 
   /* headerLeft: () => null removes the back button, headerShown: false removes the entire header  */
   return (
+    <UsageStatsProvider>
     <SafeAreaProvider>
       <GestureHandlerRootView style={{ flex: 1 }}>
         {/* <View style={styles.container}>
@@ -44,9 +46,12 @@ export default function App() {
     </Stack.Navigator>
     </NavigationContainer>
 
-      </GestureHandlerRootView>
-    </SafeAreaProvider>
+    
 
+      </GestureHandlerRootView>
+      
+    </SafeAreaProvider>
+    </UsageStatsProvider>
 
   );
 }
