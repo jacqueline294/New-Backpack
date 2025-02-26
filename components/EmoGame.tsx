@@ -13,6 +13,7 @@ const EmoGame = () => {
     question5: null,
   });
   const [feelingResult, setFeelingResult] = useState(false);
+
   const emotions = [
     { label: "😊", value: "😊"},
     { label: "❤️", value: "❤️"},
@@ -21,11 +22,19 @@ const EmoGame = () => {
     { label: "😢", value: "😢"},
 ];
 
-  const handleAnswer = (question, value) => {
+  const handleAnswer = (question: string, value: boolean) => {
     setAnswers((prevAnswers) => ({
       ...prevAnswers,
       [question]: value,
     }));
+  };
+
+  const renderAnswerText = (question: string) => {
+    const answer = answers[question];
+    if (answer === null) {
+      return "No answer selected";
+    }
+    return answer ? "True" : "False";
   };
 
   return (
@@ -123,8 +132,12 @@ const EmoGame = () => {
         Idag känner du dig troligen:
       </Text>
       
-      <Text style={styles.answerText}>
-          Question 1: {renderAnswerText("question1")}
+      <Text>
+          Question 1: {renderAnswerText("question1")}{"\n"}        
+          Question 2: {renderAnswerText("question2")}{"\n"}        
+          Question 3: {renderAnswerText("question3")}{"\n"}
+          Questfion 4: {renderAnswerText("question4")}{"\n"}        
+          Question 5: {renderAnswerText("question5")}
         </Text>
       <Text style={{ textAlign: "center", fontSize: 200 }}>
       😶
