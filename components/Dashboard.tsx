@@ -21,7 +21,7 @@ const App = () => {
       </TouchableOpacity>
 
       <TouchableOpacity style={[styles.button, styles.left]}>
-        <Button title="emo space" onPress={() => alert("Left Button Pressed")} />
+        <Button title="emo space" onPress={() => navigation.navigate("EmoSpace")} />
       </TouchableOpacity>
       <TouchableOpacity style={[styles.button, styles.left2]} >
         <Button title="calender" onPress={() => navigation.navigate("Calender")} />
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
   },
   left: {
     left: -0, // Move further left to avoid off-screen issue
-    top: '40%',
+    top: 150,
     transform: [{ translateY: -50 }],
   },
   left2: {

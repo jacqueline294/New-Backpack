@@ -6,7 +6,7 @@ import { useNavigation } from "@react-navigation/native"
 import RNPickerSelect from "react-native-picker-select"
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const Calender = () => {
+const EmoSpace = () => {
     const [selectedDate, setSelectedDate] = useState("");
     const [selectedEmotion, setSelectedEmotion] = useState(null);
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -159,15 +159,24 @@ onRequestClose={() => setIsModalVisible(false)}
           </View>
         </View>
 </Modal>
-<View style={styles.hemKnapp}>
-        <Button
-          title="Tillbaka till Dashboard"
-          onPress={() => navigation.navigate("MainPage")}
-        />
-      </View>
-      </View>
+        <View style={styles.hemKnapp}>
+            <Button
+              title="Känslo spel"
+            onPress={() => navigation.navigate("EmoGame")}
+            />
+            <Button
+              title="Talk it out"
+            onPress={() => navigation.navigate("TalkItOut")}
+            />
+            <Button
+              title="Tillbaka"
+            onPress={() => navigation.navigate("MainPage")}
+            />
+        </View>
+    </View>
     );
   };
+  
 const styles = StyleSheet.create({  
   image: {
     width: 200,
@@ -212,6 +221,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   hemKnapp: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
     position: 'absolute',
     bottom: 10, 
     left: 0,
@@ -246,4 +257,4 @@ const pickerSelectStyles = StyleSheet.create({
     },
   });
   
-  export default Calender;
+  export default EmoSpace;

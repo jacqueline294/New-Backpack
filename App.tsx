@@ -13,9 +13,12 @@ import TestPage from './components/TestPage';
 import ChooseRole from './components/ChooseRole';
 import Loading from './components/Loading';
 import MainPage from './components/MainPage';
-import Calender from './components/Calender';
+import Calender from './components/EmoSpace';
 import Login from './components/Login';
 import Parent from './components/Parent';
+import EmoSpace from './components/EmoSpace';
+import EmoGame from './components/EmoGame';
+import TalkItOut from './components/TalkItOut';
 
 const Stack =createStackNavigator();
 
@@ -37,7 +40,9 @@ export default function App() {
       <Stack.Screen name="ChooseRole" component={ChooseRole} />
       <Stack.Screen name="Loading" component={Loading} />
       <Stack.Screen name="MainPage" component={MainPage} />
-      <Stack.Screen name="Calender" component={Calender} />
+      <Stack.Screen name="EmoSpace" component={EmoSpace} />
+      <Stack.Screen name="EmoGame" component={EmoGame} />
+      <Stack.Screen name="TalkItOut" component={TalkItOut} />
       {/*<Stack.Screen name="Parent" component={Parent} /> */}
       <Stack.Screen name="Parent" component={Parent} /> 
     </Stack.Navigator>
