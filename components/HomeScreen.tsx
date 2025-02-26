@@ -25,7 +25,7 @@ type Props = {
 };
 
 function HomeScreen({ navigation }: Props) {
-  const {usageStats, setUsageStats} = useUsageStats();
+  const {usageStats, setUsageStats, energy} = useUsageStats();
   
   
   return (
@@ -51,7 +51,9 @@ function HomeScreen({ navigation }: Props) {
       </Button>
 
       <ScrollView>
-        <EnergyBar value={100 - usageStats[0].totalTimeInForeground / 1000}></EnergyBar>
+        <EnergyBar value={usageStats && usageStats[0] ? 100 - usageStats[0].totalTimeInForeground / 1000 : 100}></EnergyBar>
+        <EnergyBar value={energy}></EnergyBar>
+
         <Text>{JSON.stringify(usageStats, null, 2)}</Text>
       </ScrollView>
       

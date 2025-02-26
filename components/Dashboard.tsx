@@ -1,8 +1,11 @@
 import React from 'react';
 import { View, Image, Button, StyleSheet, TouchableOpacity } from 'react-native';
 import EnergyBar from './EnergyBar';
+import { useUsageStats } from "./UsageStatsContext";
 
 const App = () => {
+
+  const {energy} = useUsageStats();
   return (
     <View >
       
@@ -38,7 +41,7 @@ const App = () => {
       </TouchableOpacity>
 
       <View>
-        <EnergyBar value={30}/>
+        <EnergyBar value={energy}/>
       </View>
 
     </View>

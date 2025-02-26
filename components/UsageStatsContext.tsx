@@ -1,25 +1,28 @@
 import { queryUsageStats } from '@brighthustle/react-native-usage-stats-manager';
-import React, {createContext, useContext, useEffect, useState } from 'react';
+import React, {createContext, SetStateAction, useContext, useEffect, useState } from 'react';
 import UsageStats from 'react-native-usage-stats';
 
 interface UsageStatsContextProps {
     usageStats: any;
     setUsageStats: React.SetStateAction<any>;
+    energy: any,
+    setEnergy: SetStateAction<any>;
 };
 
 const UsageStatsContext = createContext<UsageStatsContextProps | undefined>(undefined);
 
 export const UsageStatsProvider = ( {children} ) => {
     const [usageStats, setUsageStats] = useState<any>("");
+    const [energy, setEnergy] = useState<any>("");
 
     useEffect(() => {
         const interval = setInterval(async () => {
-            await fetchAndUpdateUsageStats(setUsageStats);
+            await fetchAndUpdateUsageStats(setUsageStats, setEnergy);
         }, 1000);
     }, []);
 
     return (
-        <UsageStatsContext.Provider value={{usageStats, setUsageStats}}>
+        <UsageStatsContext.Provider value={{usageStats, setUsageStats, energy, setEnergy}}>
             {children}
         </UsageStatsContext.Provider>
     )
@@ -35,7 +38,7 @@ export const useUsageStats = (): UsageStatsContextProps => {
     return context;
 }
 
-async function fetchAndUpdateUsageStats(setUsageStats: React.Dispatch<React.SetStateAction<any>>) {
+async function fetchAndUpdateUsageStats(setUsageStats: React.Dispatch<React.SetStateAction<any>>, setEnergy:React.Dispatch<React.SetStateAction<any>>) {
 
     const currentDate = new Date();
     const currentTime = currentDate.getTime();
@@ -55,6 +58,17 @@ async function fetchAndUpdateUsageStats(setUsageStats: React.Dispatch<React.SetS
 
     const sortedApps2 = result2?.sort((a, b) => b.totalTimeInForeground - a.totalTimeInForeground);
     setUsageStats(sortedApps)
+
+    const calculateEnergy = () => {
+        let energi = 100 - sortedApps[0].totalTimeInForeground/100;
+
+        if (energi <= 0) {
+            energi = 1
+        }
+
+        return energi;
+    }
     
+    setEnergy(calculateEnergy)
     
 }

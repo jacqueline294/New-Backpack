@@ -5,7 +5,7 @@ import NavTest from './components/NavTest';
 import TestNavPage from './components/TestNavPage';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack'
 import HomeScreen from './components/HomeScreen';
@@ -18,10 +18,53 @@ import Parent from './components/Parent';
 import AppUsageStats from './components/AppUsageStats';
 import { UsageStatsProvider } from './components/UsageStatsContext';
 import Dashboard from './components/Dashboard';
+import BackgroundFetch from 'react-native-background-fetch';
 
 const Stack = createStackNavigator();
 
 export default function App() {
+
+  useEffect(() => {
+
+    BackgroundFetch.configure(
+      {
+        minimumFetchInterval: 15,
+        stopOnTerminate: false,
+        startOnBoot: true,
+      },
+      async (taskId) => {
+        console.log("[BackgroundFetch] Task received: ", taskId);
+        
+        await performBackground();
+  
+        BackgroundFetch.finish(taskId);
+      },
+      (error) => {
+        console.log("[BackgroundFetch] failed to start: ", error);
+      }
+    );
+  
+    BackgroundFetch.start();
+  
+    return () => {
+      BackgroundFetch.stop();
+    };
+
+
+
+  }, []);
+
+  const performBackground = async () => {
+    console.log("running background task");
+
+    return (
+      <View>
+        <Text>Background Task test</Text>
+      </View>
+    )
+  }
+
+  
 
   /* headerLeft: () => null removes the back button, headerShown: false removes the entire header  */
   return (
