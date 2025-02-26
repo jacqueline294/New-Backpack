@@ -19,6 +19,7 @@ import AppUsageStats from './components/AppUsageStats';
 import { UsageStatsProvider } from './components/UsageStatsContext';
 import Dashboard from './components/Dashboard';
 import BackgroundFetch from 'react-native-background-fetch';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Stack = createStackNavigator();
 
@@ -56,12 +57,16 @@ export default function App() {
 
   const performBackground = async () => {
     console.log("running background task");
+    const energy = AsyncStorage.getItem("energy").then((item) => {
+      console.log("item(energy): ", item);
+    });
+    //console.log("energy: ", energy);
 
-    return (
+    /* return (
       <View>
         <Text>Background Task test</Text>
       </View>
-    )
+    ) */
   }
 
   
