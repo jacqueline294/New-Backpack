@@ -14,7 +14,8 @@ import ChooseRole from './components/ChooseRole';
 import Loading from './components/Loading';
 import MainPage from './components/MainPage';
 import Login from './components/Login';
-import Parent from './components/Parent';
+import Calendar from './components/Calendar';
+import Dashboard from './components/Dashboard';
 
 const Stack =createStackNavigator();
 
@@ -36,7 +37,8 @@ export default function App() {
       <Stack.Screen name="ChooseRole" component={ChooseRole} />
       <Stack.Screen name="Loading" component={Loading} />
       <Stack.Screen name="MainPage" component={MainPage} />
-      <Stack.Screen name="Parent" component={Parent} /> 
+      <Stack.Screen name="Dashboard" component={Dashboard} />
+      <Stack.Screen name="Calendar" component={Calendar} /> 
     </Stack.Navigator>
     </NavigationContainer>
 
