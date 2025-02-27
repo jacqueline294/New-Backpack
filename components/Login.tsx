@@ -11,7 +11,7 @@ import { auth } from "./Firebase";
 type RootStackParamList = {
     SignUp: undefined;
     Login: undefined;
-    Parent: undefined; 
+    ParentPage: undefined; 
   };
 
 const Login = () => {
@@ -34,7 +34,7 @@ const Login = () => {
       console.log("User logged in successfully");
   
       // Navigate to ParentPage after login
-      navigation.navigate("Parent");
+      navigation.navigate("ParentPage");
   
     } catch (error: any) {
       setShowErrorMessage(true);
