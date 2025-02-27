@@ -24,6 +24,8 @@ import { queryUsageStats } from '@brighthustle/react-native-usage-stats-manager'
 import RoomScreen from './components/RoomScreen';
 import { getFCMToken, requestUserPermission, setupPushNotification } from './components/PushNotificationService';
 import PushNotification from "react-native-push-notification";
+import messaging from "@react-native-firebase/messaging"
+
 
 /* PushNotification.localNotification({
   title: "hello",
@@ -41,6 +43,31 @@ export default function App() {
 
     setupPushNotification();
   }, []); */
+
+  /* useEffect(() => {
+
+    const unsubscribeOnMessage = messaging().onMessage(async remoteMessage => {
+      console.log("Foreground notification: ", remoteMessage);
+    });
+
+    const unsubscribeOnNotificationOpenedApp = messaging().onNotificationOpenedApp(async remoteMessage => {
+      console.log("Background notification: ", remoteMessage);
+    });
+
+    messaging()
+      .getInitialNotification()
+      .then(remoteMessage => {
+        if(remoteMessage) {
+          console.log("Notification caused app to open: ", remoteMessage);
+        }
+      })
+
+      return ()=> {
+        unsubscribeOnMessage();
+        unsubscribeOnNotificationOpenedApp();
+      }
+
+  }, []) */
 
   useEffect(() => {
 
@@ -108,6 +135,14 @@ export default function App() {
     const energy = await AsyncStorage.getItem("energy");
 
     console.log("energy: ", energy);
+
+    PushNotification.localNotification({
+      title: "hello",
+      message: 'This is a test push notification' + energy,
+      playSound: true,
+      soundName: "default",
+      vibrate: true
+    });
     //console.log("energy: ", energy);
 
     /* return (
