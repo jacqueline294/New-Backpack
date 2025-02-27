@@ -50,6 +50,18 @@ async function fetchAndUpdateUsageStats(setUsageStats: React.Dispatch<React.SetS
     
     const result3 = await queryUsageStats(0, startOfDay, currentTime );
 
+    const YT = Object.values(result3).filter(item => item.appName === "YouTube").reduce((sum, item) => sum + item.totalTimeInForeground, 0);
+    const Instagram = Object.values(result3).filter(item => item.appName === "Instagram").reduce((sum, item) => sum + item.totalTimeInForeground, 0);
+    const TikTok = Object.values(result3).filter(item => item.appName === "TikTok").reduce((sum, item) => sum + item.totalTimeInForeground, 0);
+    const Snapchat = Object.values(result3).filter(item => item.appName === "Snapchat").reduce((sum, item) => sum + item.totalTimeInForeground, 0);
+    const Triller = Object.values(result3).filter(item => item.appName === "Triller").reduce((sum, item) => sum + item.totalTimeInForeground, 0);
+    const Roblox = Object.values(result3).filter(item => item.appName === "Roblox").reduce((sum, item) => sum + item.totalTimeInForeground, 0);
+    const Fortnite = Object.values(result3).filter(item => item.appName === "Fortnite").reduce((sum, item) => sum + item.totalTimeInForeground, 0);
+    const AmongUs = Object.values(result3).filter(item => item.appName === "Among Us").reduce((sum, item) => sum + item.totalTimeInForeground, 0);
+
+    const badAppsTotalTimeInForeground = YT + Instagram + TikTok + Snapchat + Triller + Roblox + Fortnite + AmongUs; 
+
+    
     const apps = Object.entries(result3).map(([packageName, appData]) => ({
         packageName,
         ...appData
@@ -58,10 +70,12 @@ async function fetchAndUpdateUsageStats(setUsageStats: React.Dispatch<React.SetS
     const sortedApps = apps.sort((a, b) => b.totalTimeInForeground - a.totalTimeInForeground);
 
     const sortedApps2 = result2?.sort((a, b) => b.totalTimeInForeground - a.totalTimeInForeground);
-    setUsageStats(apps)
+    setUsageStats(result3);
 
     const calculateEnergy = () => {
-        let energi = 100 - apps[1].totalTimeInForeground/1000;
+        let energi = 100 - badAppsTotalTimeInForeground/1000;
+
+        console.log("apps[1]: ", apps[1])
 
         if (energi <= 0) {
             energi = 1

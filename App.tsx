@@ -20,6 +20,7 @@ import { UsageStatsProvider } from './components/UsageStatsContext';
 import Dashboard from './components/Dashboard';
 import BackgroundFetch from 'react-native-background-fetch';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { queryUsageStats } from '@brighthustle/react-native-usage-stats-manager';
 
 const Stack = createStackNavigator();
 
@@ -57,9 +58,40 @@ export default function App() {
 
   const performBackground = async () => {
     console.log("running background task");
-    const energy = AsyncStorage.getItem("energy").then((item) => {
-      console.log("item(energy): ", item);
-    });
+    
+
+    const currentDate = new Date();
+    const currentTime = currentDate.getTime();
+
+    const startOfDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate()).getTime();//new Date(currentDate.setHours(0, 0, 0, 0)).getTime();
+
+    const result3 = await queryUsageStats(0, startOfDay, currentTime );
+
+    const YT = Object.values(result3).filter(item => item.appName === "YouTube").reduce((sum, item) => sum + item.totalTimeInForeground, 0);
+    const Instagram = Object.values(result3).filter(item => item.appName === "Instagram").reduce((sum, item) => sum + item.totalTimeInForeground, 0);
+    const TikTok = Object.values(result3).filter(item => item.appName === "TikTok").reduce((sum, item) => sum + item.totalTimeInForeground, 0);
+    const Snapchat = Object.values(result3).filter(item => item.appName === "Snapchat").reduce((sum, item) => sum + item.totalTimeInForeground, 0);
+    const Triller = Object.values(result3).filter(item => item.appName === "Triller").reduce((sum, item) => sum + item.totalTimeInForeground, 0);
+    const Roblox = Object.values(result3).filter(item => item.appName === "Roblox").reduce((sum, item) => sum + item.totalTimeInForeground, 0);
+    const Fortnite = Object.values(result3).filter(item => item.appName === "Fortnite").reduce((sum, item) => sum + item.totalTimeInForeground, 0);
+    const AmongUs = Object.values(result3).filter(item => item.appName === "Among Us").reduce((sum, item) => sum + item.totalTimeInForeground, 0);
+
+    const badAppsTotalTimeInForeground = YT + Instagram + TikTok + Snapchat + Triller + Roblox + Fortnite + AmongUs; 
+
+    const calculateEnergy = () => {
+      let energi = 100 - badAppsTotalTimeInForeground/1000;
+
+      if (energi <= 0) {
+          energi = 1
+      }
+      return energi.toString();
+    }
+
+    AsyncStorage.setItem("energy", calculateEnergy());
+
+    const energy = await AsyncStorage.getItem("energy");
+
+    console.log("energy: ", energy);
     //console.log("energy: ", energy);
 
     /* return (
