@@ -16,6 +16,8 @@ import MainPage from './components/MainPage';
 import Login from './components/Login';
 import Calendar from './components/Calendar';
 import Dashboard from './components/Dashboard';
+import ParentPage from './components/ParentPage';
+console.log("✅ ParentPage successfully imported:", ParentPage);
 
 const Stack =createStackNavigator();
 
@@ -39,6 +41,7 @@ export default function App() {
       <Stack.Screen name="MainPage" component={MainPage} />
       <Stack.Screen name="Dashboard" component={Dashboard} />
       <Stack.Screen name="Calendar" component={Calendar} /> 
+      <Stack.Screen name="ParentPage" component={ParentPage} />
     </Stack.Navigator>
     </NavigationContainer>
 
