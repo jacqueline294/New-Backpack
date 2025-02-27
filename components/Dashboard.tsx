@@ -1,9 +1,10 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { View, Image, Button, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 const App = () => {
-  const navigation = useNavigation ();
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       {/* Image in the center */}
@@ -23,8 +24,9 @@ const App = () => {
       <TouchableOpacity style={[styles.button, styles.left]}>
         <Button title="emo space" onPress={() => navigation.navigate("EmoSpace")} />
       </TouchableOpacity>
-      <TouchableOpacity style={[styles.button, styles.left2]} >
-        <Button title="calender" onPress={() => navigation.navigate("Calender")} />
+
+      <TouchableOpacity style={[styles.button, styles.left2]}>
+        <Button title="Calendar" onPress={() => navigation.navigate('Calendar')} />
       </TouchableOpacity>
 
       <TouchableOpacity style={[styles.button, styles.right3]}>
@@ -38,36 +40,30 @@ const App = () => {
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    position: 'relative', // Ensure all child elements are positioned relative to this container
+    position: 'relative',
   },
   image: {
     width: 200,
     height: 200,
-    borderRadius: 100, // to make the image circular, if required
+    borderRadius: 100,
     marginBottom: 20,
-    zIndex: 1, // Image stays on top of the buttons
+    zIndex: 1,
   },
   button: {
     position: 'absolute',
   },
-  top: {
-    top: -60, // Adjust as per the button size and image size
-    left: '80%',
-    transform: [{ translateX: -50 }],
-  },
   rightTop: {
-    right: -0, // Move further right to avoid off-screen issue
+    right: 0,
     top: '0%',
     transform: [{ translateY: -50 }],
   },
   bottom: {
-    bottom: -30, // Adjust as per the button size and image size
+    bottom: -30,
     left: '52.5%',
     transform: [{ translateX: -50 }],
   },
@@ -86,16 +82,16 @@ const styles = StyleSheet.create({
     top: '60%',
     transform: [{ translateY: -50 }],
   },
-  right2: {
-    right: -0,
-    top: "40%",
-    transform: [{ translateY: -50}]
-  },
   right3: {
-    top: 75, // Adjust as per the button size and image size
+    top: 75,
     left: '95%',
     transform: [{ translateX: -50 }],
-  }
+  },
+  right2: {
+    right: 0,
+    top: '40%',
+    transform: [{ translateY: -50 }],
+  },
 });
 
 export default App;
