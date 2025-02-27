@@ -7,8 +7,9 @@ import { useUsageStats } from "./UsageStatsContext";
 
 const App = () => {
   const navigation = useNavigation();
+  const energy = useUsageStats().energy;
   return (
-    <View >
+    <View style={styles.container} >
       
       
       {/* Image in the center */}
@@ -20,7 +21,7 @@ const App = () => {
       
       {/* Buttons */}
       <TouchableOpacity style={[styles.button, styles.rightTop]}>
-        <Button title="----------......" onPress={() => alert("Top Button Pressed")} />
+          <EnergyBar value={energy}/>
       </TouchableOpacity>
       <TouchableOpacity style={[styles.button, styles.bottom]}>
         <Button title="Activities" onPress={() => alert("Bottom Button Pressed")} />
@@ -42,17 +43,13 @@ const App = () => {
         <Button title="Games" onPress={() => alert("Right Button Pressed")} />
       </TouchableOpacity>
 
-      <View>
-        <EnergyBar value={energy}/>
-      </View>
-
     </View>
   );
 };
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 230,
+    marginTop: 130,
     justifyContent: 'center',
     alignItems: 'center',
     position: 'relative',
@@ -61,7 +58,8 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     borderRadius: 100,
-    marginBottom: 20,
+    right: 0,
+    marginBottom: 260,
     zIndex: 1,
   },
   button: {
@@ -69,11 +67,13 @@ const styles = StyleSheet.create({
   },
   rightTop: {
     right: 0,
-    top: '0%',
+    top: '-30%',
     transform: [{ translateY: -50 }],
+    width: 500,
+    marginRight: 10
   },
   bottom: {
-    bottom: -30,
+    bottom: 200,
     left: '52.5%',
     transform: [{ translateX: -50 }],
   },
@@ -93,13 +93,13 @@ const styles = StyleSheet.create({
     transform: [{ translateY: -50 }],
   },
   right3: {
-    top: 75,
-    left: '95%',
+    top: 20,
+    left: '86%',
     transform: [{ translateX: -50 }],
   },
   right2: {
     right: 0,
-    top: '40%',
+    top: '35%',
     transform: [{ translateY: -50 }],
   },
 });

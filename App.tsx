@@ -183,6 +183,7 @@ export default function App() {
       <Stack.Screen name="EmoSpace" component={EmoSpace} />
       <Stack.Screen name="EmoGame" component={EmoGame} />
       <Stack.Screen name="TalkItOut" component={TalkItOut} />
+      <Stack.Screen name="Stats" component={AppUsageStats} />
     </Stack.Navigator>
     </NavigationContainer>
 

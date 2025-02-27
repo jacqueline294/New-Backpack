@@ -51,6 +51,7 @@ const AppUsageStats = () => {
   const [loading, setLoading] = useState(false);
   //const [usageStats, setUsageStats] = useState<any>();
   const {usageStats, setUsageStats} = useUsageStats();
+  const [localUsageStats, setLocalUsageStats] = useState();
   const [permissionGranted, setPermissionGranted] = useState(false);
 
   useEffect(() => {
@@ -136,7 +137,7 @@ const AppUsageStats = () => {
 
         const sortedApps = apps.sort((a, b) => b.totalTimeInForeground - a.totalTimeInForeground);
 
-        setUsageStats(sortedApps)
+        setLocalUsageStats(sortedApps)
         console.log("sortedApps: ", sortedApps);
       } else {
         console.error("Permission not granted");
@@ -162,7 +163,7 @@ const AppUsageStats = () => {
       )} */}
 
       <ScrollView>
-        <Text>{JSON.stringify(usageStats, null, 2)}</Text>
+        <Text>{JSON.stringify(localUsageStats, null, 2)}</Text>
       </ScrollView>
     </View>
   );
