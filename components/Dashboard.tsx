@@ -59,32 +59,32 @@ const styles = StyleSheet.create({
     height: 200,
     borderRadius: 100,
     right: 0,
-    marginBottom: 260,
+    marginBottom: -100,
     zIndex: 1,
   },
   button: {
     position: 'absolute',
   },
   rightTop: {
-    right: 0,
-    top: '-30%',
+    right: -8,
+    top: -160,
     transform: [{ translateY: -50 }],
     width: 500,
     marginRight: 10
   },
   bottom: {
-    bottom: 200,
+    bottom: -200,
     left: '52.5%',
     transform: [{ translateX: -50 }],
   },
   left: {
     left: -0, // Move further left to avoid off-screen issue
-    top: 150,
+    top: 130,
     transform: [{ translateY: -50 }],
   },
   left2: {
     left: -0,
-    top: 75,
+    top: 40,
     transform: [{ translateY: -50}]
   },
   right: {
@@ -93,13 +93,13 @@ const styles = StyleSheet.create({
     transform: [{ translateY: -50 }],
   },
   right3: {
-    top: 20,
+    top: 85,
     left: '86%',
     transform: [{ translateX: -50 }],
   },
   right2: {
     right: 0,
-    top: '35%',
+    top: 36,
     transform: [{ translateY: -50 }],
   },
 });
