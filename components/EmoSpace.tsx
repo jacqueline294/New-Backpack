@@ -7,11 +7,11 @@ import RNPickerSelect from "react-native-picker-select"
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const EmoSpace = () => {
-    const [selectedDate, setSelectedDate] = useState("");
+    const [selectedDate, setSelectedDate] = useState<string>("");
     const [selectedEmotion, setSelectedEmotion] = useState(null);
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const [emotionData, setEmotionData] = useState({});
-    const [morningEmotionData, setMorningEmotionData] = useState({});
+    const [emotionData, setEmotionData] = useState<Record<string, string>>({});
+    const [morningEmotionData, setMorningEmotionData] = useState<Record<string, string>>({});
     const navigation = useNavigation();
     const [selectedTimeOfDay, setSelectedTimeOfDay] = useState("evening");
     const [locale, setLocale] = useState("sv");
@@ -41,11 +41,11 @@ const EmoSpace = () => {
         loadMorningEmotionData();
     }, []);
 
-    const handleCalenderDayPress = (day) => {
+    const handleCalenderDayPress = (day: { dateString: React.SetStateAction<string>; }) => {
         setSelectedDate(day.dateString); 
       };
   
-    const handleDayPress = (day) => {
+    const handleDayPress = (day: { dateString: React.SetStateAction<string>; }) => {
       setSelectedDate(day.dateString); 
       setIsModalVisible(true);
     };
@@ -85,7 +85,7 @@ const EmoSpace = () => {
     }
   
     return (
-      <View style={{ flex: 1, marginTop: 10 }}>
+      <View style={{ flex: 1 }}>
         <Text style={{ textAlign: "center", fontSize: 20 }}>
           Dagens datum: {selectedDate}
         </Text>
@@ -98,7 +98,7 @@ const EmoSpace = () => {
         <Calendar
           onDayPress={handleCalenderDayPress}
           markedDates={{
-            [selectedDate]: { selected: true, selectedColor: "purple" },
+          [selectedDate]: { selected: true, selectedColor: "purple" },
           }}
           markingType={"multi-dot"}
           firstDay={1}
@@ -120,63 +120,68 @@ const EmoSpace = () => {
               setSelectedTimeOfDay("evening");
               setIsModalVisible(true);
             }}
-          />
-          </View>
+          />          
+        </View>
         </>
-      )}       
-        <Image 
-                //source={{ uri: 'https://static.vecteezy.com/ti/gratis-vektor/t1/6828456-ljusa-smiley-ansikte-emoji-vektor-uttryck-gratis-vector.jpg' }} 
-                //style={styles.image}
-              />
-              <Text style={{ textAlign: "center", fontSize: 150 }}>
+        )}       
+          <Image 
+            //source={{ uri: 'https://static.vecteezy.com/ti/gratis-vektor/t1/6828456-ljusa-smiley-ansikte-emoji-vektor-uttryck-gratis-vector.jpg' }} 
+            //style={styles.image}
+          />
+          <Text style={{ textAlign: "center", fontSize: 150 }}>
           {morningEmotionData[selectedDate] || "😶"}
           {emotionData[selectedDate] || "😶"}
-        </Text>
-
-<Modal
-animationType="slide"
-transparent={true}
-visible={isModalVisible}
-onRequestClose={() => setIsModalVisible(false)}
->
-<View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Idag känner jag mig</Text>
-            <RNPickerSelect
-              onValueChange={(value) => setSelectedEmotion(value)}
-              items={emotions}
-              style={pickerSelectStyles}
-            />
-            <TouchableOpacity onPress={handleSaveEmotion} style={styles.saveButton}>
-              <Text style={styles.saveButtonText}>Spara</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => setIsModalVisible(false)}
-              style={styles.cancelButton}
-            >
-              <Text style={styles.cancelButtonText}>Avbryt</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-</Modal>
-        <View style={styles.hemKnapp}>
-            <Button
-              title="Känslo spel"
-            onPress={() => navigation.navigate("EmoGame")}
-            />
-            <Button
-              title="Talk it out"
-            onPress={() => navigation.navigate("TalkItOut")}
-            />
-            <Button
-              title="Tillbaka"
-            onPress={() => navigation.navigate("MainPage")}
-            />
-        </View>
-    </View>
+          </Text>
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => navigation.navigate("EmoGame")}
+              >
+              <Text style={styles.buttonText}>KÄNSLO SPEL</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => navigation.navigate("TalkItOut")}
+              >
+              <Text style={styles.buttonText}>TALK IT OUT</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => navigation.navigate("MainPage")}
+              >
+              <Text style={styles.buttonText}>TILLBAKA</Text>
+              </TouchableOpacity>                    
+            </View>
+              <Modal
+              animationType="slide"
+              transparent={true}
+              visible={isModalVisible}
+              onRequestClose={() => setIsModalVisible(false)}
+              >
+              <View style={styles.modalContainer}>
+                <View style={styles.modalContent}>
+                  <Text style={styles.modalTitle}>Idag känner jag mig</Text>
+                  <RNPickerSelect
+                    onValueChange={(value) => setSelectedEmotion(value)}
+                    items={emotions}
+                  style={pickerSelectStyles}
+                  />
+                  <TouchableOpacity onPress={handleSaveEmotion} style={styles.saveButton}>
+                    <Text style={styles.saveButtonText}>Spara</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => setIsModalVisible(false)}
+                    style={styles.cancelButton}
+                  >
+                  <Text style={styles.cancelButtonText}>Avbryt</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </Modal>        
+      </View>    
     );
   };
-  
+
 const styles = StyleSheet.create({  
   image: {
     width: 200,
@@ -187,7 +192,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)", // semi-transparent background
   },
   modalContent: {
     backgroundColor: "white",
@@ -199,6 +203,17 @@ const styles = StyleSheet.create({
   modalTitle: {
     fontSize: 20,
     marginBottom: 20,
+  },
+  button: {
+    backgroundColor: 'purple',
+    padding: 10,
+    borderRadius: 5,
+    justifyContent: 'flex-end',
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 20,
+    textAlign: 'center'
   },
   saveButton: {
     backgroundColor: "#4CAF50",
@@ -220,19 +235,11 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 16,
   },
-  hemKnapp: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    position: 'absolute',
-    bottom: 10, 
-    left: 0,
-    right: 0,
-    paddingHorizontal: 20,
-  },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     marginTop: 20,
+    marginBottom: 10,
   },
 });
 

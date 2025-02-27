@@ -16,11 +16,11 @@ const EmoGame = () => {
   const [isFeelingResultVisible, setIsFeelingResultVisible] = useState(false);
 
   const emotions = [
-    { label: "😊glad", value: "😊"},
-    { label: "❤️", value: "❤️"},
-    { label: "😌", value: "😌"},
-    { label: "😠", value: "😠"},
-    { label: "😢", value: "😢"},
+    { label: "Glad", value: "😊"},
+    { label: "Kärleksfull", value: "❤️"},
+    { label: "Avslappnad", value: "😌"},
+    { label: "Arg", value: "😠"},
+    { label: "Ledsen", value: "😢"},
 ];
 
   const handleSubmit = () => {
@@ -35,26 +35,26 @@ const EmoGame = () => {
     if(answers.q1 == true && answers.q2 == false && answers.q3 == true && answers.q4 == true && answers.q5 == true) {setFeelingResult (emotions[3].value);}
     if(answers.q1 == true && answers.q2 == false && answers.q3 == true && answers.q4 == true && answers.q5 == false) {setFeelingResult (emotions[4].value);}
     if(answers.q1 == true && answers.q2 == false && answers.q3 == true && answers.q4 == false && answers.q5 == true) {setFeelingResult (emotions[0].value);}
-    if(answers.q1 == true && answers.q2 == false && answers.q3 == true && answers.q4 == false && answers.q5 == false) {setFeelingResult (emotions[0].value);}
-    if(answers.q1 == true && answers.q2 == false && answers.q3 == false && answers.q4 == true && answers.q5 == true) {setFeelingResult (emotions[1].value);}
-    if(answers.q1 == true && answers.q2 == false && answers.q3 == false && answers.q4 == true && answers.q5 == false) {setFeelingResult (emotions[0].value);}
-    if(answers.q1 == true && answers.q2 == false && answers.q3 == false && answers.q4 == false && answers.q5 == true) {setFeelingResult (emotions[0].value);}
+    if(answers.q1 == true && answers.q2 == false && answers.q3 == true && answers.q4 == false && answers.q5 == false) {setFeelingResult (emotions[1].value);}
+    if(answers.q1 == true && answers.q2 == false && answers.q3 == false && answers.q4 == true && answers.q5 == true) {setFeelingResult (emotions[2].value);}
+    if(answers.q1 == true && answers.q2 == false && answers.q3 == false && answers.q4 == true && answers.q5 == false) {setFeelingResult (emotions[3].value);}
+    if(answers.q1 == true && answers.q2 == false && answers.q3 == false && answers.q4 == false && answers.q5 == true) {setFeelingResult (emotions[4].value);}
     if(answers.q1 == true && answers.q2 == false && answers.q3 == false && answers.q4 == false && answers.q5 == false) {setFeelingResult (emotions[0].value);}
     if(answers.q1 == false && answers.q2 == true && answers.q3 == true && answers.q4 == true && answers.q5 == true) {setFeelingResult (emotions[1].value);}
     if(answers.q1 == false && answers.q2 == true && answers.q3 == true && answers.q4 == true && answers.q5 == false) {setFeelingResult (emotions[2].value);}
     if(answers.q1 == false && answers.q2 == true && answers.q3 == true && answers.q4 == false && answers.q5 == true) {setFeelingResult (emotions[3].value);}
     if(answers.q1 == false && answers.q2 == true && answers.q3 == true && answers.q4 == false && answers.q5 == false) {setFeelingResult (emotions[4].value);}
     if(answers.q1 == false && answers.q2 == true && answers.q3 == false && answers.q4 == true && answers.q5 == true) {setFeelingResult (emotions[0].value);}
-    if(answers.q1 == false && answers.q2 == true && answers.q3 == false && answers.q4 == true && answers.q5 == false) {setFeelingResult (emotions[0].value);}
-    if(answers.q1 == false && answers.q2 == true && answers.q3 == false && answers.q4 == false && answers.q5 == true) {setFeelingResult (emotions[0].value);}
-    if(answers.q1 == false && answers.q2 == true && answers.q3 == false && answers.q4 == false && answers.q5 == false) {setFeelingResult (emotions[0].value);}
-    if(answers.q1 == false && answers.q2 == false && answers.q3 == true && answers.q4 == true && answers.q5 == true) {setFeelingResult (emotions[0].value);}
+    if(answers.q1 == false && answers.q2 == true && answers.q3 == false && answers.q4 == true && answers.q5 == false) {setFeelingResult (emotions[1].value);}
+    if(answers.q1 == false && answers.q2 == true && answers.q3 == false && answers.q4 == false && answers.q5 == true) {setFeelingResult (emotions[2].value);}
+    if(answers.q1 == false && answers.q2 == true && answers.q3 == false && answers.q4 == false && answers.q5 == false) {setFeelingResult (emotions[3].value);}
+    if(answers.q1 == false && answers.q2 == false && answers.q3 == true && answers.q4 == true && answers.q5 == true) {setFeelingResult (emotions[4].value);}
     if(answers.q1 == false && answers.q2 == false && answers.q3 == true && answers.q4 == true && answers.q5 == false) {setFeelingResult (emotions[0].value);}
-    if(answers.q1 == false && answers.q2 == false && answers.q3 == true && answers.q4 == false && answers.q5 == true) {setFeelingResult (emotions[0].value);}
-    if(answers.q1 == false && answers.q2 == false && answers.q3 == true && answers.q4 == false && answers.q5 == false) {setFeelingResult (emotions[0].value);}
-    if(answers.q1 == false && answers.q2 == false && answers.q3 == false && answers.q4 == true && answers.q5 == true) {setFeelingResult (emotions[0].value);}
-    if(answers.q1 == false && answers.q2 == false && answers.q3 == false && answers.q4 == true && answers.q5 == false) {setFeelingResult (emotions[0].value);}
-    if(answers.q1 == false && answers.q2 == false && answers.q3 == false && answers.q4 == false && answers.q5 == true) {setFeelingResult (emotions[0].value);}
+    if(answers.q1 == false && answers.q2 == false && answers.q3 == true && answers.q4 == false && answers.q5 == true) {setFeelingResult (emotions[1].value);}
+    if(answers.q1 == false && answers.q2 == false && answers.q3 == true && answers.q4 == false && answers.q5 == false) {setFeelingResult (emotions[2].value);}
+    if(answers.q1 == false && answers.q2 == false && answers.q3 == false && answers.q4 == true && answers.q5 == true) {setFeelingResult (emotions[3].value);}
+    if(answers.q1 == false && answers.q2 == false && answers.q3 == false && answers.q4 == true && answers.q5 == false) {setFeelingResult (emotions[4].value);}
+    if(answers.q1 == false && answers.q2 == false && answers.q3 == false && answers.q4 == false && answers.q5 == true) {setFeelingResult (emotions[4].value);}
     if(answers.q1 == false && answers.q2 == false && answers.q3 == false && answers.q4 == false && answers.q5 == false) {setFeelingResult (emotions[1].value);}
     }
 
@@ -62,14 +62,17 @@ const EmoGame = () => {
     setAnswers((prevAnswers) => ({
       ...prevAnswers,
       [q]: value,
-    }));
-    
+    }));    
   };
 
   const renderAnswerText = (q: string) => {
-    const answer = answers[q];
-    
+    const answer = answers[q];    
     return answer ? "True" : "False";
+  };
+
+  const getButtonStyle = (q: string, value: boolean) => {
+    const isSelected = answers[q] === value;
+    return isSelected ? { ...styles.button, backgroundColor: 'green' } : styles.button;
   };
 
   return (
@@ -79,16 +82,16 @@ const EmoGame = () => {
       </Text>
       <View style={styles.answerContainer}>
         <TouchableOpacity
-          style={styles.button}
+          style={getButtonStyle("q1", true)}
           onPress={() => handleAnswer("q1", true)}
         >
-          <Text style={styles.buttonText}>Ja</Text>
+          <Text style={styles.buttonText}>JA</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={styles.button}
+          style={getButtonStyle("q1", false)}
           onPress={() => handleAnswer("q1", false)}
         >
-          <Text style={styles.buttonText}>Nej</Text>
+          <Text style={styles.buttonText}>NEJ</Text>
         </TouchableOpacity>
       </View>
 
@@ -97,16 +100,16 @@ const EmoGame = () => {
       </Text>
       <View style={styles.answerContainer}>
         <TouchableOpacity
-          style={styles.button}
+          style={getButtonStyle("q2", true)}
           onPress={() => handleAnswer("q2", true)}
         >
-          <Text style={styles.buttonText}>Ja</Text>
+          <Text style={styles.buttonText}>JA</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={styles.button}
+          style={getButtonStyle("q2", false)}
           onPress={() => handleAnswer("q2", false)}
         >
-          <Text style={styles.buttonText}>Nej</Text>
+          <Text style={styles.buttonText}>NEJ</Text>
         </TouchableOpacity>
       </View>
 
@@ -115,16 +118,16 @@ const EmoGame = () => {
       </Text>
       <View style={styles.answerContainer}>
         <TouchableOpacity
-          style={styles.button}
+          style={getButtonStyle("q3", true)}
           onPress={() => handleAnswer("q3", true)}
         >
-          <Text style={styles.buttonText}>Ja</Text>
+          <Text style={styles.buttonText}>JA</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={styles.button}
+          style={getButtonStyle("q3", false)}
           onPress={() => handleAnswer("q3", false)}
         >
-          <Text style={styles.buttonText}>Nej</Text>
+          <Text style={styles.buttonText}>NEJ</Text>
         </TouchableOpacity>
       </View>
 
@@ -133,16 +136,16 @@ const EmoGame = () => {
       </Text>
       <View style={styles.answerContainer}>
         <TouchableOpacity
-          style={styles.button}
+          style={getButtonStyle("q4", true)}
           onPress={() => handleAnswer("q4", true)}
         >
-          <Text style={styles.buttonText}>Ja</Text>
+          <Text style={styles.buttonText}>JA</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={styles.button}
+          style={getButtonStyle("q4", false)}
           onPress={() => handleAnswer("q4", false)}
         >
-          <Text style={styles.buttonText}>Nej</Text>
+          <Text style={styles.buttonText}>NEJ</Text>
         </TouchableOpacity>
       </View>
 
@@ -151,16 +154,16 @@ const EmoGame = () => {
       </Text>
       <View style={styles.answerContainer}>
         <TouchableOpacity
-          style={styles.button}
+          style={getButtonStyle("q5", true)}
           onPress={() => handleAnswer("q5", true)}
         >
-          <Text style={styles.buttonText}>Ja</Text>
+          <Text style={styles.buttonText}>JA</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={styles.button}
+          style={getButtonStyle("q5", false)}
           onPress={() => handleAnswer("q5", false)}
         >
-          <Text style={styles.buttonText}>Nej</Text>
+          <Text style={styles.buttonText}>NEJ</Text>
         </TouchableOpacity>
       </View>
 
@@ -171,27 +174,27 @@ const EmoGame = () => {
             handleSubmit
           }
         >
-          <Text style={styles.buttonText}>Idag känner jag mig troligen</Text>
+          <Text style={styles.buttonText}>JAG KÄNNER MIG</Text>
         </TouchableOpacity>
       </View>
-
-      
-      <Text>
+        {/*<Text>
           Question 1: {renderAnswerText("q1")}{"\n"}        
           Question 2: {renderAnswerText("q2")}{"\n"}        
           Question 3: {renderAnswerText("q3")}{"\n"}
           Question 4: {renderAnswerText("q4")}{"\n"}        
           Question 5: {renderAnswerText("q5")}
-        </Text>
+        </Text>*/}
       <Text style={{ textAlign: "center", fontSize: 200 }}>
        {feelingResult }
       </Text>
 
       <View style={styles.buttonContainer}>
-        <Button
-          title="Tillbaka"
+        <TouchableOpacity
+          style={styles.button}
           onPress={() => navigation.navigate("EmoSpace")}
-        />
+        >
+          <Text style={styles.buttonText}>TILLBAKA</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -219,6 +222,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'white',
     fontSize: 20,
+    textAlign: 'center'
   },
 });
 
