@@ -17,7 +17,6 @@ import Login from './components/Login';
 import Calendar from './components/Calendar';
 import Dashboard from './components/Dashboard';
 import ParentPage from './components/ParentPage';
-import Parent from './components/Parent';
 import EmoSpace from './components/EmoSpace';
 import EmoGame from './components/EmoGame';
 import TalkItOut from './components/TalkItOut';
@@ -48,7 +47,6 @@ export default function App() {
       <Stack.Screen name="EmoSpace" component={EmoSpace} />
       <Stack.Screen name="EmoGame" component={EmoGame} />
       <Stack.Screen name="TalkItOut" component={TalkItOut} />
-      <Stack.Screen name="Parent" component={Parent} /> 
     </Stack.Navigator>
     </NavigationContainer>
 

@@ -11,7 +11,7 @@ import { auth } from "./Firebase";
 type RootStackParamList = {
     SignUp: undefined;
     Login: undefined;
-    Parent: undefined; 
+    ParentPage: undefined; 
   };
 
 const Login = () => {
