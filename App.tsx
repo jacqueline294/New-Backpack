@@ -17,7 +17,10 @@ import Login from './components/Login';
 import Calendar from './components/Calendar';
 import Dashboard from './components/Dashboard';
 import ParentPage from './components/ParentPage';
-console.log("✅ ParentPage successfully imported:", ParentPage);
+import Parent from './components/Parent';
+import EmoSpace from './components/EmoSpace';
+import EmoGame from './components/EmoGame';
+import TalkItOut from './components/TalkItOut';
 
 const Stack =createStackNavigator();
 
@@ -42,6 +45,10 @@ export default function App() {
       <Stack.Screen name="Dashboard" component={Dashboard} />
       <Stack.Screen name="Calendar" component={Calendar} /> 
       <Stack.Screen name="ParentPage" component={ParentPage} />
+      <Stack.Screen name="EmoSpace" component={EmoSpace} />
+      <Stack.Screen name="EmoGame" component={EmoGame} />
+      <Stack.Screen name="TalkItOut" component={TalkItOut} />
+      <Stack.Screen name="Parent" component={Parent} /> 
     </Stack.Navigator>
     </NavigationContainer>
 

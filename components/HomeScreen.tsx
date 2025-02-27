@@ -4,6 +4,7 @@ import { Button } from "react-native-paper";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RouteProp } from "@react-navigation/native";
 import Dashboard from "./Dashboard";
+import MainPage from "./MainPage";
 
 // Define the navigation type for the stack
 type RootStackParamList = {
@@ -33,6 +34,9 @@ function HomeScreen({ navigation }: Props) {
 
       <Button mode="outlined" onPress={() => navigation.navigate("Login")} style={styles.button}>
         Har du redan ett konto? Logga in här
+      </Button>
+      <Button mode="outlined" onPress={() => navigation.navigate("MainPage")} style={styles.button}>
+        Lobby
       </Button>
 
       {/* <Dashboard></Dashboard> */}

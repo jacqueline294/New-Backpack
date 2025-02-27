@@ -1,6 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { View, Image, Button, StyleSheet, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const App = () => {
   const navigation = useNavigation();
@@ -21,9 +22,9 @@ const App = () => {
       </TouchableOpacity>
 
       <TouchableOpacity style={[styles.button, styles.left]}>
-        <Button title="emo space" onPress={() => alert("Left Button Pressed")} />
+        <Button title="emo space" onPress={() => navigation.navigate("EmoSpace")} />
       </TouchableOpacity>
-      
+
       <TouchableOpacity style={[styles.button, styles.left2]}>
         <Button title="Calendar" onPress={() => navigation.navigate('Calendar')} />
       </TouchableOpacity>
@@ -67,13 +68,18 @@ const styles = StyleSheet.create({
     transform: [{ translateX: -50 }],
   },
   left: {
-    left: 0,
-    top: 75,
+    left: -0, // Move further left to avoid off-screen issue
+    top: 150,
     transform: [{ translateY: -50 }],
   },
   left2: {
-    left: 0,
-    top: 200,
+    left: -0,
+    top: 75,
+    transform: [{ translateY: -50}]
+  },
+  right: {
+    right: -0, // Move further right to avoid off-screen issue
+    top: '60%',
     transform: [{ translateY: -50 }],
   },
   right3: {
