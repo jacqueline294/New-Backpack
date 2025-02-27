@@ -2,8 +2,10 @@ import React, { Suspense } from "react";
 import { Button, View, Text, StyleSheet } from "react-native";
 import SignUp from "./SignUp";
 import Dashboard from "./Dashboard";
+import { useNavigation } from "@react-navigation/native";
 
-function TestPage() {
+
+function MainPage({navigation}) {
     return (
         <View>
             <Text>Välkommen till din egen Backpack, ha så kul med Emmo</Text>
@@ -13,6 +15,7 @@ function TestPage() {
             /> */}
 
             <Dashboard></Dashboard>
+            
 
         </View>
     );
@@ -28,4 +31,4 @@ const styles = StyleSheet.create({
     },
   });
 
-export default TestPage;
+export default MainPage;

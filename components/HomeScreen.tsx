@@ -7,6 +7,7 @@ import Dashboard from "./Dashboard";
 import { useUsageStats } from "./UsageStatsContext";
 import EnergyBar from "./EnergyBar";
 
+import MainPage from "./MainPage";
 
 // Define the navigation type for the stack
 type RootStackParamList = {
@@ -40,6 +41,9 @@ function HomeScreen({ navigation }: Props) {
 
       <Button mode="outlined" onPress={() => navigation.navigate("Login")} style={styles.button}>
         Har du redan ett konto? Logga in här
+      </Button>
+      <Button mode="outlined" onPress={() => navigation.navigate("MainPage")} style={styles.button}>
+        Lobby
       </Button>
 
       <Button mode="outlined" onPress={() => navigation.navigate("Stats")} style={styles.button}>

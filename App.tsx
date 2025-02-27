@@ -14,10 +14,8 @@ import ChooseRole from './components/ChooseRole';
 import Loading from './components/Loading';
 import MainPage from './components/MainPage';
 import Login from './components/Login';
-import Parent from './components/Parent';
 import AppUsageStats from './components/AppUsageStats';
 import { UsageStatsProvider } from './components/UsageStatsContext';
-import Dashboard from './components/Dashboard';
 import BackgroundFetch from 'react-native-background-fetch';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { queryUsageStats } from '@brighthustle/react-native-usage-stats-manager';
@@ -25,6 +23,12 @@ import RoomScreen from './components/RoomScreen';
 import { getFCMToken, requestUserPermission, setupPushNotification } from './components/PushNotificationService';
 import PushNotification from "react-native-push-notification";
 import messaging from "@react-native-firebase/messaging"
+import Calendar from './components/Calendar';
+import Dashboard from './components/Dashboard';
+import ParentPage from './components/ParentPage';
+import EmoSpace from './components/EmoSpace';
+import EmoGame from './components/EmoGame';
+import TalkItOut from './components/TalkItOut';
 
 
 /* PushNotification.localNotification({
@@ -173,10 +177,12 @@ export default function App() {
       <Stack.Screen name="ChooseRole" component={ChooseRole} />
       <Stack.Screen name="Loading" component={Loading} />
       <Stack.Screen name="MainPage" component={MainPage} />
-      <Stack.Screen name="Parent" component={Parent} /> 
-      <Stack.Screen name="Stats" component={AppUsageStats} />
-      <Stack.Screen name="Dash" component={Dashboard} />
-      <Stack.Screen name="Room" component={RoomScreen} />
+      <Stack.Screen name="Dashboard" component={Dashboard} />
+      <Stack.Screen name="Calendar" component={Calendar} /> 
+      <Stack.Screen name="ParentPage" component={ParentPage} />
+      <Stack.Screen name="EmoSpace" component={EmoSpace} />
+      <Stack.Screen name="EmoGame" component={EmoGame} />
+      <Stack.Screen name="TalkItOut" component={TalkItOut} />
     </Stack.Navigator>
     </NavigationContainer>
 
