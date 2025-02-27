@@ -21,10 +21,26 @@ import Dashboard from './components/Dashboard';
 import BackgroundFetch from 'react-native-background-fetch';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { queryUsageStats } from '@brighthustle/react-native-usage-stats-manager';
+import RoomScreen from './components/RoomScreen';
+import { getFCMToken, requestUserPermission, setupPushNotification } from './components/PushNotificationService';
+import PushNotification from "react-native-push-notification";
 
+/* PushNotification.localNotification({
+  title: "hello",
+  message: 'This is a test push notification',
+  playSound: true,
+  soundName: "default",
+  vibrate: true
+}); */
 const Stack = createStackNavigator();
 
 export default function App() {
+  /* useEffect(() => {
+    requestUserPermission();
+    getFCMToken();
+
+    setupPushNotification();
+  }, []); */
 
   useEffect(() => {
 
@@ -125,6 +141,7 @@ export default function App() {
       <Stack.Screen name="Parent" component={Parent} /> 
       <Stack.Screen name="Stats" component={AppUsageStats} />
       <Stack.Screen name="Dash" component={Dashboard} />
+      <Stack.Screen name="Room" component={RoomScreen} />
     </Stack.Navigator>
     </NavigationContainer>
 

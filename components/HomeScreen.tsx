@@ -49,6 +49,9 @@ function HomeScreen({ navigation }: Props) {
       <Button mode="outlined" onPress={() => navigation.navigate("MainPage")} style={styles.button}>
         Daesh
       </Button>
+      <Button mode="outlined" onPress={() => navigation.navigate("Room")} style={styles.button}>
+        Room
+      </Button>
 
       <ScrollView>
         <EnergyBar value={usageStats && usageStats[0] ? 100 - usageStats[0].totalTimeInForeground / 1000 : 100}></EnergyBar>
