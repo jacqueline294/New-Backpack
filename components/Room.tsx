@@ -1,6 +1,6 @@
 import { Box, Environment, OrbitControls, PerspectiveCamera, Plane, Sphere, Texture } from "@react-three/drei";
 import { Canvas, useFrame } from "@react-three/fiber";
-import React, { useEffect, useRef, useState, useMemo } from "react";
+import React, { useEffect, useRef, useState, useMemo, Suspense } from "react";
 import { View } from "react-native";
 import { Image, StyleSheet, Platform } from 'react-native';
 
@@ -523,88 +523,93 @@ const Room: React.FC<RoomProps> = () => {
 
       {/* 3D Scene */}
       <Canvas style={{ flex: 1 }} camera={{ position: [0, 1, 4], fov: 50 }}>
-        {/* Add an environment map for realistic lighting */}
-        <Environment preset="sunset" />
 
-        <RotatingAxle></RotatingAxle>
-
-        <DraggableObject isDragging={isDragging} setIsDragging={setIsDragging}></DraggableObject>
-
-        {/* Create the floor */}
-        <Plane args={[5, 5]} position={[0, -2.5, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-          <meshStandardMaterial color="lightgray" />
-        </Plane>
-
-        {/*<primitive object={model.scene} scale={0.5} position={[0, 0, 0]} /> */}
-
-        {/* Create walls */}
-        <Box position={[-2.5, -0.75, 0]} args={[0.2, 3.5, 5]}>
-          <meshStandardMaterial color="lightblue" />
-        </Box>
-        <Box position={[2.5, -0.75, 0]} args={[0.2, 3.5, 5]}>
-          <meshStandardMaterial color="lightblue" />
-        </Box>
-        <Box position={[0, -0.75, 2.5]} args={[5, 3.5, 0.2]}>
-          <meshStandardMaterial  map={leader} />
-        </Box>
-
-        {/* Blue box */}
-        <Box position={[-1.2, -2, -1]}>
-          <meshStandardMaterial color="royalblue" />
-        </Box>
-
-        
-        <Table position={[-0.2, 0, 0.4]} scale={[1, 1, 1]} rotation={[0, 0, 0]}/>
-
-        {/* Drink box */}
-        <Box position={[2.85, -1, 0]}>
-          <meshStandardMaterial  map={currentTexture}/>
-        </Box>
-
-        {/*Black box as "tv"*/}
-        <Box position={[3.051, -1, 0]} scale={[1.4, 1.4, 1.4]}>
-          <meshStandardMaterial color={"black"} />
-        </Box>
-
-        {/* Box with the react logo texture */}
-        <Box position={[-6, 0, 0]} args={[2, 2, 2]}>
-          <meshStandardMaterial map={texture} />
-        </Box>
-
-        {/* (foot)Ball */}
-        <Sphere position={[1, -2.23, 2]} scale={[0.3, 0.3, 0.3]}>
-          <meshStandardMaterial map={footballTexture} />
-        </Sphere>
-
-        {/* <Ball /> */}
-
-        <Earth position={[-1.2, 0.5, -1]}/>
-
-        <BlenderModel position={[0, 0, 0]}/>
-
-        {/* <primitive object={scene}/> */}
+        <Suspense fallback={null}>
 
 
-        {/* Skeleton*/}
-        <primitive position={[2.2, -2.5, 1.7]} object={model.scene} scale={[0.1, 0.1, 0.1]} rotation={[0, Math.PI / -2, 0]}/>
+          {/* Add an environment map for realistic lighting */}
+          <Environment preset="sunset" />
 
-        {/* Emmo */}
-        <primitive  position={[-1.4, -0.9, 1.7]}  object={model4.scene} scale={[0.3, 0.3, 0.3]} map={texture}  rotation={[0, Math.PI +4.7 , 0]} />
+          <RotatingAxle></RotatingAxle>
 
-        {/* Pistol*/}
-        <primitive position={[-1.4, -1.325, 1.5]} object={model2.scene} scale={[1, 1, 1]} rotation={[1.5, 0, 0]} onPointerDown={handleClick}/>
+          <DraggableObject isDragging={isDragging} setIsDragging={setIsDragging}></DraggableObject>
 
-        {/* toilet*/}
-        <primitive position={[-2.4, -2.5, 0.5]} object={model3.scene} scale={[2, 2, 2]} rotation={[0, 1.57, 0]}/>
+          {/* Create the floor */}
+          <Plane args={[5, 5]} position={[0, -2.5, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+            <meshStandardMaterial color="lightgray" />
+          </Plane>
 
-        {/* Camera controls for navigating the scene */}
-        <OrbitControls enablePan={false} minDistance={1} maxDistance={5} enableRotate={!isDragging} />
+          {/*<primitive object={model.scene} scale={0.5} position={[0, 0, 0]} /> */}
 
-        <PerspectiveCamera makeDefault position={[0, 1000000, -3000000]} />
+          {/* Create walls */}
+          <Box position={[-2.5, -0.75, 0]} args={[0.2, 3.5, 5]}>
+            <meshStandardMaterial color="lightblue" />
+          </Box>
+          <Box position={[2.5, -0.75, 0]} args={[0.2, 3.5, 5]}>
+            <meshStandardMaterial color="lightblue" />
+          </Box>
+          <Box position={[0, -0.75, 2.5]} args={[5, 3.5, 0.2]}>
+            <meshStandardMaterial map={leader} />
+          </Box>
 
-        {/* Lighting */}
-        <ambientLight intensity={0.5} />
-        <pointLight position={[10, 10, 10]} />
+          {/* Blue box */}
+          <Box position={[-1.2, -2, -1]}>
+            <meshStandardMaterial color="royalblue" />
+          </Box>
+
+
+          <Table position={[-0.2, 0, 0.4]} scale={[1, 1, 1]} rotation={[0, 0, 0]} />
+
+          {/* Drink box */}
+          <Box position={[2.85, -1, 0]}>
+            <meshStandardMaterial map={currentTexture} />
+          </Box>
+
+          {/*Black box as "tv"*/}
+          <Box position={[3.051, -1, 0]} scale={[1.4, 1.4, 1.4]}>
+            <meshStandardMaterial color={"black"} />
+          </Box>
+
+          {/* Box with the react logo texture */}
+          <Box position={[-6, 0, 0]} args={[2, 2, 2]}>
+            <meshStandardMaterial map={texture} />
+          </Box>
+
+          {/* (foot)Ball */}
+          <Sphere position={[1, -2.23, 2]} scale={[0.3, 0.3, 0.3]}>
+            <meshStandardMaterial map={footballTexture} />
+          </Sphere>
+
+          {/* <Ball /> */}
+
+          <Earth position={[-1.2, 0.5, -1]} />
+
+          <BlenderModel position={[0, 0, 0]} />
+
+          {/* <primitive object={scene}/> */}
+
+
+          {/* Skeleton*/}
+          <primitive position={[2.2, -2.5, 1.7]} object={model.scene} scale={[0.1, 0.1, 0.1]} rotation={[0, Math.PI / -2, 0]} />
+
+          {/* Emmo */}
+          <primitive position={[-1.4, -0.9, 1.7]} object={model4.scene} scale={[0.3, 0.3, 0.3]} map={texture} rotation={[0, Math.PI + 4.7, 0]} />
+
+          {/* Pistol*/}
+          <primitive position={[-1.4, -1.325, 1.5]} object={model2.scene} scale={[1, 1, 1]} rotation={[1.5, 0, 0]} onPointerDown={handleClick} />
+
+          {/* toilet*/}
+          <primitive position={[-2.4, -2.5, 0.5]} object={model3.scene} scale={[2, 2, 2]} rotation={[0, 1.57, 0]} />
+
+          {/* Camera controls for navigating the scene */}
+          <OrbitControls enablePan={false} minDistance={1} maxDistance={5} enableRotate={!isDragging} />
+
+          <PerspectiveCamera makeDefault position={[0, 1000000, -3000000]} />
+
+          {/* Lighting */}
+          <ambientLight intensity={0.5} />
+          <pointLight position={[10, 10, 10]} />
+        </Suspense>
       </Canvas>
     </View>
   );

@@ -29,51 +29,6 @@ const Room = () => {
 
             </Canvas>
 
-            <Canvas style={{ flex: 1 }} camera={{ position: [0, 1, 4], fov: 50 }}>
-                <Environment preset="dawn" />
-
-                <Plane args={[5, 5]} position={[0, -2.5, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-                    <meshStandardMaterial color="lightgray" />
-                </Plane>
-
-                <Box position={[-2.5, -0.75, 0]} args={[0.2, 3.5, 5]}>
-                    <meshStandardMaterial color="lightblue" />
-                </Box>
-
-                <OrbitControls></OrbitControls>
-
-            </Canvas>
-
-            <Canvas style={{ flex: 1 }} camera={{ position: [0, 1, 4], fov: 50 }}>
-                <Environment preset="city" />
-
-                <Plane args={[5, 5]} position={[0, -2.5, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-                    <meshStandardMaterial color="lightgray" map={}/>
-                </Plane>
-
-                <Box position={[-2.5, -0.75, 0]} args={[0.2, 3.5, 5]}>
-                    <meshStandardMaterial color="lightblue" />
-                </Box>
-
-                <OrbitControls></OrbitControls>
-
-            </Canvas>
-
-            <Canvas style={{ flex: 1 }} camera={{ position: [0, 1, 4], fov: 50 }}>
-                <Environment preset="apartment" />
-
-                <Plane args={[5, 5]} position={[0, -2.5, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-                    <meshStandardMaterial color="lightgray" />
-                </Plane>
-
-                <Box position={[-2.5, -0.75, 0]} args={[0.2, 3.5, 5]}>
-                    <meshStandardMaterial color="lightblue" />
-                </Box>
-
-                <OrbitControls></OrbitControls>
-
-            </Canvas>
-
         </View>
 
     )
@@ -82,7 +37,7 @@ const Room = () => {
 
 export default Room;
 
-/* const styles = StyleSheet.create({
+const styles = StyleSheet.create({
   titleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -99,4 +54,4 @@ export default Room;
     left: 0,
     position: 'absolute',
   },
-}); */
+});
