@@ -21,7 +21,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { queryUsageStats } from '@brighthustle/react-native-usage-stats-manager';
 import RoomScreen from './components/RoomScreen';
 import { getFCMToken, requestUserPermission, setupPushNotification } from './components/PushNotificationService';
-import PushNotification from "react-native-push-notification";
+import PushNotification, { Importance } from "react-native-push-notification";
 import messaging from "@react-native-firebase/messaging"
 import Calendar from './components/Calendar';
 import Dashboard from './components/Dashboard';
@@ -40,7 +40,23 @@ import TalkItOut from './components/TalkItOut';
 }); */
 const Stack = createStackNavigator();
 
+
 export default function App() {
+
+  useEffect(()=> {
+    PushNotification.createChannel(
+      {
+          channelId: "default-channel-id",
+          channelName: "Default Channel",
+          channelDescription: "A default channel for notifications",
+          soundName: "default",
+          importance: Importance.HIGH,
+          vibrate: true,
+      },
+    
+      (created) => {console.log(`createChannel returned '${created}`);}
+    );
+  }, []);
   /* useEffect(() => {
     requestUserPermission();
     getFCMToken();
@@ -145,7 +161,8 @@ export default function App() {
       message: 'This is a test push notification' + energy,
       playSound: true,
       soundName: "default",
-      vibrate: true
+      vibrate: true,
+      channelId: "default-channel-id"
     });
     //console.log("energy: ", energy);
 
