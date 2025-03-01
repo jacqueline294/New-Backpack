@@ -157,8 +157,8 @@ export default function App() {
     console.log("energy: ", energy);
 
     PushNotification.localNotification({
-      title: "hello",
-      message: 'This is a test push notification' + energy,
+      title: "Albanie",
+      message: "nuvarande energinivå: " + energy,
       playSound: true,
       soundName: "default",
       vibrate: true,
