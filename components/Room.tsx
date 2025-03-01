@@ -16,55 +16,75 @@ import { useGLTF } from '@react-three/drei/native'
 /* import { group } from "@/node_modules copy/@types/yargs";
 import { current } from "@/node_modules copy/@react-native-community/cli-tools/build/releaseChecker"; */
 import { GLTFLoader } from "three-stdlib";
+import { grey100 } from "react-native-paper/lib/typescript/styles/themes/v2/colors";
+import { useNavigation } from "@react-navigation/native";
 
 
 interface RoomProps {}
 
-const BlenderModel = ({position} : {position : [number, number, number]}) => {
+const BlenderModel = ({ position }: { position: [number, number, number] }) => {
+  const [modelReady, setModelReady] = useState(false);
   const earth = Asset.fromModule(require('../assets/emmo.glb')).uri;
+  const navigation = useNavigation();
 
-  const {scene, animations } = useLoader(GLTFLoader, earth);
+  const { scene, animations } = useLoader(GLTFLoader, earth);
 
   const boxRef = useRef();
-  useFrame(() => {
-    const time = performance.now() * 0.0055
-    if (boxRef.current) {
-      // Circular motion
-      /* boxRef.current.position.x = Math.sin(time) * 1
-      boxRef.current.position.z = Math.cos(time) * 1 */
-      boxRef.current.position.y = Math.cos(time)-0.97 * 1.3
-    }
-  })
 
-  // Creates a ref to store the mixer and bind it to the animation
+  useEffect(() => {
+    if (scene) {
+      setModelReady(true); // Model is loaded and ready
+    }
+  }, [scene]);
+
+  useFrame(() => {
+    const time = performance.now() * 0.0055;
+    if (boxRef.current) {
+      boxRef.current.position.y = Math.cos(time) - 0.97 * 1.3;
+    }
+  });
+
   const mixer = useRef();
 
   useEffect(() => {
-    console.log("animations length", animations.length)
+    console.log("animations length", animations.length);
 
     if (animations.length) {
-      console.log("animations length", animations.length)
-      // if animations present, initialise a new AnimationMixer using the scene of the object as a prop, that which will be animated
       mixer.current = new AnimationMixer(scene);
-      
-      // goes through every animations and plays them
+
       animations.forEach((clip) => {
         mixer.current.clipAction(clip).play();
-      })
+      });
     }
+
+    
   }, [animations, scene]);
 
-  // updates the mixer in the animation loop
   useFrame((state, delta) => {
-    if(mixer.current) {
+    if (mixer.current) {
       mixer.current.update(delta);
     }
   });
 
-  return(
-    <primitive object={scene} ref={boxRef} position={position} scale={[1, 1, 1]} rotation={[0, Math.PI + 6.2, 0]}/>
-  )
-}
+  const handleClick = () => {
+    alert("emmo");
+  }
+
+  return modelReady ? (
+    <primitive
+      object={scene}
+      ref={boxRef}
+      position={position}
+      scale={[1, 1, 1]}
+      rotation={[0, Math.PI + 6.2, 0]}
+      onClick={handleClick}
+    />
+  ) : (
+    <Box>
+      <meshBasicMaterial color="grey100"></meshBasicMaterial>
+    </Box>
+  );
+};
 
 const Earth = ({position} : {position : [number, number, number]}) => {
   const earth = Asset.fromModule(require('../assets/earth.glb')).uri;
@@ -528,7 +548,7 @@ const Room: React.FC<RoomProps> = () => {
 
 
           {/* Add an environment map for realistic lighting */}
-          <Environment preset="sunset" />
+          <Environment preset="night" />
 
           <RotatingAxle></RotatingAxle>
 
