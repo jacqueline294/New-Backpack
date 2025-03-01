@@ -24,7 +24,7 @@ const App = () => {
       <TouchableOpacity style={[styles.button, styles.bottom]}>
         <Button
           title="Activities"
-          onPress={() => alert("Bottom Button Pressed")}
+          onPress={() => navigation.navigate("Activities")}
         />
       </TouchableOpacity>
 
@@ -97,15 +97,15 @@ const styles = StyleSheet.create({
     top: "60%",
     transform: [{ translateY: -50 }],
   },
-  right3: {
-    top: 75,
-    left: "95%",
-    transform: [{ translateX: -50 }],
-  },
   right2: {
-    right: 0,
+    right: -0,
     top: "40%",
     transform: [{ translateY: -50 }],
+  },
+  right3: {
+    top: 75, // Adjust as per the button size and image size
+    left: "95%",
+    transform: [{ translateX: -50 }],
   },
 })
 
