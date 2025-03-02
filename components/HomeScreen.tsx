@@ -50,15 +50,17 @@ function HomeScreen({ navigation }: Props) {
         AppUsageStats
       </Button>
 
-      <Button mode="outlined" onPress={() => navigation.navigate("MainPage")} style={styles.button}>
+      {/* <Button mode="outlined" onPress={() => navigation.navigate("MainPage")} style={styles.button}>
         Daesh
-      </Button>
+      </Button> */}
       <Button mode="outlined" onPress={() => navigation.navigate("Room")} style={styles.button}>
         Room
       </Button>
 
       <ScrollView>
-        <EnergyBar value={usageStats && usageStats[0] ? 100 - usageStats[0].totalTimeInForeground / 1000 : 100}></EnergyBar>
+       {/*  <EnergyBar value={usageStats && usageStats[0] ? 100 - usageStats[0].totalTimeInForeground / 1000 : 100}></EnergyBar>
+         */}
+        
         <EnergyBar value={energy}></EnergyBar>
 
         <Text>{JSON.stringify(usageStats, null, 2)}</Text>

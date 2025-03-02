@@ -36,7 +36,7 @@ const App = () => {
       </TouchableOpacity>
 
       <TouchableOpacity style={[styles.button, styles.right3]}>
-        <Button title="Screen time." onPress={() => alert("Right Button Pressed")} />
+        <Button title="Screen time." onPress={() => navigation.navigate("Stats")} />
       </TouchableOpacity>
 
       <TouchableOpacity style={[styles.button, styles.right2]}>

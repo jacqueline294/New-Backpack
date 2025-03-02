@@ -123,9 +123,9 @@ const AppUsageStats = () => {
 
         const resultInHumanTime = millisecondsToTime(result[index].totalTimeInForeground);
         const resultInFullDate = millisecondsToFullDate(result[2].totalTimeInForeground);
-        setUsageStats(result[index].packageName + ": " + resultInHumanTime);
+        //setUsageStats(result[index].packageName + ": " + resultInHumanTime);
         //setUsageStats(result[index]);
-        setUsageStats(result3["com.hsv.freeadblockerbrowser"].appName + ": " + result3["com.hsv.freeadblockerbrowser"].totalTimeInForeground + " seconds");
+        //setUsageStats(result3["com.hsv.freeadblockerbrowser"].appName + ": " + result3["com.hsv.freeadblockerbrowser"].totalTimeInForeground + " seconds");
         
         //console.log("result3: ", result3);
 
@@ -148,6 +148,13 @@ const AppUsageStats = () => {
       setLoading(false);
     }
   };
+  const convertToMinutes = (seconds: number) => {
+    return (seconds / 60).toFixed(2); // Converts to minutes and keeps 2 decimal places
+  };
+  const handleEnablePermission = () => {
+      console.log("test handleEnablePermission")
+      showUsageAccessSettings("");
+    };
 
   return (
     <View>
@@ -162,8 +169,20 @@ const AppUsageStats = () => {
         )
       )} */}
 
+      {permissionGranted ? (<></>): (<Button title="Ge tillstånd" onPress={handleEnablePermission} />
+)}
+
+      {/* <Button title="Ge tillstånd" onPress={handleEnablePermission} /> */}
+      
+
+
       <ScrollView>
-        <Text>{JSON.stringify(localUsageStats, null, 2)}</Text>
+        {localUsageStats ? localUsageStats.map((stat, index) => (
+          <View key={index} style={{ marginBottom: 20 }}>
+            <Text style={{ fontWeight: 'bold' }}>App: {stat.appName}</Text>
+            <Text>Användning senaste dygnet: {convertToMinutes(stat.totalTimeInForeground)} minuter</Text>
+          </View>
+        )): (<Text>laddar</Text>)}
       </ScrollView>
     </View>
   );

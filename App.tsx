@@ -162,7 +162,8 @@ export default function App() {
       playSound: true,
       soundName: "default",
       vibrate: true,
-      channelId: "default-channel-id"
+      channelId: "default-channel-id",
+      bigLargeIcon: "https://i0.wp.com/plopdo.com/wp-content/uploads/2021/11/feature-pic.jpg?fit=537%2C322&ssl=1"
     });
     //console.log("energy: ", energy);
 

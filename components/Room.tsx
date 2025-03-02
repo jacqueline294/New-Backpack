@@ -23,7 +23,7 @@ import { useNavigation } from "@react-navigation/native";
 interface RoomProps {}
 
 const BlenderModel = ({ position }: { position: [number, number, number] }) => {
-  const [modelReady, setModelReady] = useState(false);
+  const [modelReady, setModelReady] = useState(false); //This ensures that a placeholder is in place if the Asset hasn't loaded yet, in the return
   const earth = Asset.fromModule(require('../assets/emmo.glb')).uri;
   const navigation = useNavigation();
 
@@ -81,15 +81,22 @@ const BlenderModel = ({ position }: { position: [number, number, number] }) => {
     />
   ) : (
     <Box>
-      <meshBasicMaterial color="grey100"></meshBasicMaterial>
+      <meshBasicMaterial color={"grey"}></meshBasicMaterial>
     </Box>
   );
 };
 
 const Earth = ({position} : {position : [number, number, number]}) => {
+  const [modelReady, setModelReady] = useState(false);
   const earth = Asset.fromModule(require('../assets/earth.glb')).uri;
 
   const {scene, animations } = useLoader(GLTFLoader, earth);
+
+  useEffect(()=> {
+    if(scene) {
+      setModelReady(true);
+    }
+  }, [scene]);
 
   const mixer = useRef();
 
@@ -112,9 +119,12 @@ const Earth = ({position} : {position : [number, number, number]}) => {
     }
   });
 
-  return(
+  return modelReady ? (
     <primitive object={scene} position={position} />
-  )
+  ) : (
+  <Box position={position}>
+    <meshStandardMaterial color={"black"}/>
+  </Box>)
 }
 
 // isDragging as a prop, to enable it to interact with the parent Canvas where orbitControls are. The idea is to disable rotation of OrbitControls while dragging the object. 
