@@ -147,7 +147,7 @@ export default function App() {
       if (energi <= 0) {
           energi = 1
       }
-      return energi.toString();
+      return energi.toFixed(1).toString();
     }
 
     AsyncStorage.setItem("energy", calculateEnergy());
@@ -158,7 +158,7 @@ export default function App() {
 
     PushNotification.localNotification({
       title: "Albanie",
-      message: "nuvarande energinivå: " + energy,
+      message: "Energinivå: " + energy + " Tid: " + new Date().toLocaleTimeString(),
       playSound: true,
       soundName: "default",
       vibrate: true,

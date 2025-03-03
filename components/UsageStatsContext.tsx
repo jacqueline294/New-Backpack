@@ -83,7 +83,7 @@ async function fetchAndUpdateUsageStats(setUsageStats: React.Dispatch<React.SetS
 
         
 
-        return energi.toString();
+        return energi.toFixed(2).toString();
     }
 
     console.log("calculateEnergy.toString", calculateEnergy());
