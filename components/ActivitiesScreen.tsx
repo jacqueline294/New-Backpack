@@ -11,10 +11,9 @@ import { useNavigation } from "@react-navigation/native"
 const ActivitiesScreen = () => {
   const [selectedActivity, setSelectedActivity] = useState(null)
   const [activityOptions, setActivityOptions] = useState([])
-  const [blinkAnim] = useState(new Animated.Value(1)) // Blink-animation
+  const [blinkAnim] = useState(new Animated.Value(1))
   const navigation = useNavigation()
 
-  // Blinkande animation för huvudknapparna
   const startBlinking = () => {
     Animated.loop(
       Animated.sequence([
@@ -32,7 +31,6 @@ const ActivitiesScreen = () => {
     ).start()
   }
 
-  // Starta blinkningen när huvudknapparna visas
   useEffect(() => {
     if (activityOptions.length === 0 && !selectedActivity) {
       startBlinking()
@@ -55,7 +53,7 @@ const ActivitiesScreen = () => {
     "Armhävningar",
   ]
 
-  // Blinkande lekar i ordning
+  // B i ordning
   const animateButtons = (buttons) => {
     return buttons.map((button, index) => {
       const blinkValue = new Animated.Value(0)
