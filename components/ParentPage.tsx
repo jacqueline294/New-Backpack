@@ -1,149 +1,119 @@
-import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Text, Button, TextInput, FlatList } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { Calendar, DateData } from "react-native-calendars";
-import { getUserId, loadActivities, saveActivities } from "./firebaseServices";
+import React, { useState, useEffect } from 'react';
+import { View, Text, FlatList, StyleSheet, Modal, TextInput, Button } from 'react-native';
+import { Calendar, DateData } from 'react-native-calendars';
+import { getUserId, loadActivities, saveActivities } from './firebaseServices';
 
-// Define navigation stack types
-type RootStackParamList = {
-  SignUp: undefined;
-  Login: undefined;
-  ParentPage: undefined;
-};
+interface Activity {
+  description: string;
+  time: string;
+}
 
-const ParentPage = () => {
-  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
-  const [selectedDate, setSelectedDate] = useState<string>("");
-  const [activities, setActivities] = useState<Record<string, { marked: boolean; dotColor: string }>>({});
-  const [dailyActivities, setDailyActivities] = useState<string[]>([]);
-  const [newActivity, setNewActivity] = useState<string>("");
+interface Activities {
+  [key: string]: Activity[];
+}
+
+const ParentPage: React.FC = () => {
+  const [selectedDate, setSelectedDate] = useState<string>('');
+  const [activities, setActivities] = useState<Activities>({});
   const [userId, setUserId] = useState<string | null>(null);
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [activity, setActivity] = useState<string>('');
+  const [hour, setHour] = useState<string>('');
+  const [minutes, setMinutes] = useState<string>('');
 
-  // Monitor authentication state
   useEffect(() => {
-    const unsubscribe = getUserId((uid) => {
+    const unsubscribe = getUserId((uid: string | null) => {
       setUserId(uid);
       if (uid) {
-        loadActivities(uid).then((userActivities) => {
-          // Convert user activities to marked dates
-          const markedDates = Object.keys(userActivities).reduce((acc, date) => {
-            acc[date] = { marked: true, dotColor: "blue" };
-            return acc;
-          }, {} as Record<string, { marked: boolean; dotColor: string }>);
-          setActivities(markedDates);
-        });
+        loadActivities(uid).then((data: Activities) => setActivities(data));
       }
     });
     return () => unsubscribe();
   }, []);
 
-  // Handle selecting a date
-  const handleDayPress = (day: DateData) => {
+  const handleDayPress = (day: DateData): void => {
     setSelectedDate(day.dateString);
-    if (userId) {
-      loadActivities(userId).then((userActivities) => {
-        setDailyActivities(userActivities[day.dateString] || []);
-      });
-    }
+    setModalVisible(true);
   };
 
-  // Add Activity
-  const addActivity = async () => {
-    if (!userId || !selectedDate || newActivity.trim() === "") return;
-
-    const updatedActivities = [...dailyActivities, newActivity];
-    setDailyActivities(updatedActivities);
-
-    const allActivities = { ...activities, [selectedDate]: updatedActivities };
-    await saveActivities(userId, allActivities);
-
-    setActivities({ ...activities, [selectedDate]: { marked: true, dotColor: "blue" } });
-    setNewActivity("");
-  };
-
-  // Delete Activity
-  const deleteActivity = async (index: number) => {
-    if (!userId || !selectedDate) return;
-
-    const updatedActivities = dailyActivities.filter((_, i) => i !== index);
-    setDailyActivities(updatedActivities);
-
-    const allActivities = { ...activities, [selectedDate]: updatedActivities };
-    await saveActivities(userId, allActivities);
+  const addActivity = (): void => {
+    if (!userId || activity.trim() === '' || hour.trim() === '' || minutes.trim() === '') return;
+    const time: string = `${hour.padStart(2, '0')}:${minutes.padStart(2, '0')}`;
+    const updatedActivities: Activities = {
+      ...activities,
+      [selectedDate]: [...(activities[selectedDate] || []), { description: activity, time }],
+    };
+    setActivities(updatedActivities);
+    saveActivities(userId, updatedActivities);
+    setActivity('');
+    setHour('');
+    setMinutes('');
+    setModalVisible(false);
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Welcome to Parent Page!</Text>
-
-      {/* Calendar */}
-      <Calendar onDayPress={handleDayPress} markedDates={activities} />
-
-      {selectedDate && (
-        <View style={styles.activitySection}>
-          <Text style={styles.subHeader}>Activities for {selectedDate}</Text>
-          <FlatList
-            data={dailyActivities}
-            renderItem={({ item, index }) => (
-              <View style={styles.activityItem}>
-                <Text>{item}</Text>
-                <Button title="Delete" onPress={() => deleteActivity(index)} />
-              </View>
-            )}
-            keyExtractor={(item, index) => index.toString()}
-          />
+      <Calendar
+        onDayPress={handleDayPress}
+        markedDates={Object.keys(activities).reduce((acc: Record<string, { marked: boolean; dotColor: string }>, date) => {
+          acc[date] = { marked: true, dotColor: 'blue' };
+          return acc;
+        }, {})}
+      />
+      <Text>Activities for {selectedDate}:</Text>
+      <FlatList
+        data={activities[selectedDate] || []}
+        renderItem={({ item }) => <Text>{item.time} - {item.description}</Text>}
+        keyExtractor={(item, index) => index.toString()}
+      />
+      <Modal visible={modalVisible} animationType="slide">
+        <View style={styles.modalContainer}>
+          <Text>Add Activity for {selectedDate}</Text>
           <TextInput
+            placeholder="Activity description"
+            value={activity}
+            onChangeText={setActivity}
             style={styles.input}
-            placeholder="Enter Activity"
-            value={newActivity}
-            onChangeText={setNewActivity}
           />
-          <Button title="Add Activity" onPress={addActivity} />
+          <View style={styles.timeInputContainer}>
+            <TextInput
+              placeholder="HH"
+              value={hour}
+              onChangeText={setHour}
+              keyboardType="numeric"
+              style={styles.timeInput}
+            />
+            <Text>:</Text>
+            <TextInput
+              placeholder="MM"
+              value={minutes}
+              onChangeText={setMinutes}
+              keyboardType="numeric"
+              style={styles.timeInput}
+            />
+          </View>
+          <View style={styles.buttonContainer}>
+            <Button title="Add" onPress={addActivity} />
+            <Button title="Close" onPress={() => setModalVisible(false)} />
+          </View>
         </View>
-      )}
-
-      {/* Logout Button */}
-      <Button title="Logga ut" onPress={() => navigation.navigate("Login")} />
+      </Modal>
     </View>
   );
 };
+const styles = StyleSheet.create({
+    container: { flex: 1, padding: 20 },
+    title: { fontSize: 18, fontWeight: 'bold', marginTop: 10 },
+    activityText: { fontSize: 16, marginVertical: 2 },
+    modalContainer: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 },
+    modalTitle: { fontSize: 20, fontWeight: 'bold', marginBottom: 10 },
+    input: { borderWidth: 1, width: 200, marginVertical: 10, padding: 5 },
+    timeInputContainer: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 20 },
+    timeInput: { borderWidth: 1, width: 50, textAlign: 'center', marginHorizontal: 5, padding: 5 },
+    buttonContainer: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 20 },
+    buttonSpacer: { width: 20 },
+  });
+
+
 
 export default ParentPage;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 20,
-  },
-  header: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 20,
-  },
-  subHeader: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
-  activitySection: {
-    marginTop: 20,
-    alignItems: "center",
-  },
-  input: {
-    borderWidth: 1,
-    width: 200,
-    marginVertical: 10,
-    padding: 5,
-    textAlign: "center",
-  },
-  activityItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    width: 250,
-    marginVertical: 5,
-  },
-});
