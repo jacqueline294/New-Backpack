@@ -61,7 +61,6 @@ async function fetchAndUpdateUsageStats(setUsageStats: React.Dispatch<React.SetS
 
     const badAppsTotalTimeInForeground = YT + Instagram + TikTok + Snapchat + Triller + Roblox + Fortnite + AmongUs; 
 
-    const energyDeduction = badAppsTotalTimeInForeground / 100;
     
     const apps = Object.entries(result3).map(([packageName, appData]) => ({
         packageName,
@@ -73,8 +72,7 @@ async function fetchAndUpdateUsageStats(setUsageStats: React.Dispatch<React.SetS
     const sortedApps2 = result2?.sort((a, b) => b.totalTimeInForeground - a.totalTimeInForeground);
     setUsageStats(result3);
 
-    setEnergy(100 - energyDeduction)
-   /*  const calculateEnergy = () => {
+    const calculateEnergy = () => {
         let energi = 100 - badAppsTotalTimeInForeground/1000;
 
         console.log("apps[1]: ", apps[1])
@@ -90,7 +88,7 @@ async function fetchAndUpdateUsageStats(setUsageStats: React.Dispatch<React.SetS
 
     console.log("calculateEnergy.toString", calculateEnergy());
     AsyncStorage.setItem("energy", calculateEnergy());
-    console.log("AsyncStorage.getItem('energy'); ", AsyncStorage.getItem("energy")); 
+    console.log("AsyncStorage.getItem('energy'); ", AsyncStorage.getItem("energy"));
 
     let x;
     AsyncStorage.getItem("energy").then((item) => {
@@ -100,6 +98,6 @@ async function fetchAndUpdateUsageStats(setUsageStats: React.Dispatch<React.SetS
 
     console.log("x: ", x);
     
-    setEnergy(calculateEnergy)*/
+    setEnergy(calculateEnergy)
     
 }
