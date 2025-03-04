@@ -7,7 +7,16 @@ import { useUsageStats } from "./UsageStatsContext";
 
 const App = () => {
   const navigation = useNavigation();
-  const energy = useUsageStats().energy;
+  const {energy, setEnergy } = useUsageStats();
+  
+
+  const refillEnergy = () => {
+    setEnergy((prevEnergy) => {
+      const newEnergy = prevEnergy + 10;
+      return newEnergy > 100 ? 100 : newEnergy;
+    })
+  }
+
   return (
     <View style={styles.container} >
       
@@ -24,7 +33,7 @@ const App = () => {
           <EnergyBar value={energy}/>
       </TouchableOpacity>
       <TouchableOpacity style={[styles.button, styles.bottom]}>
-        <Button title="Activities" onPress={() => alert("Bottom Button Pressed")} />
+        <Button title="Lägg till 10 energi" onPress={()=> refillEnergy()} />
       </TouchableOpacity>
 
       <TouchableOpacity style={[styles.button, styles.left]}>

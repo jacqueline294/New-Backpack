@@ -5,7 +5,7 @@ import NavTest from './components/NavTest';
 import TestNavPage from './components/TestNavPage';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack'
 import HomeScreen from './components/HomeScreen';
@@ -141,6 +141,14 @@ export default function App() {
 
     const badAppsTotalTimeInForeground = YT + Instagram + TikTok + Snapchat + Triller + Roblox + Fortnite + AmongUs; 
 
+    const [currentEnergy, setCurrentEnergy] = useState(100);
+
+    const energyDeduction = badAppsTotalTimeInForeground /100;
+
+    /* setCurrentEnergy((prevEnergy)=> {
+      const newEnergy = prevEnergy - energyDeduction;
+      return newEnergy < 0 ? 1 : newEnergy;
+    }) */
     const calculateEnergy = () => {
       let energi = 100 - badAppsTotalTimeInForeground/1000;
 
@@ -151,6 +159,7 @@ export default function App() {
     }
 
     AsyncStorage.setItem("energy", calculateEnergy());
+    //AsyncStorage.setItem("energy", currentEnergy.toString());
 
     const energy = await AsyncStorage.getItem("energy");
 
@@ -163,8 +172,32 @@ export default function App() {
       soundName: "default",
       vibrate: true,
       channelId: "default-channel-id",
-      bigLargeIcon: "https://i0.wp.com/plopdo.com/wp-content/uploads/2021/11/feature-pic.jpg?fit=537%2C322&ssl=1"
+      //bigLargeIcon: "https://i0.wp.com/plopdo.com/wp-content/uploads/2021/11/feature-pic.jpg?fit=537%2C322&ssl=1"
     });
+
+    if(Number(energy) < 90) {
+      PushNotification.localNotification({
+        title: "Varning 90",
+        message: "Energinivå: " + energy + " Tid: " + new Date().toLocaleTimeString(),
+        playSound: true,
+        soundName: "default",
+        vibrate: true,
+        channelId: "default-channel-id",
+        //bigLargeIcon: "https://i0.wp.com/plopdo.com/wp-content/uploads/2021/11/feature-pic.jpg?fit=537%2C322&ssl=1"
+      });
+    }
+
+    if(Number(energy) < 85) {
+      PushNotification.localNotification({
+        title: "Varning 85",
+        message: "Energinivå: " + energy + " Tid: " + new Date().toLocaleTimeString(),
+        playSound: true,
+        soundName: "default",
+        vibrate: true,
+        channelId: "default-channel-id",
+        //bigLargeIcon: "https://i0.wp.com/plopdo.com/wp-content/uploads/2021/11/feature-pic.jpg?fit=537%2C322&ssl=1"
+      });
+    }
     //console.log("energy: ", energy);
 
     /* return (
