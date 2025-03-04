@@ -23,30 +23,37 @@ const EmoGame = () => {
     { label: "Ledsen", value: "😢"},
 ];
 
-const feelings = [
-    { label: "GLAD", value: "😊"},
-    { label: "ARG", value: "😡"},
-    { label: "LEDSEN", value: "🥺"},
-    { label: "RÄDD", value: "😨"},
-    { label: "FÖRVÅNAD", value: "😲"},
-    { label: "AVSMAK/AVSKY", value: "😤"},
-    { label: "SKAM/SKULD", value: "😞"},
-];
-
- const happyExperiences = [
-    { label: "BELÅTEN", value: "😊"},
-    { label: "NÖJD", value: "❤️"},
-    { label: "PEPP", value: "😌"},
-    { label: "UPPRYMD", value: "😠"},
-    { label: "LYCKLIG", value: "😢"},
-    { label: "EUFORISK", value: "😢"},
-];
-
   const handleSubmit = () => {
     if(answers.q1 == true && answers.q2 == true && answers.q3 == true && answers.q4 == true && answers.q5 == true) {setFeelingResult (emotions[0].value);}
     if(answers.q1 == true && answers.q2 == true && answers.q3 == true && answers.q4 == true && answers.q5 == false) {setFeelingResult (emotions[1].value);}
     if(answers.q1 == true && answers.q2 == true && answers.q3 == true && answers.q4 == false && answers.q5 == true) {setFeelingResult (emotions[2].value);}
     if(answers.q1 == true && answers.q2 == true && answers.q3 == true && answers.q4 == false && answers.q5 == false) {setFeelingResult (emotions[3].value);}
+    if(answers.q1 == true && answers.q2 == true && answers.q3 == false && answers.q4 == true && answers.q5 == true) {setFeelingResult (emotions[4].value);}
+    if(answers.q1 == true && answers.q2 == true && answers.q3 == false && answers.q4 == true && answers.q5 == false) {setFeelingResult (emotions[0].value);}
+    if(answers.q1 == true && answers.q2 == true && answers.q3 == false && answers.q4 == false && answers.q5 == true) {setFeelingResult (emotions[1].value);}
+    if(answers.q1 == true && answers.q2 == true && answers.q3 == false && answers.q4 == false && answers.q5 == false) {setFeelingResult (emotions[2].value);}
+    if(answers.q1 == true && answers.q2 == false && answers.q3 == true && answers.q4 == true && answers.q5 == true) {setFeelingResult (emotions[3].value);}
+    if(answers.q1 == true && answers.q2 == false && answers.q3 == true && answers.q4 == true && answers.q5 == false) {setFeelingResult (emotions[4].value);}
+    if(answers.q1 == true && answers.q2 == false && answers.q3 == true && answers.q4 == false && answers.q5 == true) {setFeelingResult (emotions[0].value);}
+    if(answers.q1 == true && answers.q2 == false && answers.q3 == true && answers.q4 == false && answers.q5 == false) {setFeelingResult (emotions[1].value);}
+    if(answers.q1 == true && answers.q2 == false && answers.q3 == false && answers.q4 == true && answers.q5 == true) {setFeelingResult (emotions[2].value);}
+    if(answers.q1 == true && answers.q2 == false && answers.q3 == false && answers.q4 == true && answers.q5 == false) {setFeelingResult (emotions[3].value);}
+    if(answers.q1 == true && answers.q2 == false && answers.q3 == false && answers.q4 == false && answers.q5 == true) {setFeelingResult (emotions[4].value);}
+    if(answers.q1 == true && answers.q2 == false && answers.q3 == false && answers.q4 == false && answers.q5 == false) {setFeelingResult (emotions[0].value);}
+    if(answers.q1 == false && answers.q2 == true && answers.q3 == true && answers.q4 == true && answers.q5 == true) {setFeelingResult (emotions[1].value);}
+    if(answers.q1 == false && answers.q2 == true && answers.q3 == true && answers.q4 == true && answers.q5 == false) {setFeelingResult (emotions[2].value);}
+    if(answers.q1 == false && answers.q2 == true && answers.q3 == true && answers.q4 == false && answers.q5 == true) {setFeelingResult (emotions[3].value);}
+    if(answers.q1 == false && answers.q2 == true && answers.q3 == true && answers.q4 == false && answers.q5 == false) {setFeelingResult (emotions[4].value);}
+    if(answers.q1 == false && answers.q2 == true && answers.q3 == false && answers.q4 == true && answers.q5 == true) {setFeelingResult (emotions[0].value);}
+    if(answers.q1 == false && answers.q2 == true && answers.q3 == false && answers.q4 == true && answers.q5 == false) {setFeelingResult (emotions[1].value);}
+    if(answers.q1 == false && answers.q2 == true && answers.q3 == false && answers.q4 == false && answers.q5 == true) {setFeelingResult (emotions[2].value);}
+    if(answers.q1 == false && answers.q2 == true && answers.q3 == false && answers.q4 == false && answers.q5 == false) {setFeelingResult (emotions[3].value);}
+    if(answers.q1 == false && answers.q2 == false && answers.q3 == true && answers.q4 == true && answers.q5 == true) {setFeelingResult (emotions[4].value);}
+    if(answers.q1 == false && answers.q2 == false && answers.q3 == true && answers.q4 == true && answers.q5 == false) {setFeelingResult (emotions[0].value);}
+    if(answers.q1 == false && answers.q2 == false && answers.q3 == true && answers.q4 == false && answers.q5 == true) {setFeelingResult (emotions[1].value);}
+    if(answers.q1 == false && answers.q2 == false && answers.q3 == true && answers.q4 == false && answers.q5 == false) {setFeelingResult (emotions[2].value);}
+    if(answers.q1 == false && answers.q2 == false && answers.q3 == false && answers.q4 == true && answers.q5 == true) {setFeelingResult (emotions[3].value);}
+    if(answers.q1 == false && answers.q2 == false && answers.q3 == false && answers.q4 == true && answers.q5 == false) {setFeelingResult (emotions[4].value);}
     if(answers.q1 == false && answers.q2 == false && answers.q3 == false && answers.q4 == false && answers.q5 == true) {setFeelingResult (emotions[4].value);}
     if(answers.q1 == false && answers.q2 == false && answers.q3 == false && answers.q4 == false && answers.q5 == false) {setFeelingResult (emotions[1].value);}
     }
@@ -71,7 +78,7 @@ const feelings = [
   return (
     <View style={styles.container}>
       <Text style={{ textAlign: "left", fontSize: 20 }}>
-        - Hur känns det idag?
+        - Har det varit roligt i skolan idag?
       </Text>
       <View style={styles.answerContainer}>
         <TouchableOpacity
@@ -89,7 +96,7 @@ const feelings = [
       </View>
 
       <Text style={{ textAlign: "left", fontSize: 20 }}>
-        - Vilket ord beskriver din känsla?
+        - Har du lärt dig spännande nya saker idag?
       </Text>
       <View style={styles.answerContainer}>
         <TouchableOpacity
@@ -107,7 +114,7 @@ const feelings = [
       </View>
 
       <Text style={{ textAlign: "left", fontSize: 20 }}>
-        - Vad beskriver din upplevelse?
+        - Har du ätit god mat idag?
       </Text>
       <View style={styles.answerContainer}>
         <TouchableOpacity

@@ -51,7 +51,7 @@ const EmoSpace = () => {
     };
 
     const emotions = [
-        { label: "😊", value: "😊"},
+        { label: "🙂", value: "🙂"},
         { label: "❤️", value: "❤️"},
         { label: "😌", value: "😌"},
         { label: "😠", value: "😠"},
