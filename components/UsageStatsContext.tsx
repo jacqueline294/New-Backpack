@@ -16,7 +16,7 @@ export const UsageStatsProvider = ( {children} ) => {
     const [usageStats, setUsageStats] = useState<any>("");
     const [energy, setEnergy] = useState<any>(100);
 
-    const [newStat, setNewStat] = useState(); // may be removed, is not used
+    const [newStat, setNewStat] = useState(); // may be removed, is not
     const [prevStat, setPrevStat] = useState();
 
     useEffect(() => {
@@ -34,7 +34,7 @@ export const UsageStatsProvider = ( {children} ) => {
             console.log("prevStat: ", prevStat)
 
             if(usageDifference > 0 ) {
-                totalEnergyLoss += usageDifference/100
+                totalEnergyLoss += usageDifference/1
             }
 
             console.log("usageDifference: " , usageDifference)
