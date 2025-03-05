@@ -14,13 +14,46 @@ const UsageStatsContext = createContext<UsageStatsContextProps | undefined>(unde
 
 export const UsageStatsProvider = ( {children} ) => {
     const [usageStats, setUsageStats] = useState<any>("");
-    const [energy, setEnergy] = useState<any>("");
+    const [energy, setEnergy] = useState<any>(100);
+
+    const [newStat, setNewStat] = useState(); // may be removed, is not used
+    const [prevStat, setPrevStat] = useState();
 
     useEffect(() => {
         const interval = setInterval(async () => {
-            await fetchAndUpdateUsageStats(setUsageStats, setEnergy);
+            //await fetchAndUpdateUsageStats(setUsageStats, setEnergy);
+
+            console.log("newStatBefore: ", newStat);
+            const newStat1 = await fetchAndUpdateUsageStats(setUsageStats, setEnergy);
+            console.log("newStat1: ", newStat1);
+
+
+            let totalEnergyLoss = 0;
+
+            const usageDifference = newStat1 - prevStat;
+            console.log("prevStat: ", prevStat)
+
+            if(usageDifference > 0 ) {
+                totalEnergyLoss += usageDifference/100
+            }
+
+            console.log("usageDifference: " , usageDifference)
+            console.log("totalEnergyLoss: ", totalEnergyLoss)
+            setEnergy(prevEnergy => Math.max(1, prevEnergy - totalEnergyLoss));
+
+            AsyncStorage.setItem("energy1", energy.toString())
+
+            const currentEnergy = await AsyncStorage.getItem("energy1");
+            console.log("async currentEnergy: ", currentEnergy)
+
+            setPrevStat(newStat1);
+            setNewStat(newStat1);
+
         }, 1000);
-    }, []);
+
+        return ()=> clearInterval(interval); // without the clearInterval, prevStat and newStat will fluctuate
+
+    }, [prevStat]);
 
     return (
         <UsageStatsContext.Provider value={{usageStats, setUsageStats, energy, setEnergy}}>
@@ -75,7 +108,7 @@ async function fetchAndUpdateUsageStats(setUsageStats: React.Dispatch<React.SetS
     const calculateEnergy = () => {
         let energi = 100 - badAppsTotalTimeInForeground/1000;
 
-        console.log("apps[1]: ", apps[1])
+        //console.log("apps[1]: ", apps[1])
 
         if (energi <= 0) {
             energi = 1
@@ -86,18 +119,20 @@ async function fetchAndUpdateUsageStats(setUsageStats: React.Dispatch<React.SetS
         return energi.toFixed(2).toString();
     }
 
-    console.log("calculateEnergy.toString", calculateEnergy());
+    //console.log("calculateEnergy.toString", calculateEnergy());
     AsyncStorage.setItem("energy", calculateEnergy());
-    console.log("AsyncStorage.getItem('energy'); ", AsyncStorage.getItem("energy"));
+   // console.log("AsyncStorage.getItem('energy'); ", AsyncStorage.getItem("energy"));
 
     let x;
     AsyncStorage.getItem("energy").then((item) => {
-        console.log("item: ", item);
+        //console.log("item: ", item);
         x = item;
     });
 
-    console.log("x: ", x);
+    //console.log("x: ", x);
     
-    setEnergy(calculateEnergy)
+    //setEnergy(calculateEnergy)
+
+    return badAppsTotalTimeInForeground;
     
 }

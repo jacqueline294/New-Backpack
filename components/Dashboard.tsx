@@ -10,12 +10,9 @@ const App = () => {
   const {energy, setEnergy } = useUsageStats();
   
 
-  const refillEnergy = () => {
-    setEnergy((prevEnergy) => {
-      const newEnergy = prevEnergy + 10;
-      return newEnergy > 100 ? 100 : newEnergy;
-    })
-  }
+  const recoverEnergy = () => {
+    setEnergy(prevEnergy => Math.min(100, prevEnergy + 10)); // Recover energy up to a max of 100
+  };
 
   return (
     <View style={styles.container} >
@@ -33,7 +30,7 @@ const App = () => {
           <EnergyBar value={energy}/>
       </TouchableOpacity>
       <TouchableOpacity style={[styles.button, styles.bottom]}>
-        <Button title="Lägg till 10 energi" onPress={()=> refillEnergy()} />
+        <Button title="Lägg till 10 energi" onPress={()=> recoverEnergy()} />
       </TouchableOpacity>
 
       <TouchableOpacity style={[styles.button, styles.left]}>

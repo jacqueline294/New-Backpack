@@ -153,12 +153,13 @@ export default function App() {
     AsyncStorage.setItem("energy", calculateEnergy());
 
     const energy = await AsyncStorage.getItem("energy");
+    const energy2 = await AsyncStorage.getItem("energy1"); // does not work, is delayed
 
     console.log("energy: ", energy);
 
     PushNotification.localNotification({
       title: "Albanie",
-      message: "Energinivå: " + energy + " Tid: " + new Date().toLocaleTimeString(),
+      message: "Energinivå: " + energy + " energi2: " + energy2 + " Tid: " + new Date().toLocaleTimeString(),
       playSound: true,
       soundName: "default",
       vibrate: true,
