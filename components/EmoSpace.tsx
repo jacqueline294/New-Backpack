@@ -124,10 +124,6 @@ const EmoSpace = () => {
         </View>
         </>
         )}       
-          <Image 
-            //source={{ uri: 'https://static.vecteezy.com/ti/gratis-vektor/t1/6828456-ljusa-smiley-ansikte-emoji-vektor-uttryck-gratis-vector.jpg' }} 
-            //style={styles.image}
-          />
           <Text style={{ textAlign: "center", fontSize: 150 }}>
           {morningEmotionData[selectedDate] || "😶"}
           {emotionData[selectedDate] || "😶"}

@@ -20,6 +20,10 @@ import ParentPage from './components/ParentPage';
 import EmoSpace from './components/EmoSpace';
 import EmoGame from './components/EmoGame';
 import TalkItOut from './components/TalkItOut';
+import EmoGameQ2 from './components/EmoGameQ2';
+import EmoGameQ3 from './components/EmoGameQ3';
+import EmoGameQ4 from './components/EmoGameQ4';
+import EmoGameQ5 from './components/EmoGameQ5';
 
 const Stack =createStackNavigator();
 
@@ -47,6 +51,10 @@ export default function App() {
       <Stack.Screen name="EmoSpace" component={EmoSpace} />
       <Stack.Screen name="EmoGame" component={EmoGame} />
       <Stack.Screen name="TalkItOut" component={TalkItOut} />
+      <Stack.Screen name="EmoGameQ2" component={EmoGameQ2} />
+      <Stack.Screen name="EmoGameQ3" component={EmoGameQ3} />
+      <Stack.Screen name="EmoGameQ4" component={EmoGameQ4} />
+      <Stack.Screen name="EmoGameQ5" component={EmoGameQ5} />
     </Stack.Navigator>
     </NavigationContainer>
 

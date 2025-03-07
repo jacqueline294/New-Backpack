@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Button, View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -9,31 +9,6 @@ const EmoGame = () => {
   const [yellowEmotionData, setYellowEmotionData] = useState<Record<string, string>>({});
   const [redEmotionData, setRedEmotionData] = useState<Record<string, string>>({});
   const [greyEmotionData, setGreyEmotionData] = useState<Record<string, string>>({});
-
-  useEffect(() => {
-    const loadBlueEmotionData = async () => {
-        try {
-            const storedBlueEmotionData = await AsyncStorage.getItem('blueEmotionData');
-            if(storedBlueEmotionData) {
-                setBlueEmotionData(JSON.parse(storedEmotionData));
-            }
-        } catch (error) {
-            console.log("Failed to load emotion data from Asyncstorage", error);
-        }
-    };
-    const loadYellowEmotionData = async () => {
-        try {
-            const storedYellowEmotionData = await AsyncStorage.getItem('yellowEmotionData');
-            if(storedYellowEmotionData) {
-                setYellowEmotionData(JSON.parse(storedYellowEmotionData));
-            }
-        } catch (error) {
-            console.log("Failed to load emotion data from Asyncstorage", error);
-        }
-    };
-    loadBlueEmotionData();
-    loadYellowEmotionData();
-}, []);
 
   const [answers, setAnswers] = useState({
     q1: null,
@@ -61,12 +36,12 @@ const feelings = [
     { label: "NERVÖS", value: "😲"},
     { label: "BESVIKEN", value: "😤"},
     { label: "ENSAM", value: "😞"},
-    { label: "LUGN", value: "🧘‍♂️"},
-    { label: "NYFIKEN", value: "🤔"},
-    { label: "STOLT", value: "👑"},
-    { label: "PIRRIG", value: "🫣"},
-    { label: "TACKSAM", value: "🙏"},
-    { label: "TRÖTT", value: "😴"},
+    { label: "LUGN", value: "😡"},
+    { label: "NYFIKEN", value: "🥺"},
+    { label: "STOLT", value: "😨"},
+    { label: "PIRRIG", value: "😲"},
+    { label: "TACKSAM", value: "😤"},
+    { label: "TRÖTT", value: "😞"},
 ];
 
  
@@ -100,7 +75,7 @@ const feelings = [
   return (
     <View style={styles.container}>
       <Text style={{ textAlign: "left", fontSize: 20 }}>
-        - ÄR DU SJÄLV OCH DET KÄNNS JOBBIGT?
+        - HAR NÅGON GJORT NÅGOT TASKIGT MOT DIG?
       </Text>
       <View style={styles.answerContainer}>
         <TouchableOpacity
@@ -118,7 +93,7 @@ const feelings = [
       </View>
 
       <Text style={{ textAlign: "left", fontSize: 20 }}>
-        - HAR DU GJORT ROLIGA SAKER IDAG?
+        - SKA DU GÖRA NÅGOT NYTT OCH SPÄNNANDE?
       </Text>
       <View style={styles.answerContainer}>
         <TouchableOpacity
@@ -136,7 +111,7 @@ const feelings = [
       </View>
 
       <Text style={{ textAlign: "left", fontSize: 20 }}>
-        - HAR NÅGON GJORT NÅGOT DUMT OCH DU VILL GÖRA NÅGOT TILLBAKA?
+        - HAR DU BRÅKAT MED NÅGON?
       </Text>
       <View style={styles.answerContainer}>
         <TouchableOpacity
@@ -154,7 +129,7 @@ const feelings = [
       </View>
 
       <Text style={{ textAlign: "left", fontSize: 20 }}>
-        - ÄR DU STRESSAD INFÖR NÅGOT DU SKA GÖRA?
+        - HAR NÅGON GJORT NÅGOT MOT DIG SOM SKRÄMT DIG?
       </Text>
       <View style={styles.answerContainer}>
         <TouchableOpacity
@@ -192,12 +167,11 @@ const feelings = [
       <View style={styles.answerContainer}>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate("EmoGameQ2")
+          onPress={() => navigation.navigate("EmoGameQ3")
           }
         >
           <Text style={styles.buttonText}>NÄSTA</Text>
         </TouchableOpacity>
-        
       </View>
         {/*<Text>
           Question 1: {renderAnswerText("q1")}{"\n"}        
@@ -209,9 +183,8 @@ const feelings = [
       <Text style={{ textAlign: "center", fontSize: 200 }}>
        {feelingResult }
       </Text>
-      
+
       <View style={styles.buttonContainer}>
-        
         <TouchableOpacity
           style={styles.button}
           onPress={() => navigation.navigate("EmoSpace")}
