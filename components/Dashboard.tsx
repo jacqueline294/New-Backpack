@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { View, Image, Button, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Image, Button, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import EnergyBar from './EnergyBar';
 import { useUsageStats } from "./UsageStatsContext";
 
@@ -49,7 +49,7 @@ const App = () => {
           <EnergyBar value={energy}/>
       </TouchableOpacity>
       <TouchableOpacity style={[styles.button, styles.bottom]}>
-        <Button title="Lägg till 10 energi" onPress={()=> refillEnergy()} />
+        <Button title="Activities" onPress={()=> navigation.navigate("Activities")} />
       </TouchableOpacity>
 
       <TouchableOpacity style={[styles.button, styles.left]}>
@@ -65,7 +65,7 @@ const App = () => {
       </TouchableOpacity>
 
       <TouchableOpacity style={[styles.button, styles.right2]}>
-        <Button title="Games" onPress={() => navigation.navigate("Activities")} />
+        <Button title="Games" onPress={()=> alert("games")} />
       </TouchableOpacity>
 
     </View>
