@@ -4,6 +4,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Animated,
+  Image
 } from "react-native"
 import { useNavigation } from "@react-navigation/native"
 
@@ -90,9 +91,29 @@ const ActivitiesScreen = () => {
     });
   }, [activityOptions]);
 
+  const angry = "https://t4.ftcdn.net/jpg/00/68/33/03/360_F_68330331_dKqChy33w0TcNHJEkqT5iw97QOX8la7F.jpg"
+
+  const neutral = 'https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp';
+
+  const happy = "https://thumbs.dreamstime.com/b/cheerful-cartoon-style-orange-white-cat-big-joyful-smile-closed-eyes-as-if-laughing-cheerful-cartoon-style-341221817.jpg";
+  let emotion = ""
+
+  if(energy < 50) {
+    emotion = angry
+  } if (energy > 80) {
+    emotion = happy
+    
+  } if (energy > 50 && energy < 80) {
+    emotion = neutral
+  }
+
   return (
     <View   >
-       <TouchableOpacity style={[styles.button, styles.rightTop]}>
+        <Image 
+                source={{ uri: emotion }} 
+                style={styles.image} 
+              />
+       <TouchableOpacity style={styles.rightTop}>
           <EnergyBar value={energy}/>
       </TouchableOpacity>
       <Text style={styles.header}>Välj en aktivitet</Text>
@@ -184,6 +205,22 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderRadius: 10,
     marginVertical: 5,
+  },
+  image: {
+    width: 200,
+    height: 200,
+    borderRadius: 100,
+    top: 10,
+    right: 0,
+    marginBottom: -200,
+    zIndex: 1,
+  },
+  rightTop: {
+    right: 100,
+    top: -0,
+    transform: [{ translateY: -50 }],
+    width: 500,
+    marginRight: 10
   },
   buttonText: {
     fontSize: 16,
