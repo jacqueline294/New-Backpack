@@ -49,7 +49,7 @@ const App = () => {
       </TouchableOpacity>
 
       <TouchableOpacity style={[styles.button, styles.right2]}>
-        <Button title="Games" onPress={() => alert("Right Button Pressed")} />
+        <Button title="Games" onPress={() => navigation.navigate("Activities")} />
       </TouchableOpacity>
 
     </View>

@@ -29,6 +29,7 @@ import ParentPage from './components/ParentPage';
 import EmoSpace from './components/EmoSpace';
 import EmoGame from './components/EmoGame';
 import TalkItOut from './components/TalkItOut';
+import ActivitiesScreen from './components/ActivitiesScreen';
 
 
 /* PushNotification.localNotification({
@@ -204,6 +205,7 @@ export default function App() {
       <Stack.Screen name="TalkItOut" component={TalkItOut} />
       <Stack.Screen name="Stats" component={AppUsageStats} />
       <Stack.Screen name="Room" component={RoomScreen} />
+      <Stack.Screen name="Activities" component={ActivitiesScreen} />
     </Stack.Navigator>
     </NavigationContainer>
 
