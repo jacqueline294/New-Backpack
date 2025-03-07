@@ -21,6 +21,8 @@ import EmoSpace from "./components/EmoSpace"
 import EmoGame from "./components/EmoGame"
 import TalkItOut from "./components/TalkItOut"
 import ActivitiesScreen from "./components/ActivitiesScreen"
+import GamesScreen from "./components/GamesScreen"
+import EndlessAlphabet from "./components/EndlessAlphabet"
 
 const Stack = createStackNavigator()
 
@@ -49,6 +51,8 @@ export default function App() {
             <Stack.Screen name="EmoGame" component={EmoGame} />
             <Stack.Screen name="TalkItOut" component={TalkItOut} />
             <Stack.Screen name="Activities" component={ActivitiesScreen} />
+            <Stack.Screen name="GamesScreen" component={GamesScreen} />
+            <Stack.Screen name="EndlessAlphabet" component={EndlessAlphabet} />
           </Stack.Navigator>
         </NavigationContainer>
       </GestureHandlerRootView>
