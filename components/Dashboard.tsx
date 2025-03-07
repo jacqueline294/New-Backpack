@@ -16,14 +16,30 @@ const App = () => {
       return newEnergy > 100 ? 100 : newEnergy;
     })
   }
+  const angry = "https://t4.ftcdn.net/jpg/00/68/33/03/360_F_68330331_dKqChy33w0TcNHJEkqT5iw97QOX8la7F.jpg"
 
+  const neutral = 'https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp';
+
+  const happy = "https://thumbs.dreamstime.com/b/cheerful-cartoon-style-orange-white-cat-big-joyful-smile-closed-eyes-as-if-laughing-cheerful-cartoon-style-341221817.jpg";
+  let emotion = ""
+
+  if(energy < 50) {
+    emotion = angry
+  } if (energy > 80) {
+    emotion = happy
+    
+  } if (energy > 50 && energy < 80) {
+    emotion = neutral
+  }
+  
+  
   return (
     <View style={styles.container} >
       
       
       {/* Image in the center */}
       <Image 
-        source={{ uri: 'https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp' }} 
+        source={{ uri: emotion }} 
         style={styles.image} 
       />
 

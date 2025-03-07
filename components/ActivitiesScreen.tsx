@@ -10,6 +10,7 @@ import { useNavigation } from "@react-navigation/native"
 import { useUsageStats } from "./UsageStatsContext";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import React from "react";
+import EnergyBar from "./EnergyBar";
 
 
 
@@ -90,12 +91,15 @@ const ActivitiesScreen = () => {
   }, [activityOptions]);
 
   return (
-    <View style={styles.container}>
+    <View   >
+       <TouchableOpacity style={[styles.button, styles.rightTop]}>
+          <EnergyBar value={energy}/>
+      </TouchableOpacity>
       <Text style={styles.header}>Välj en aktivitet</Text>
       {selectedActivity ? (
         <>
           <Text style={styles.activityText}>Aktivitet: {selectedActivity}</Text>
-          <Text style={styles.activityText}>Energy: {energy}%</Text>
+         {/*  <Text style={styles.activityText}>Energy: {energy}%</Text> */}
           <TouchableOpacity style={styles.refillButton} onPress={refillEnergy}>
             <Text style={styles.refillButtonText}>Övning gjord (10 energi)</Text>
           </TouchableOpacity>
