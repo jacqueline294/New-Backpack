@@ -51,6 +51,9 @@ const App = () => {
       <TouchableOpacity style={[styles.button, styles.bottom]}>
         <Button title="Activities" onPress={()=> navigation.navigate("Activities")} />
       </TouchableOpacity>
+      <TouchableOpacity style={[styles.button, styles.bottom2]}>
+        <Button title="Main" onPress={()=> navigation.navigate("Home")} />
+      </TouchableOpacity>
 
       <TouchableOpacity style={[styles.button, styles.left]}>
         <Button title="emo space" onPress={() => navigation.navigate("EmoSpace")} />
@@ -100,6 +103,11 @@ const styles = StyleSheet.create({
   bottom: {
     bottom: -200,
     left: '52.5%',
+    transform: [{ translateX: -50 }],
+  },
+  bottom2: {
+    bottom: -200,
+    left: '22.5%',
     transform: [{ translateX: -50 }],
   },
   left: {
