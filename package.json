@@ -21,6 +21,7 @@
     "expo-linear-gradient": "~14.0.2",
     "expo-status-bar": "~2.0.1",
     "firebase": "^11.2.0",
+    "matter-js": "^0.20.0",
     "navigation": "^6.2.0",
     "react": "18.3.1",
     "react-dom": "18.3.1",
@@ -30,6 +31,7 @@
     "react-native-device-info": "^14.0.4",
     "react-native-dotenv": "^3.4.11",
     "react-native-emoji-selector": "^0.2.0",
+    "react-native-game-engine": "^1.2.0",
     "react-native-gesture-handler": "^2.23.1",
     "react-native-paper": "^5.13.1",
     "react-native-picker-select": "^9.3.1",
@@ -42,6 +44,8 @@
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
+    "@react-native-community/cli": "^17.0.0",
+    "@types/matter-js": "^0.19.8",
     "@types/react": "~18.3.12",
     "@types/react-native": "^0.72.8",
     "typescript": "^5.3.3"

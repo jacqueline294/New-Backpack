@@ -23,6 +23,7 @@ import TalkItOut from "./components/TalkItOut"
 import ActivitiesScreen from "./components/ActivitiesScreen"
 import GamesScreen from "./components/GamesScreen"
 import EndlessAlphabet from "./components/EndlessAlphabet"
+import BrainDotsGame from "./components/BrainDots"
 
 const Stack = createStackNavigator()
 
@@ -53,6 +54,7 @@ export default function App() {
             <Stack.Screen name="Activities" component={ActivitiesScreen} />
             <Stack.Screen name="GamesScreen" component={GamesScreen} />
             <Stack.Screen name="EndlessAlphabet" component={EndlessAlphabet} />
+            <Stack.Screen name="BrainDots" component={BrainDotsGame} />
           </Stack.Navigator>
         </NavigationContainer>
       </GestureHandlerRootView>

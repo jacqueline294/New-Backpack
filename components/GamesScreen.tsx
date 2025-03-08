@@ -3,7 +3,8 @@ import { View, Button, StyleSheet } from "react-native"
 import { StackNavigationProp } from "@react-navigation/stack"
 
 type RootStackParamList = {
-  Sudoku: undefined
+  EndlessAlphabet: undefined
+  BrainDots: undefined
 }
 
 type Props = {
@@ -16,6 +17,10 @@ export default function GamesScreen({ navigation }: Props) {
       <Button
         title="Play EndlessAlphabet"
         onPress={() => navigation.navigate("EndlessAlphabet")}
+      />
+      <Button
+        title="Play BrainDots"
+        onPress={() => navigation.navigate("BrainDots")}
       />
     </View>
   )

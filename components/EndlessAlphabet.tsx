@@ -1,10 +1,12 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
   FlatList,
+  Animated,
+  Easing,
 } from "react-native"
 
 const words = ["APPLE", "BANANA", "ORANGE", "GRAPE", "MANGO"]
@@ -21,10 +23,47 @@ const AlphabetGame = () => {
     shuffleArray([...currentWord])
   )
   const [selectedLetters, setSelectedLetters] = useState<string[]>([])
+  const [fadeAnim] = useState(new Animated.Value(0))
+  const [blinkAnim] = useState(new Animated.Value(1))
+
+  useEffect(() => {
+    if (selectedLetters.join("") === currentWord) {
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 1000,
+        useNativeDriver: true,
+      }).start()
+
+      Animated.loop(
+        Animated.sequence([
+          Animated.timing(blinkAnim, {
+            toValue: 0,
+            duration: 600,
+            easing: Easing.linear,
+            useNativeDriver: true,
+          }),
+          Animated.timing(blinkAnim, {
+            toValue: 1,
+            duration: 600,
+            easing: Easing.linear,
+            useNativeDriver: true,
+          }),
+        ])
+      ).start()
+    }
+  }, [selectedLetters])
 
   const handleLetterPress = (letter: string, index: number) => {
     setSelectedLetters([...selectedLetters, letter])
     setShuffledLetters(shuffledLetters.filter((_, i) => i !== index))
+  }
+
+  const handleUndo = () => {
+    if (selectedLetters.length > 0) {
+      const lastLetter = selectedLetters[selectedLetters.length - 1]
+      setSelectedLetters(selectedLetters.slice(0, -1))
+      setShuffledLetters([...shuffledLetters, lastLetter])
+    }
   }
 
   const resetGame = () => {
@@ -32,6 +71,8 @@ const AlphabetGame = () => {
     setCurrentWord(newWord)
     setShuffledLetters(shuffleArray([...newWord]))
     setSelectedLetters([])
+    fadeAnim.setValue(0)
+    blinkAnim.setValue(1)
   }
 
   return (
@@ -57,10 +98,23 @@ const AlphabetGame = () => {
           </TouchableOpacity>
         )}
       />
+      <TouchableOpacity style={styles.undoButton} onPress={handleUndo}>
+        <Text style={styles.undoText}>Ta bort sista bokstaven</Text>
+      </TouchableOpacity>
       {selectedLetters.join("") === currentWord && (
-        <TouchableOpacity style={styles.resetButton} onPress={resetGame}>
-          <Text style={styles.resetText}>Nytt Ord!</Text>
-        </TouchableOpacity>
+        <View style={styles.successContainer}>
+          <Animated.Text
+            style={[
+              styles.successText,
+              { opacity: fadeAnim, transform: [{ scale: blinkAnim }] },
+            ]}
+          >
+            🎆 Bra jobbat! 🎆
+          </Animated.Text>
+          <TouchableOpacity style={styles.resetButton} onPress={resetGame}>
+            <Text style={styles.resetText}>Nytt Ord!</Text>
+          </TouchableOpacity>
+        </View>
       )}
     </View>
   )
@@ -83,13 +137,27 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   letterText: { fontSize: 24, color: "#fff" },
+  undoButton: {
+    marginTop: 10,
+    padding: 10,
+    backgroundColor: "#f00",
+    borderRadius: 5,
+  },
+  undoText: { fontSize: 18, color: "#fff" },
   resetButton: {
-    marginTop: 20,
+    marginTop: 10,
     padding: 10,
     backgroundColor: "#0a0",
     borderRadius: 5,
   },
   resetText: { fontSize: 20, color: "#fff" },
+  successContainer: { alignItems: "center", marginTop: 20 },
+  successText: {
+    fontSize: 26,
+    fontWeight: "bold",
+    color: "bold",
+    textAlign: "center",
+  },
 })
 
 export default AlphabetGame
