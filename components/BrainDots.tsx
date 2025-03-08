@@ -12,14 +12,12 @@ import Matter from "matter-js"
 
 const { width, height } = Dimensions.get("window")
 
-// Define a type for the lines
 type Line = { x: number; y: number }
 
 const createWorld = () => {
   let engine = Matter.Engine.create({ gravity: { y: 0.5 } })
   let world = engine.world
 
-  // Create balls
   let ballA = Matter.Bodies.circle(width * 0.3, height * 0.5, 20, {
     restitution: 0.8,
   })
@@ -27,7 +25,6 @@ const createWorld = () => {
     restitution: 0.8,
   })
 
-  // Create walls around the screen
   let ground = Matter.Bodies.rectangle(width / 2, height, width, 20, {
     isStatic: true,
   })
@@ -86,7 +83,6 @@ const BrainDotsGame = () => {
           : `M${locationX},${locationY}`)
     )
 
-    // Create a physical line body in Matter.js
     if (lines.length > 0) {
       const lastPoint = lines[lines.length - 1]
       const lineBody = Matter.Bodies.rectangle(
@@ -110,7 +106,6 @@ const BrainDotsGame = () => {
     Matter.Body.setPosition(ballA, { x: width * 0.3, y: height * 0.5 })
     Matter.Body.setPosition(ballB, { x: width * 0.7, y: height * 0.5 })
 
-    // Remove all line bodies from the world
     lineBodies.forEach((body) => Matter.World.remove(world, body))
     setLineBodies([])
   }
@@ -135,7 +130,7 @@ const BrainDotsGame = () => {
             {
               left: ballAPosition.x - 20,
               top: ballAPosition.y - 20,
-              backgroundColor: "red",
+              backgroundColor: "blue",
             },
           ]}
         />
@@ -145,7 +140,7 @@ const BrainDotsGame = () => {
             {
               left: ballBPosition.x - 20,
               top: ballBPosition.y - 20,
-              backgroundColor: "blue",
+              backgroundColor: "red",
             },
           ]}
         />
