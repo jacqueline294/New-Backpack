@@ -33,6 +33,10 @@ import ActivitiesScreen from './components/ActivitiesScreen';
 import GamesScreen from './components/GamesScreen';
 import EndlessAlphabet from "./components/EndlessAlphabet"
 import BrainDotsGame from './components/BrainDots';
+import EmoGameQ2 from './components/EmoGameQ2';
+import EmoGameQ3 from './components/EmoGameQ3';
+import EmoGameQ4 from './components/EmoGameQ4';
+import EmoGameQ5 from './components/EmoGameQ5';
 
 
 /* PushNotification.localNotification({
@@ -212,6 +216,11 @@ export default function App() {
       <Stack.Screen name="GamesScreen" component={GamesScreen} />
       <Stack.Screen name="EndlessAlphabet" component={EndlessAlphabet} />
       <Stack.Screen name="BrainDots" component={BrainDotsGame} />
+
+      <Stack.Screen name="EmoGameQ2" component={EmoGameQ2} />
+      <Stack.Screen name="EmoGameQ3" component={EmoGameQ3} />
+      <Stack.Screen name="EmoGameQ4" component={EmoGameQ4} />
+      <Stack.Screen name="EmoGameQ5" component={EmoGameQ5} />
     </Stack.Navigator>
     </NavigationContainer>
 

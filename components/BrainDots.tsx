@@ -120,7 +120,7 @@ const BrainDotsGame = () => {
       style={styles.container}
       onStartShouldSetResponder={() => true}
       onResponderMove={handleTouch}
-      onResponderRelease={() => setPath((prevPath: string) => prevPath + " Z")}
+      /* onResponderRelease={() => setPath((prevPath: string) => prevPath + " Z")} */
     >
       {/* Render lines using Svg */}
       <Svg style={styles.svgCanvas}>
