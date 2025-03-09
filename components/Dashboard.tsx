@@ -28,7 +28,7 @@ const App = () => {
   } if (energy > 80) {
     emotion = happy
     
-  } if (energy > 50 && energy < 80) {
+  } if (energy >= 50 && energy <= 80) {
     emotion = neutral
   }
   
@@ -68,7 +68,7 @@ const App = () => {
       </TouchableOpacity>
 
       <TouchableOpacity style={[styles.button, styles.right2]}>
-        <Button title="Games" onPress={()=> alert("games")} />
+        <Button title="Games" onPress={()=> navigation.navigate("GamesScreen")} />
       </TouchableOpacity>
 
     </View>

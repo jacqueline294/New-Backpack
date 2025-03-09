@@ -143,7 +143,7 @@ const ActivitiesScreen = () => {
       emotion = angry;
     } if (energy > 80) {
       emotion = happy;
-    } if (energy > 50 && energy < 80) {
+    } if (energy >= 50 && energy <= 80) {
       emotion = neutral;
     }
   

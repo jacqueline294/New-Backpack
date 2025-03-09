@@ -30,6 +30,8 @@ import EmoSpace from './components/EmoSpace';
 import EmoGame from './components/EmoGame';
 import TalkItOut from './components/TalkItOut';
 import ActivitiesScreen from './components/ActivitiesScreen';
+import GamesScreen from './components/GamesScreen';
+import EndlessAlphabet from "./components/EndlessAlphabet"
 
 
 /* PushNotification.localNotification({
@@ -206,6 +208,8 @@ export default function App() {
       <Stack.Screen name="Stats" component={AppUsageStats} />
       <Stack.Screen name="Room" component={RoomScreen} />
       <Stack.Screen name="Activities" component={ActivitiesScreen} />
+      <Stack.Screen name="GamesScreen" component={GamesScreen} />
+      <Stack.Screen name="EndlessAlphabet" component={EndlessAlphabet} />
     </Stack.Navigator>
     </NavigationContainer>
 
