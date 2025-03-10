@@ -1,6 +1,6 @@
 import React from "react";
 import { SetStateAction, useState } from "react"
-import { Button, ScrollView, View, Text, StyleSheet } from "react-native";
+import { Button, ScrollView, View, Text, StyleSheet, Touchable, TouchableOpacity } from "react-native";
 
 const dialogueTree = {
     start: {
@@ -165,11 +165,14 @@ const dialogueTree = {
   
           {/* Displaying the choices */}
           {currentDialogue.choices.map((choice, index) => (
-            <Button
+            <TouchableOpacity style={styles.button}>
+              <Button
               key={index}
               title={choice.text}
               onPress={() => handleChoice(choice.next)}
             />
+            </TouchableOpacity>
+            
           ))}
         </ScrollView>
   
@@ -197,4 +200,7 @@ const styles = StyleSheet.create({
       fontSize: 18,
       marginBottom: 20,
     },
+    button: {
+      marginBottom: 10
+    }
   });
