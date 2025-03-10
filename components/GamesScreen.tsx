@@ -5,6 +5,7 @@ import { StackNavigationProp } from "@react-navigation/stack"
 type RootStackParamList = {
   EndlessAlphabet: undefined
   BrainDots: undefined
+  MemoryMatch: undefined
 }
 
 type Props = {
@@ -21,6 +22,10 @@ export default function GamesScreen({ navigation }: Props) {
       <Button
         title="Play BrainDots"
         onPress={() => navigation.navigate("BrainDots")}
+      />
+      <Button
+        title="Play MemoryMatch"
+        onPress={() => navigation.navigate("MemoryMatch")}
       />
     </View>
   )

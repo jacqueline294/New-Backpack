@@ -24,6 +24,7 @@ import ActivitiesScreen from "./components/ActivitiesScreen"
 import GamesScreen from "./components/GamesScreen"
 import EndlessAlphabet from "./components/EndlessAlphabet"
 import BrainDotsGame from "./components/BrainDots"
+import MemoryMatch from "./components/MemoryMatch"
 
 const Stack = createStackNavigator()
 
@@ -55,6 +56,7 @@ export default function App() {
             <Stack.Screen name="GamesScreen" component={GamesScreen} />
             <Stack.Screen name="EndlessAlphabet" component={EndlessAlphabet} />
             <Stack.Screen name="BrainDots" component={BrainDotsGame} />
+            <Stack.Screen name="MemoryMatch" component={MemoryMatch} />
           </Stack.Navigator>
         </NavigationContainer>
       </GestureHandlerRootView>
