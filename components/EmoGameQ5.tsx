@@ -171,6 +171,12 @@ const feelings = [
             handleSubmit
           }
         >
+          <Text style={styles.buttonText}>calc</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate("EmoSpace")}
+        >
           <Text style={styles.buttonText}>KLAR</Text>
         </TouchableOpacity>
       </View>

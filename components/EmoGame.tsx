@@ -15,7 +15,7 @@ const EmoGame = () => {
         try {
             const storedBlueEmotionData = await AsyncStorage.getItem('blueEmotionData');
             if(storedBlueEmotionData) {
-                setBlueEmotionData(JSON.parse(storedEmotionData));
+                setBlueEmotionData(JSON.parse(storedBlueEmotionData));
             }
         } catch (error) {
             console.log("Failed to load emotion data from Asyncstorage", error);
@@ -31,8 +31,30 @@ const EmoGame = () => {
             console.log("Failed to load emotion data from Asyncstorage", error);
         }
     };
+    const loadRedEmotionData = async () => {
+        try {
+            const storedRedEmotionData = await AsyncStorage.getItem('redEmotionData');
+            if(storedRedEmotionData) {
+                setRedEmotionData(JSON.parse(storedRedEmotionData));
+            }
+        } catch (error) {
+            console.log("Failed to load emotion data from Asyncstorage", error);
+        }
+    };
+    const loadGreyEmotionData = async () => {
+        try {
+            const storedGreyEmotionData = await AsyncStorage.getItem('greyEmotionData');
+            if(storedGreyEmotionData) {
+                setGreyEmotionData(JSON.parse(storedGreyEmotionData));
+            }
+        } catch (error) {
+            console.log("Failed to load emotion data from Asyncstorage", error);
+        }
+    };
     loadBlueEmotionData();
     loadYellowEmotionData();
+    loadRedEmotionData();
+    loadGreyEmotionData();
 }, []);
 
   const [answers, setAnswers] = useState({
@@ -81,10 +103,16 @@ const feelings = [
     }
 
   const handleAnswer = (q: string, value: boolean) => {    
-    setAnswers((prevAnswers) => ({
-      ...prevAnswers,
-      [q]: value,
-    }));    
+    const updatedAnswers = {...answers, [q]: value };
+    setAnswers(updatedAnswers);
+
+    const updatedBlueEmotionData = {
+        ...blueEmotionData,
+        [q]: value ? 1 : 0,
+    };
+    setBlueEmotionData(updatedBlueEmotionData);
+
+    AsyncStorage.setItem("blueEmotionData", JSON.stringify(updatedBlueEmotionData));
   };
 
   const renderAnswerText = (q: string) => {
@@ -206,10 +234,22 @@ const feelings = [
           Question 4: {renderAnswerText("q4")}{"\n"}        
           Question 5: {renderAnswerText("q5")}
         </Text>*/}
-      <Text style={{ textAlign: "center", fontSize: 200 }}>
-       {feelingResult }
+      <Text style={{ textAlign: "center", fontSize: 100 }}>
+       {feelingResult}
       </Text>
       
+      <View style={{ padding: 10, flexDirectio: 'row' }}>
+        {Object.keys(blueEmotionData).length > 0 ? (
+          Object.entries(blueEmotionData).map(([key, value]) => (
+            <Text key={key}>
+              {key}: {value}
+            </Text>
+          ))
+        ) : (
+          <Text>No data available</Text>
+        )}
+      </View>
+
       <View style={styles.buttonContainer}>
         
         <TouchableOpacity
