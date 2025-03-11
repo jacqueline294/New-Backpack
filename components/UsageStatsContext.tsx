@@ -23,28 +23,28 @@ export const UsageStatsProvider = ( {children} ) => {
         const interval = setInterval(async () => {
             //await fetchAndUpdateUsageStats(setUsageStats, setEnergy);
 
-            console.log("newStatBefore: ", newStat);
+            //console.log("newStatBefore: ", newStat);
             const newStat1 = await fetchAndUpdateUsageStats(setUsageStats, setEnergy);
-            console.log("newStat1: ", newStat1);
+            //console.log("newStat1: ", newStat1);
 
 
             let totalEnergyLoss = 0;
 
             const usageDifference = newStat1 - prevStat;
-            console.log("prevStat: ", prevStat)
+            //console.log("prevStat: ", prevStat)
 
             if(usageDifference > 0 ) {
                 totalEnergyLoss += usageDifference/1
             }
 
-            console.log("usageDifference: " , usageDifference)
-            console.log("totalEnergyLoss: ", totalEnergyLoss)
+            //console.log("usageDifference: " , usageDifference)
+            //console.log("totalEnergyLoss: ", totalEnergyLoss)
             setEnergy(prevEnergy => Math.max(1, prevEnergy - totalEnergyLoss));
 
             AsyncStorage.setItem("energy1", energy.toString())
 
             const currentEnergy = await AsyncStorage.getItem("energy1");
-            console.log("async currentEnergy: ", currentEnergy)
+            //console.log("async currentEnergy: ", currentEnergy)
 
             setPrevStat(newStat1);
             setNewStat(newStat1);

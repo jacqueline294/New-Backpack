@@ -165,7 +165,7 @@ const dialogueTree = {
   
           {/* Displaying the choices */}
           {currentDialogue.choices.map((choice, index) => (
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity key={index} style={styles.button}>
               <Button
               key={index}
               title={choice.text}

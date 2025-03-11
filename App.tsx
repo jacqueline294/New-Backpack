@@ -38,6 +38,7 @@ import EmoGameQ3 from './components/EmoGameQ3';
 import EmoGameQ4 from './components/EmoGameQ4';
 import EmoGameQ5 from './components/EmoGameQ5';
 import MemoryMatch from './components/MemoryMatch';
+import BalloonGame from './components/BalloonGame';
 
 
 /* PushNotification.localNotification({
@@ -218,6 +219,7 @@ export default function App() {
       <Stack.Screen name="EndlessAlphabet" component={EndlessAlphabet} />
       <Stack.Screen name="BrainDots" component={BrainDotsGame} />
       <Stack.Screen name="MemoryMatch" component={MemoryMatch} />
+      <Stack.Screen name="Balloon" component={BalloonGame} />
 
       <Stack.Screen name="EmoGameQ2" component={EmoGameQ2} />
       <Stack.Screen name="EmoGameQ3" component={EmoGameQ3} />

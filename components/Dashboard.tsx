@@ -71,6 +71,10 @@ const App = () => {
         <Button title="Games" onPress={()=> navigation.navigate("GamesScreen")} />
       </TouchableOpacity>
 
+      <TouchableOpacity style={[styles.button, styles.right4]}>
+        <Button title="Balloon" onPress={()=> navigation.navigate("Balloon")} />
+      </TouchableOpacity>
+
     </View>
   );
 };
@@ -133,6 +137,11 @@ const styles = StyleSheet.create({
   right2: {
     right: 0,
     top: 36,
+    transform: [{ translateY: -50 }],
+  },
+  right4: {
+    right: 70,
+    top: 256,
     transform: [{ translateY: -50 }],
   },
 });
