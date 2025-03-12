@@ -18,6 +18,8 @@ import { current } from "@/node_modules copy/@react-native-community/cli-tools/b
 import { GLTFLoader } from "three-stdlib";
 import { grey100 } from "react-native-paper/lib/typescript/styles/themes/v2/colors";
 import { useNavigation } from "@react-navigation/native";
+import SoundLevel from 'react-native-sound-level';
+
 
 
 interface RoomProps {}
@@ -27,9 +29,34 @@ const BlenderModel = ({ position }: { position: [number, number, number] }) => {
   const earth = Asset.fromModule(require('../assets/emmo.glb')).uri;
   const navigation = useNavigation();
 
+  const [modelSize, setModelSize] = useState(1);
+  const [boxLength, setBoxLength] = useState(0.2);
+
   const { scene, animations } = useLoader(GLTFLoader, earth);
 
   const boxRef = useRef();
+
+  // Makes Emmo bigger by blowing...
+  useEffect(()=> {
+
+    if(SoundLevel){
+      SoundLevel.start();
+
+      SoundLevel.onNewFrame = (data) => {
+        const soundLevel = data.value;
+
+        if(soundLevel > -10) {
+
+          //setModelSize((prevSize) => Math.min(prevSize + 0.1, 2));
+          setBoxLength(prevLength => Math.min(prevLength + 0.02, 2))
+        } else {
+          //setModelSize((prevSize) => Math.max(prevSize - 0.02, 1))
+          setBoxLength(prevLength => Math.max(prevLength - 0.006, 0.2))
+        }
+      }
+    }
+
+  }, [])
 
   useEffect(() => {
     if (scene) {
@@ -40,7 +67,7 @@ const BlenderModel = ({ position }: { position: [number, number, number] }) => {
   useFrame(() => {
     const time = performance.now() * 0.0055;
     if (boxRef.current) {
-      boxRef.current.position.y = Math.cos(time) - 0.97 * 1.3;
+      boxRef.current.position.y = Math.cos(time) - 0.8 * 1.3;
     }
   });
 
@@ -71,14 +98,20 @@ const BlenderModel = ({ position }: { position: [number, number, number] }) => {
   }
 
   return modelReady ? (
-    <primitive
+    <group ref={boxRef}>
+      <primitive
       object={scene}
-      ref={boxRef}
+      
       position={position}
-      scale={[1, 1, 1]}
+      scale={[modelSize, modelSize, modelSize]}
       rotation={[0, Math.PI + 6.2, 0]}
       onClick={handleClick}
-    />
+      />
+      <Sphere scale={[0.1, 0.1, boxLength]} position={[0.06, -0.42,-0.7]}>
+        <meshStandardMaterial color={"orange"}></meshStandardMaterial>
+      </Sphere>
+    </group>
+    
   ) : (
     <Box>
       <meshBasicMaterial color={"grey"}></meshBasicMaterial>
