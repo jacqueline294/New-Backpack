@@ -1,11 +1,46 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, PermissionsAndroid, Platform } from 'react-native';
 import SoundLevel from 'react-native-sound-level';
 
 const BalloonGame = () => {
   const [balloonSize, setBalloonSize] = useState(100);
+  const [balloonBurst, setBalloonBurst] = useState(false);
+
+  const requestMicrophonePermission = async () => {
+    if (Platform.OS === 'android') {
+      try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
+          {
+            title: 'Microphone Permission',
+            message: 'We need access to your microphone to record audio.',
+            buttonNeutral: 'Ask Me Later',
+            buttonNegative: 'Cancel',
+            buttonPositive: 'OK',
+          }
+        );
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          console.log('Microphone permission granted');
+        } else {
+          console.log('Microphone permission denied');
+        }
+      } catch (err) {
+        console.warn(err);
+      }
+    }
+  };
+  useEffect(()=> {
+    requestMicrophonePermission();
+  }, [])
+
+  useEffect(()=> {
+    if(balloonSize > 299) {
+      setBalloonBurst(true);
+    }
+  }, [balloonSize])
 
   useEffect(() => {
+    //requestMicrophonePermission();
     if (SoundLevel) {
       SoundLevel.start();
   
@@ -13,11 +48,17 @@ const BalloonGame = () => {
         const soundLevel = data.value;
         console.log('Sound Level:', soundLevel);
   
-        if (soundLevel > -10) {
-          setBalloonSize((prevSize) => Math.min(prevSize + 5, 300));
-        } else {
+        if(!balloonBurst) {
+           if (soundLevel > -10) {
+          setBalloonSize((prevSize) => Math.min(prevSize + 10, 300));
+             } else {
           setBalloonSize((prevSize) => Math.max(prevSize - 2, 50));
+             } 
         }
+        //console.log("balloon size: ", balloonSize )
+        /* if(balloonSize > 299) {
+            setBalloonBurst(true)
+        } */
       };
   
       return () => {
@@ -26,18 +67,30 @@ const BalloonGame = () => {
     } else {
       console.error('SoundLevel is not initialized');
     }
-  }, []);
+  }, [balloonBurst]);
+
+  const resetBalloon = () => {
+    setBalloonBurst(false);
+    setBalloonSize(100);
+  }
   
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Blow into the mic to inflate the balloon! 🎈</Text>
+      <Text style={styles.text}>
+        {balloonBurst ? 'The balloon burst! 🎉' : 'Blow into the mic to inflate the balloon! 🎈'}
+      </Text>
       <View
         style={[
           styles.balloon,
           { width: balloonSize, height: balloonSize },
         ]}
       />
+      {balloonBurst && (
+        <Text style={styles.resetText} onPress={resetBalloon}>
+          Tap here to reset the game.
+        </Text>
+      )}
     </View>
   );
 };
@@ -56,6 +109,12 @@ const styles = StyleSheet.create({
   text: {
     marginTop: 20,
     fontSize: 18,
+  },
+  resetText: {
+    marginTop: 20,
+    fontSize: 18,
+    color: 'blue',
+    textDecorationLine: 'underline',
   },
 });
 
