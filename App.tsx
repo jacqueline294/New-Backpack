@@ -5,7 +5,7 @@ import NavTest from './components/NavTest';
 import TestNavPage from './components/TestNavPage';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack'
 import HomeScreen from './components/HomeScreen';
@@ -41,6 +41,7 @@ import MemoryMatch from './components/MemoryMatch';
 import BalloonGame from './components/BalloonGame';
 import UnblockMe from './components/UnblockMe';
 import TjugoFyrtioatta from './components/TjugoFyrtioatta';
+import BackgroundTimer from "react-native-background-timer"
 
 
 /* PushNotification.localNotification({
@@ -54,6 +55,7 @@ const Stack = createStackNavigator();
 
 
 export default function App() {
+  const [sent, setSent] = useState(false);
 
   useEffect(()=> {
     PushNotification.createChannel(
@@ -178,6 +180,8 @@ export default function App() {
       channelId: "default-channel-id",
       bigLargeIcon: "https://i0.wp.com/plopdo.com/wp-content/uploads/2021/11/feature-pic.jpg?fit=537%2C322&ssl=1"
     });
+
+    
     //console.log("energy: ", energy);
 
     /* return (
@@ -186,6 +190,69 @@ export default function App() {
       </View>
     ) */
   }
+
+  useEffect(() => {
+    const checkAppUsage = async () => {
+      const currentDate = new Date();
+      const currentTime = currentDate.getTime();
+      const startOfDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate()).getTime();
+  
+      const result3 = await queryUsageStats(0, startOfDay, currentTime);
+  
+      const YT = Object.values(result3).filter(item => item.appName === "YouTube").reduce((sum, item) => sum + item.totalTimeInForeground, 0);
+      const Instagram = Object.values(result3).filter(item => item.appName === "Instagram").reduce((sum, item) => sum + item.totalTimeInForeground, 0);
+      const TikTok = Object.values(result3).filter(item => item.appName === "TikTok").reduce((sum, item) => sum + item.totalTimeInForeground, 0);
+      const Snapchat = Object.values(result3).filter(item => item.appName === "Snapchat").reduce((sum, item) => sum + item.totalTimeInForeground, 0);
+      const Triller = Object.values(result3).filter(item => item.appName === "Triller").reduce((sum, item) => sum + item.totalTimeInForeground, 0);
+      const Roblox = Object.values(result3).filter(item => item.appName === "Roblox").reduce((sum, item) => sum + item.totalTimeInForeground, 0);
+      const Fortnite = Object.values(result3).filter(item => item.appName === "Fortnite").reduce((sum, item) => sum + item.totalTimeInForeground, 0);
+      const AmongUs = Object.values(result3).filter(item => item.appName === "Among Us").reduce((sum, item) => sum + item.totalTimeInForeground, 0);
+  
+      const badAppsTotalTimeInForeground = YT + Instagram + TikTok + Snapchat + Triller + Roblox + Fortnite + AmongUs;
+      console.log("backgroundApp: ", badAppsTotalTimeInForeground)
+      console.log("sent: ", sent);
+      if (badAppsTotalTimeInForeground > 360 && !sent) { // Notify if > 1 hour
+        PushNotification.localNotification({
+          title: "App Usage Alert",
+          message: "You've spent too much time on social/gaming apps!",
+          playSound: true,
+          soundName: "default",
+          vibrate: true,
+          channelId: "default-channel-id",
+        });
+        setSent(true);
+      }
+    };
+    
+  
+    // Check app usage every minute
+    const interval = BackgroundTimer.setInterval(checkAppUsage, 6000);
+  
+    return () => {BackgroundTimer.clearInterval(interval);}
+  }, [sent]);
+
+  
+  // Reset sent on a Daily basis
+  useEffect(() => {
+    const resetNotificationFlag = async () => {
+      const currentDate = new Date();
+      const currentDay = currentDate.getDate();
+  
+      const lastNotificationDay = await AsyncStorage.getItem('lastNotificationDay');
+      if (lastNotificationDay !== currentDay.toString()) {
+        setSent(false); // Reset the flag
+        await AsyncStorage.setItem('lastNotificationDay', currentDay.toString()); // Update the stored day
+      }
+    };
+  
+    // Check and reset the flag every minute
+    const interval = BackgroundTimer.setInterval(resetNotificationFlag, 60000);
+  
+    return () => {
+      BackgroundTimer.clearInterval(interval); // Cleanup on unmount
+    };
+  }, []);
+  
 
   
 
