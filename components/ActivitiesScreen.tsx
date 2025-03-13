@@ -161,10 +161,11 @@ const ActivitiesScreen = () => {
 
     useEffect(()=> {
       if(balloonBurstCompleted) {
-        refillEnergy("Andningsövningar")
+        refillEnergy("Andningsövningar");
+        setBalloonBurstCompleted(false);
       }
     }, [balloonBurstCompleted])
-    
+
     const angry = "https://t4.ftcdn.net/jpg/00/68/33/03/360_F_68330331_dKqChy33w0TcNHJEkqT5iw97QOX8la7F.jpg";
     const neutral = 'https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp';
     const happy = "https://thumbs.dreamstime.com/b/cheerful-cartoon-style-orange-white-cat-big-joyful-smile-closed-eyes-as-if-laughing-cheerful-cartoon-style-341221817.jpg";

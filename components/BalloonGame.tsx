@@ -86,7 +86,7 @@ const BalloonGame = ({onBalloonBurst}) => {
           styles.balloon,
           { width: balloonSize, height: balloonSize },
         ]}
-      />
+      ><Text style={styles.text2}>Blås!</Text></View>
       {balloonBurst && (
         <Text style={styles.resetText} onPress={resetBalloon}>
           Tap here to reset the game.
@@ -104,11 +104,20 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   balloon: {
-    backgroundColor: 'red',
+    top: 250,
+    backgroundColor: 'lightblue',
     borderRadius: 150,
   },
   text: {
     marginTop: 20,
+    fontSize: 18,
+  },
+  text2: {
+    
+    position: 'absolute', // Absolutely position the text inside the balloon
+    top: '50%', // Center vertically
+    left: '50%', // Center horizontally
+    /* transform: [{ translateX: -50% }, { translateY: -50% }],  */// Offset by half of the text's width/height
     fontSize: 18,
   },
   resetText: {
