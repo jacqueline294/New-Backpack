@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, PermissionsAndroid, Platform } from 'react-native';
 import SoundLevel from 'react-native-sound-level';
 
-const BalloonGame = () => {
+const BalloonGame = ({onBalloonBurst}) => {
   const [balloonSize, setBalloonSize] = useState(100);
   const [balloonBurst, setBalloonBurst] = useState(false);
 
@@ -36,6 +36,7 @@ const BalloonGame = () => {
   useEffect(()=> {
     if(balloonSize > 299) {
       setBalloonBurst(true);
+      onBalloonBurst(true)
     }
   }, [balloonSize])
 
@@ -46,7 +47,7 @@ const BalloonGame = () => {
   
       SoundLevel.onNewFrame = (data) => {
         const soundLevel = data.value;
-        console.log('Sound Level:', soundLevel);
+        //console.log('Sound Level:', soundLevel);
   
         if(!balloonBurst) {
            if (soundLevel > -10) {

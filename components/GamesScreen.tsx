@@ -27,6 +27,15 @@ export default function GamesScreen({ navigation }: Props) {
         title="Play MemoryMatch"
         onPress={() => navigation.navigate("MemoryMatch")}
       />
+
+      <Button
+        title="Play UnblockMe"
+        onPress={() => navigation.navigate("UnblockMe")}
+      />
+      <Button
+        title="Play TjugoFyrtioatta"
+        onPress={() => navigation.navigate("TjugoFyrtioatta")}
+      />
     </View>
   )
 }

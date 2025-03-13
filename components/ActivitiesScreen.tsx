@@ -13,6 +13,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import React from "react";
 import EnergyBar from "./EnergyBar";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import BalloonGame from "./BalloonGame";
 
 
 
@@ -20,6 +21,7 @@ const ActivitiesScreen = () => {
     const { energy, setEnergy } = useUsageStats();
     const [selectedActivity, setSelectedActivity] = useState(null);
     const [activityOptions, setActivityOptions] = useState([]);
+    const [balloonBurstCompleted, setBalloonBurstCompleted] = useState(false);
     const blinkAnim = useRef(new Animated.Value(1)).current;
     
     // State to store cooldown info for each activity
@@ -94,8 +96,12 @@ const ActivitiesScreen = () => {
     ];
   
     const refillEnergy = useCallback((activity) => {
+      //console.log("Activity: ", activity)
+      //navigation.navigate("Balloon")
       // Increase energy
-      setEnergy((prevEnergy) => {
+
+      if(activity === "Andningsövningar" && balloonBurstCompleted) {
+        setEnergy((prevEnergy) => {
         const newEnergy = prevEnergy + 10;
         return newEnergy > 100 ? 100 : newEnergy;
       });
@@ -109,7 +115,26 @@ const ActivitiesScreen = () => {
       // Save cooldown to AsyncStorage
       setCooldowns(newCooldowns);
       saveCooldowns(newCooldowns);
-    }, [setEnergy, cooldowns, saveCooldowns]);
+      } else if (activity != "Andningsövningar") {
+        
+        setEnergy((prevEnergy) => {
+          const newEnergy = prevEnergy + 10;
+          return newEnergy > 100 ? 100 : newEnergy;
+        });
+    
+        // Start cooldown for the specific activity
+        const newCooldowns = {
+          ...cooldowns,
+          [activity]: Date.now() + 60000,  // Set cooldown end time (1 minute)
+        };
+        
+        // Save cooldown to AsyncStorage
+        setCooldowns(newCooldowns);
+        saveCooldowns(newCooldowns);
+
+      }
+      
+    }, [balloonBurstCompleted, setEnergy, cooldowns, saveCooldowns]);
   
     const animatedButtons = useMemo(() => {
       return activityOptions.map((button, index) => {
@@ -133,6 +158,13 @@ const ActivitiesScreen = () => {
       });
     }, [activityOptions]);
   
+
+    useEffect(()=> {
+      if(balloonBurstCompleted) {
+        refillEnergy("Andningsövningar")
+      }
+    }, [balloonBurstCompleted])
+    
     const angry = "https://t4.ftcdn.net/jpg/00/68/33/03/360_F_68330331_dKqChy33w0TcNHJEkqT5iw97QOX8la7F.jpg";
     const neutral = 'https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp';
     const happy = "https://thumbs.dreamstime.com/b/cheerful-cartoon-style-orange-white-cat-big-joyful-smile-closed-eyes-as-if-laughing-cheerful-cartoon-style-341221817.jpg";
@@ -183,6 +215,7 @@ const ActivitiesScreen = () => {
         {selectedActivity ? (
           <>
             <Text style={styles.activityText}>Aktivitet: {selectedActivity}</Text>
+            {selectedActivity === "Andningsövningar" && (<BalloonGame onBalloonBurst={setBalloonBurstCompleted}></BalloonGame>)}
             <TouchableOpacity 
               style={[styles.refillButton, isCooldownActive(selectedActivity) && styles.disabledButton]} 
               onPress={() => refillEnergy(selectedActivity)} 
