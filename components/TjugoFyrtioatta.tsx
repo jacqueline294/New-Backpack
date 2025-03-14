@@ -200,6 +200,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#faf8ef",
   },
   gameBoard: {
+    width: GRID_SIZE * 80, 
+    height: GRID_SIZE * 80,
     backgroundColor: "#bbada0",
     padding: 10,
     borderRadius: 10,

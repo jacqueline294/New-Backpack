@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, PermissionsAndroid, Platform } from 'react-native';
 import SoundLevel from 'react-native-sound-level';
 
-const BalloonGame = ({onBalloonBurst}) => {
-  const [balloonSize, setBalloonSize] = useState(100);
+const BalloonGame = ({onBalloonBurst = () => {}}) => {// added = () => {} a fallback in case BalloonGame is accessed outside its parent component
+  const [balloonSize, setBalloonSize] = useState(100); // this way, if onBalloonBurst is not passed as a prop, it won’t throw an error since the default function will be an empty function () => {}.
   const [balloonBurst, setBalloonBurst] = useState(false);
 
   const requestMicrophonePermission = async () => {
