@@ -37,6 +37,7 @@ const BalloonGame = ({onBalloonBurst}) => {
     if(balloonSize > 299) {
       setBalloonBurst(true);
       onBalloonBurst(true)
+      setBalloonSize(0)
     }
   }, [balloonSize])
 
@@ -86,7 +87,7 @@ const BalloonGame = ({onBalloonBurst}) => {
           styles.balloon,
           { width: balloonSize, height: balloonSize },
         ]}
-      ><Text style={styles.text2}>Blås!</Text></View>
+      ><Text style={[styles.text2, {width: balloonSize, height: balloonSize}]}>Blås!</Text></View>
       {balloonBurst && (
         <Text style={styles.resetText} onPress={resetBalloon}>
           Tap here to reset the game.
