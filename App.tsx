@@ -27,6 +27,7 @@ import BrainDotsGame from "./components/BrainDots"
 import MemoryMatch from "./components/MemoryMatch"
 import UnblockMe from "./components/UnblockMe"
 import TjugoFyrtioatta from "./components/TjugoFyrtioatta"
+import SimonSays from "./components/SimonSays"
 
 const Stack = createStackNavigator()
 
@@ -61,6 +62,7 @@ export default function App() {
             <Stack.Screen name="MemoryMatch" component={MemoryMatch} />
             <Stack.Screen name="UnblockMe" component={UnblockMe} />
             <Stack.Screen name="TjugoFyrtioatta" component={TjugoFyrtioatta} />
+            <Stack.Screen name="SimonSays" component={SimonSays} />
           </Stack.Navigator>
         </NavigationContainer>
       </GestureHandlerRootView>

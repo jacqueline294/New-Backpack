@@ -8,6 +8,7 @@ type RootStackParamList = {
   MemoryMatch: undefined
   UnblockMe: undefined
   TjugoFyrtioatta: undefined
+  SimonSays: undefined
 }
 
 type Props = {
@@ -36,6 +37,10 @@ export default function GamesScreen({ navigation }: Props) {
       <Button
         title="Play TjugoFyrtioatta"
         onPress={() => navigation.navigate("TjugoFyrtioatta")}
+      />
+      <Button
+        title="Play SimonSays"
+        onPress={() => navigation.navigate("SimonSays")}
       />
     </View>
   )
