@@ -12,6 +12,8 @@ const BalloonGame = ({onBalloonBurst = () => {}}) => {// added = () => {} a fall
   const [balloonSize5, setBalloonSize5] = useState(0);
   const [balloonSize6, setBalloonSize6] = useState(0);
 
+  const [balloonOrder, setBalloonOrder] = useState(1);
+
   const moveBalloon = useRef(new Animated.Value(0)).current;
 
   const requestMicrophonePermission = async () => {
@@ -181,6 +183,35 @@ const BalloonGame = ({onBalloonBurst = () => {}}) => {// added = () => {} a fall
     setBalloonBurst(false);
     setBalloonSize(100);
   }
+
+  const handleBalloonPop = (size) => {
+
+    if(balloonOrder === size) {
+      switch (size) {
+        case 1:
+          setBalloonSize2(0)
+          break;
+        case 2: 
+          setBalloonSize3(0)
+          break;
+        case 3: 
+          setBalloonSize4(0);
+          break;
+        case 4:
+          setBalloonSize5(0);
+          break;
+        case 5: 
+          setBalloonSize6(0);
+          setBalloonOrder(0);
+          break;
+        default:
+          break;
+      }
+
+      setBalloonOrder((prevOrder) => prevOrder + 1);
+    }
+
+  }
   
 
   return (
@@ -192,34 +223,34 @@ const BalloonGame = ({onBalloonBurst = () => {}}) => {// added = () => {} a fall
 
       <Animated.View style={[styles.balloon2, {width: balloonSize2, height: balloonSize2, transform: [{translateX: moveBalloon}]}]}>
         <TouchableOpacity style={{flex: 1}}
-          onPress={()=>setBalloonSize2(0)}>
+          onPress={()=>handleBalloonPop(1)}>
         </TouchableOpacity>
       </Animated.View>
       
 
       <Animated.View style={[styles.balloon3, {width: balloonSize3, height: balloonSize3, transform: [{translateX: moveBalloon}]}]}>
           <TouchableOpacity style={{flex: 1}}
-            onPress={()=>setBalloonSize3(0)}>
+            onPress={()=>handleBalloonPop(2)}>
           </TouchableOpacity>
       </Animated.View>
       
       
       <Animated.View style={[styles.balloon4, {width: balloonSize4, height: balloonSize4, transform: [{translateX: moveBalloon}]}]}>
         <TouchableOpacity 
-          onPress={()=>setBalloonSize4(0)} style={{flex: 1}}>
+          onPress={()=>handleBalloonPop(3)} style={{flex: 1}}>
         </TouchableOpacity>
       </Animated.View>
       
       <Animated.View style={[styles.balloon5, {width: balloonSize5, height: balloonSize5, transform: [{translateX: moveBalloon}]}]}>
         <TouchableOpacity style={{flex: 1}}
-          onPress={()=>setBalloonSize5(0)}>
+          onPress={()=>handleBalloonPop(4)}>
         </TouchableOpacity>
       </Animated.View>
       
 
       <Animated.View style={[styles.balloon6, {width: balloonSize6, height: balloonSize6, transform: [{translateX: moveBalloon}]}]}>
           <TouchableOpacity style={{flex: 1}}
-            onPress={()=>setBalloonSize6(0)}>
+            onPress={()=>handleBalloonPop(5)}>
           </TouchableOpacity>
       </Animated.View>
       
