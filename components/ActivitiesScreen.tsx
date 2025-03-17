@@ -337,4 +337,3 @@ const ActivitiesScreen = () => {
   });
   
   export default ActivitiesScreen;
-  

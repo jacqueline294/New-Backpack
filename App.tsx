@@ -1,3 +1,4 @@
+
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import SignUp from './components/SignUp';
@@ -53,6 +54,7 @@ import SimonSays from './components/SimonSays';
   vibrate: true
 }); */
 const Stack = createStackNavigator();
+
 
 
 export default function App() {
@@ -267,6 +269,7 @@ export default function App() {
       <StatusBar style="auto" />
     </View> */}
 
+
     <NavigationContainer>
     <Stack.Navigator initialRouteName="Home">
       <Stack.Screen name="Home" component={HomeScreen} />
@@ -312,13 +315,11 @@ export default function App() {
   );
 }
 
-
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'cyan',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "cyan",
+    alignItems: "center",
+    justifyContent: "center",
   },
-});
+})
