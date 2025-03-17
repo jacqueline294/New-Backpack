@@ -1,9 +1,12 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { Button } from "react-native-paper";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RouteProp } from "@react-navigation/native";
 import Dashboard from "./Dashboard";
+import { useUsageStats } from "./UsageStatsContext";
+import EnergyBar from "./EnergyBar";
+
 import MainPage from "./MainPage";
 
 // Define the navigation type for the stack
@@ -23,8 +26,12 @@ type Props = {
 };
 
 function HomeScreen({ navigation }: Props) {
+  const {usageStats, setUsageStats, energy} = useUsageStats();
+  
+  
   return (
     <View style={styles.container}>
+      {/* <EnergyBar value={0}></EnergyBar> */}
       <Text style={styles.welcomeText}>VÄLKOMMEN TILL BACKPACK</Text>
       
 
@@ -39,6 +46,31 @@ function HomeScreen({ navigation }: Props) {
         Lobby
       </Button>
 
+      <Button mode="outlined" onPress={() => navigation.navigate("Stats")} style={styles.button}>
+        AppUsageStats
+      </Button>
+
+      {/* <Button mode="outlined" onPress={() => navigation.navigate("MainPage")} style={styles.button}>
+        Daesh
+      </Button> */}
+      <Button mode="outlined" onPress={() => navigation.navigate("Room")} style={styles.button}>
+        Room
+      </Button>
+
+      <ScrollView>
+       {/*  <EnergyBar value={usageStats && usageStats[0] ? 100 - usageStats[0].totalTimeInForeground / 1000 : 100}></EnergyBar>
+         */}
+        
+        <EnergyBar value={energy}></EnergyBar>
+
+        <Text>{JSON.stringify(usageStats, null, 2)}</Text>
+      </ScrollView>
+      
+      
+      {/* <AppUsageStats></AppUsageStats> */}
+      
+      
+    
       {/* <Dashboard></Dashboard> */}
     </View>
   );
