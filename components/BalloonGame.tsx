@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {Animated, View, Text, StyleSheet, PermissionsAndroid, Platform, TouchableOpacity } from 'react-native';
 import SoundLevel from 'react-native-sound-level';
 
@@ -12,7 +12,7 @@ const BalloonGame = ({onBalloonBurst = () => {}}) => {// added = () => {} a fall
   const [balloonSize5, setBalloonSize5] = useState(0);
   const [balloonSize6, setBalloonSize6] = useState(0);
 
-  const moveBalloon = new Animated.Value(0);
+  const moveBalloon = useRef(new Animated.Value(0)).current;
 
   const requestMicrophonePermission = async () => {
     if (Platform.OS === 'android') {
@@ -41,17 +41,17 @@ const BalloonGame = ({onBalloonBurst = () => {}}) => {// added = () => {} a fall
     requestMicrophonePermission();
   }, [])
 
-  /* useEffect(()=> {
+  useEffect(()=> {
     const moveBalloonAnimation = ()=> {
       Animated.loop(
         Animated.sequence([
           Animated.timing(moveBalloon, {
-            toValue: 10,
+            toValue: 5,
             duration: 1000,
             useNativeDriver: true,
           }),
           Animated.timing(moveBalloon, {
-            toValue: -10,
+            toValue: 0,
             duration: 1000,
             useNativeDriver: true
           })
@@ -59,26 +59,27 @@ const BalloonGame = ({onBalloonBurst = () => {}}) => {// added = () => {} a fall
       ).start();
     }
     moveBalloonAnimation();
-  }, []) */
-  Animated.loop(
+  }, [])
+  /* Animated.loop(
         Animated.sequence([
           Animated.timing(moveBalloon, {
-            toValue: 10,
-            duration: 1000,
+            toValue: 5,
+            duration: 500,
             useNativeDriver: true,
           }),
           Animated.timing(moveBalloon, {
-            toValue: -10,
-            duration: 1000,
-            useNativeDriver: true
-          })
+            toValue: 0,
+            duration: 500,
+            useNativeDriver: true,
+          }),
+          
         ])
-      ).start();
+      ).start(); */
 
   useEffect(()=> {
     if(balloonSize2 === 0) {
       const interval = setInterval(()=> {
-        setBalloonSize2(50);
+        setBalloonSize2(40);
       }, 5000)
       return ()=> clearInterval(interval);
     }
@@ -96,7 +97,7 @@ const BalloonGame = ({onBalloonBurst = () => {}}) => {// added = () => {} a fall
   useEffect(()=> {
     if(balloonSize4 === 0) {
       const interval = setInterval(()=> {
-        setBalloonSize4(50);
+        setBalloonSize4(60);
       }, 5000)
       return ()=> clearInterval(interval);
     }
@@ -105,7 +106,7 @@ const BalloonGame = ({onBalloonBurst = () => {}}) => {// added = () => {} a fall
   useEffect(()=> {
     if(balloonSize5 === 0) {
       const interval = setInterval(()=> {
-        setBalloonSize5(50);
+        setBalloonSize5(70);
       }, 5000)
       return ()=> clearInterval(interval);
     }
@@ -114,7 +115,7 @@ const BalloonGame = ({onBalloonBurst = () => {}}) => {// added = () => {} a fall
   useEffect(()=> {
     if(balloonSize6 === 0) {
       const interval = setInterval(()=> {
-        setBalloonSize6(50);
+        setBalloonSize6(80);
       }, 5000)
       return ()=> clearInterval(interval);
     }
@@ -127,11 +128,11 @@ const BalloonGame = ({onBalloonBurst = () => {}}) => {// added = () => {} a fall
       setBalloonSize(0);
       if(balloonBurst) {
         
-        setBalloonSize2(50);
+        setBalloonSize2(40);
         setBalloonSize3(50);
-        setBalloonSize4(50);
-        setBalloonSize5(50);
-        setBalloonSize6(50);
+        setBalloonSize4(60);
+        setBalloonSize5(70);
+        setBalloonSize6(80);
       }
       
       
@@ -188,32 +189,41 @@ const BalloonGame = ({onBalloonBurst = () => {}}) => {// added = () => {} a fall
       <Text style={styles.text}>
         {balloonBurst ? 'The balloon burst! 🎉' : 'Blow into the mic to inflate the balloon! 🎈'}
       </Text>
-      <TouchableOpacity style={[styles.balloon2, {width: balloonSize2, height: balloonSize2}]}
-        onPress={()=>setBalloonSize2(0)}>
 
-      </TouchableOpacity>
-      <TouchableOpacity style={[styles.balloon3, {width: balloonSize3, height: balloonSize3}]}
-        onPress={()=>setBalloonSize3(0)}>
-
-      </TouchableOpacity>
+      <Animated.View style={[styles.balloon2, {width: balloonSize2, height: balloonSize2, transform: [{translateX: moveBalloon}]}]}>
+        <TouchableOpacity style={{flex: 1}}
+          onPress={()=>setBalloonSize2(0)}>
+        </TouchableOpacity>
+      </Animated.View>
       
-      <Animated.View style={[styles.balloon4, {width: balloonSize4, height: balloonSize4, transform: [{translateX: moveBalloon}]}]}>
-        <TouchableOpacity 
-        onPress={()=>setBalloonSize4(0)} style={{flex: 1}}>
 
-      </TouchableOpacity>
+      <Animated.View style={[styles.balloon3, {width: balloonSize3, height: balloonSize3, transform: [{translateX: moveBalloon}]}]}>
+          <TouchableOpacity style={{flex: 1}}
+            onPress={()=>setBalloonSize3(0)}>
+          </TouchableOpacity>
       </Animated.View>
       
       
-      <TouchableOpacity style={[styles.balloon5, {width: balloonSize5, height: balloonSize5}]}
-        onPress={()=>setBalloonSize5(0)}>
+      <Animated.View style={[styles.balloon4, {width: balloonSize4, height: balloonSize4, transform: [{translateX: moveBalloon}]}]}>
+        <TouchableOpacity 
+          onPress={()=>setBalloonSize4(0)} style={{flex: 1}}>
+        </TouchableOpacity>
+      </Animated.View>
+      
+      <Animated.View style={[styles.balloon5, {width: balloonSize5, height: balloonSize5, transform: [{translateX: moveBalloon}]}]}>
+        <TouchableOpacity style={{flex: 1}}
+          onPress={()=>setBalloonSize5(0)}>
+        </TouchableOpacity>
+      </Animated.View>
+      
 
-      </TouchableOpacity>
+      <Animated.View style={[styles.balloon6, {width: balloonSize6, height: balloonSize6, transform: [{translateX: moveBalloon}]}]}>
+          <TouchableOpacity style={{flex: 1}}
+            onPress={()=>setBalloonSize6(0)}>
+          </TouchableOpacity>
+      </Animated.View>
+      
 
-      <TouchableOpacity style={[styles.balloon6, {width: balloonSize6, height: balloonSize6}]}
-        onPress={()=>setBalloonSize6(0)}>
-
-      </TouchableOpacity>
       <View
         style={[
           styles.balloon,
