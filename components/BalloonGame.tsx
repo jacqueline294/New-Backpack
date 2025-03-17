@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, PermissionsAndroid, Platform } from 'react-native';
+import { View, Text, StyleSheet, PermissionsAndroid, Platform, TouchableOpacity } from 'react-native';
 import SoundLevel from 'react-native-sound-level';
 
 const BalloonGame = ({onBalloonBurst = () => {}}) => {// added = () => {} a fallback in case BalloonGame is accessed outside its parent component
   const [balloonSize, setBalloonSize] = useState(100); // this way, if onBalloonBurst is not passed as a prop, it won’t throw an error since the default function will be an empty function () => {}.
   const [balloonBurst, setBalloonBurst] = useState(false);
+  const [balloonSize2, setBalloonSize2] = useState(0);
+  const [balloonSize3, setBalloonSize3] = useState(0);
+  const [balloonSize4, setBalloonSize4] = useState(0);
+  const [balloonSize5, setBalloonSize5] = useState(0);
+  const [balloonSize6, setBalloonSize6] = useState(0);
 
   const requestMicrophonePermission = async () => {
     if (Platform.OS === 'android') {
@@ -34,12 +39,67 @@ const BalloonGame = ({onBalloonBurst = () => {}}) => {// added = () => {} a fall
   }, [])
 
   useEffect(()=> {
+    if(balloonSize2 === 0) {
+      const interval = setInterval(()=> {
+        setBalloonSize2(50);
+      }, 5000)
+      return ()=> clearInterval(interval);
+    }
+  }, [balloonSize2])
+
+  useEffect(()=> {
+    if(balloonSize3 === 0) {
+      const interval = setInterval(()=> {
+        setBalloonSize3(50);
+      }, 5000)
+      return ()=> clearInterval(interval);
+    }
+  }, [balloonSize3])
+
+  useEffect(()=> {
+    if(balloonSize4 === 0) {
+      const interval = setInterval(()=> {
+        setBalloonSize4(50);
+      }, 5000)
+      return ()=> clearInterval(interval);
+    }
+  }, [balloonSize4])
+
+  useEffect(()=> {
+    if(balloonSize5 === 0) {
+      const interval = setInterval(()=> {
+        setBalloonSize5(50);
+      }, 5000)
+      return ()=> clearInterval(interval);
+    }
+  }, [balloonSize5])
+
+  useEffect(()=> {
+    if(balloonSize6 === 0) {
+      const interval = setInterval(()=> {
+        setBalloonSize6(50);
+      }, 5000)
+      return ()=> clearInterval(interval);
+    }
+  }, [balloonSize6])
+
+  useEffect(()=> {
     if(balloonSize > 299) {
       setBalloonBurst(true);
-      onBalloonBurst(true)
-      setBalloonSize(0)
+      onBalloonBurst(true);
+      setBalloonSize(0);
+      if(balloonBurst) {
+        
+        setBalloonSize2(50);
+        setBalloonSize3(50);
+        setBalloonSize4(50);
+        setBalloonSize5(50);
+        setBalloonSize6(50);
+      }
+      
+      
     }
-  }, [balloonSize])
+  }, [balloonSize, balloonBurst])
 
   useEffect(() => {
     //requestMicrophonePermission();
@@ -78,10 +138,34 @@ const BalloonGame = ({onBalloonBurst = () => {}}) => {// added = () => {} a fall
   
 
   return (
+    <View>
     <View style={styles.container}>
       <Text style={styles.text}>
         {balloonBurst ? 'The balloon burst! 🎉' : 'Blow into the mic to inflate the balloon! 🎈'}
       </Text>
+      <TouchableOpacity style={[styles.balloon2, {width: balloonSize2, height: balloonSize2}]}
+        onPress={()=>setBalloonSize2(0)}>
+
+      </TouchableOpacity>
+      <TouchableOpacity style={[styles.balloon3, {width: balloonSize3, height: balloonSize3}]}
+        onPress={()=>setBalloonSize3(0)}>
+
+      </TouchableOpacity>
+      
+      <TouchableOpacity style={[styles.balloon4, {width: balloonSize4, height: balloonSize4}]}
+        onPress={()=>setBalloonSize4(0)}>
+
+      </TouchableOpacity>
+      
+      <TouchableOpacity style={[styles.balloon5, {width: balloonSize5, height: balloonSize5}]}
+        onPress={()=>setBalloonSize5(0)}>
+
+      </TouchableOpacity>
+
+      <TouchableOpacity style={[styles.balloon6, {width: balloonSize6, height: balloonSize6}]}
+        onPress={()=>setBalloonSize6(0)}>
+
+      </TouchableOpacity>
       <View
         style={[
           styles.balloon,
@@ -93,6 +177,7 @@ const BalloonGame = ({onBalloonBurst = () => {}}) => {// added = () => {} a fall
           Tap here to reset the game.
         </Text>
       )}
+    </View>
     </View>
   );
 };
@@ -106,6 +191,40 @@ const styles = StyleSheet.create({
   },
   balloon: {
     top: 250,
+    backgroundColor: 'lightblue',
+    borderRadius: 150,
+  },
+  balloon2: {
+    position: "absolute",
+    top: 170,
+    backgroundColor: 'lightblue',
+    borderRadius: 150,
+  },
+  balloon3: {
+    position: "absolute",
+    top: 200,
+    right: 10,
+    backgroundColor: 'lightblue',
+    borderRadius: 150,
+  },
+  balloon4: {
+    position: "absolute",
+    top: 190,
+    right: 270,
+    backgroundColor: 'lightblue',
+    borderRadius: 150,
+  },
+  balloon5: {
+    position: "absolute",
+    top: 300,
+    right: 100,
+    backgroundColor: 'lightblue',
+    borderRadius: 150,
+  },
+  balloon6: {
+    position: "absolute",
+    top: 260,
+    right: 300,
     backgroundColor: 'lightblue',
     borderRadius: 150,
   },
