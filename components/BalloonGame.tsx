@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, PermissionsAndroid, Platform, TouchableOpacity } from 'react-native';
+import {Animated, View, Text, StyleSheet, PermissionsAndroid, Platform, TouchableOpacity } from 'react-native';
 import SoundLevel from 'react-native-sound-level';
 
 const BalloonGame = ({onBalloonBurst = () => {}}) => {// added = () => {} a fallback in case BalloonGame is accessed outside its parent component
   const [balloonSize, setBalloonSize] = useState(100); // this way, if onBalloonBurst is not passed as a prop, it won’t throw an error since the default function will be an empty function () => {}.
   const [balloonBurst, setBalloonBurst] = useState(false);
+  const [balloonColour, setBalloonColour] = useState("lightblue")
   const [balloonSize2, setBalloonSize2] = useState(0);
   const [balloonSize3, setBalloonSize3] = useState(0);
   const [balloonSize4, setBalloonSize4] = useState(0);
   const [balloonSize5, setBalloonSize5] = useState(0);
   const [balloonSize6, setBalloonSize6] = useState(0);
+
+  const moveBalloon = new Animated.Value(0);
 
   const requestMicrophonePermission = async () => {
     if (Platform.OS === 'android') {
@@ -37,6 +40,40 @@ const BalloonGame = ({onBalloonBurst = () => {}}) => {// added = () => {} a fall
   useEffect(()=> {
     requestMicrophonePermission();
   }, [])
+
+  /* useEffect(()=> {
+    const moveBalloonAnimation = ()=> {
+      Animated.loop(
+        Animated.sequence([
+          Animated.timing(moveBalloon, {
+            toValue: 10,
+            duration: 1000,
+            useNativeDriver: true,
+          }),
+          Animated.timing(moveBalloon, {
+            toValue: -10,
+            duration: 1000,
+            useNativeDriver: true
+          })
+        ])
+      ).start();
+    }
+    moveBalloonAnimation();
+  }, []) */
+  Animated.loop(
+        Animated.sequence([
+          Animated.timing(moveBalloon, {
+            toValue: 10,
+            duration: 1000,
+            useNativeDriver: true,
+          }),
+          Animated.timing(moveBalloon, {
+            toValue: -10,
+            duration: 1000,
+            useNativeDriver: true
+          })
+        ])
+      ).start();
 
   useEffect(()=> {
     if(balloonSize2 === 0) {
@@ -108,14 +145,22 @@ const BalloonGame = ({onBalloonBurst = () => {}}) => {// added = () => {} a fall
   
       SoundLevel.onNewFrame = (data) => {
         const soundLevel = data.value;
-        //console.log('Sound Level:', soundLevel);
+        const rawValue = data.rawValue
+        //console.log('Sound Level:', rawValue);
   
         if(!balloonBurst) {
-           if (soundLevel > -10) {
-          setBalloonSize((prevSize) => Math.min(prevSize + 10, 300));
+           if (rawValue > 26000 ) {
+            console.log("soundlevel:" ,rawValue)
+            setBalloonColour("lightblue")
+            setBalloonSize((prevSize) => Math.min(prevSize + 10, 300));
              } else {
-          setBalloonSize((prevSize) => Math.max(prevSize - 2, 50));
+              setBalloonSize((prevSize) => Math.max(prevSize - 2, 50));
              } 
+             if(rawValue > 27000) {
+              setBalloonColour("red");
+              setBalloonSize((prevSize) => Math.max(prevSize - 5, 50));
+              //setBalloonBurst(true);
+             }
         }
         //console.log("balloon size: ", balloonSize )
         /* if(balloonSize > 299) {
@@ -152,10 +197,13 @@ const BalloonGame = ({onBalloonBurst = () => {}}) => {// added = () => {} a fall
 
       </TouchableOpacity>
       
-      <TouchableOpacity style={[styles.balloon4, {width: balloonSize4, height: balloonSize4}]}
-        onPress={()=>setBalloonSize4(0)}>
+      <Animated.View style={[styles.balloon4, {width: balloonSize4, height: balloonSize4, transform: [{translateX: moveBalloon}]}]}>
+        <TouchableOpacity 
+        onPress={()=>setBalloonSize4(0)} style={{flex: 1}}>
 
       </TouchableOpacity>
+      </Animated.View>
+      
       
       <TouchableOpacity style={[styles.balloon5, {width: balloonSize5, height: balloonSize5}]}
         onPress={()=>setBalloonSize5(0)}>
@@ -169,7 +217,7 @@ const BalloonGame = ({onBalloonBurst = () => {}}) => {// added = () => {} a fall
       <View
         style={[
           styles.balloon,
-          { width: balloonSize, height: balloonSize },
+          { width: balloonSize, height: balloonSize, backgroundColor: balloonColour },
         ]}
       ><Text style={[styles.text2, {width: balloonSize, height: balloonSize}]}>Blås!</Text></View>
       {balloonBurst && (
