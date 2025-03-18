@@ -149,7 +149,7 @@ const BalloonGame = ({onBalloonBurst = () => {}}) => {// added = () => {} a fall
   useEffect(()=> {
 
     const brightness = async()=>{
-      await DeviceBrightness.setBrightnessLevel(0.1)
+      await DeviceBrightness.setBrightnessLevel(0.05)
     }
     if(balloonSize > 299) {
       setBalloonBurst(true);
