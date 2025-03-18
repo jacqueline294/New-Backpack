@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {Animated, View, Text, StyleSheet, PermissionsAndroid, Platform, TouchableOpacity } from 'react-native';
 import SoundLevel from 'react-native-sound-level';
+import DeviceBrightness from '@adrianso/react-native-device-brightness'
 
 const BalloonGame = ({onBalloonBurst = () => {}}) => {// added = () => {} a fallback in case BalloonGame is accessed outside its parent component
   const [balloonSize, setBalloonSize] = useState(100); // this way, if onBalloonBurst is not passed as a prop, it won’t throw an error since the default function will be an empty function () => {}.
@@ -17,6 +18,8 @@ const BalloonGame = ({onBalloonBurst = () => {}}) => {// added = () => {} a fall
   const [balloonOrder, setBalloonOrder] = useState(1);
 
   const moveBalloon = useRef(new Animated.Value(0)).current;
+
+  //DeviceBrightness.setBrightnessLevel(0.1)
 
   const requestMicrophonePermission = async () => {
     if (Platform.OS === 'android') {
@@ -144,10 +147,15 @@ const BalloonGame = ({onBalloonBurst = () => {}}) => {// added = () => {} a fall
   }, [balloonSize8, balloonBurst]) */
 
   useEffect(()=> {
+
+    const brightness = async()=>{
+      await DeviceBrightness.setBrightnessLevel(0.1)
+    }
     if(balloonSize > 299) {
       setBalloonBurst(true);
       onBalloonBurst(true);
       setBalloonSize(0);
+      
       
         
       setBalloonSize2(40);
@@ -159,8 +167,9 @@ const BalloonGame = ({onBalloonBurst = () => {}}) => {// added = () => {} a fall
       setBalloonSize8(100);
       
       
-      
+      brightness();
     }
+    
   }, [balloonSize, balloonBurst])
 
   useEffect(() => {
@@ -201,32 +210,44 @@ const BalloonGame = ({onBalloonBurst = () => {}}) => {// added = () => {} a fall
     }
   }, [balloonBurst]);
 
-  const resetBalloon = () => {
+  const resetBalloon = async () => {
     setBalloonBurst(false);
     setBalloonSize(100);
+    //await DeviceBrightness.setBrightnessLevel(0.1)
   }
 
-  const handleBalloonPop = (size) => {
+  const handleBalloonPop = async (size) => {
 
     if(balloonOrder === size) {
       switch (size) {
         case 1:
           setBalloonSize2(0)
+          await DeviceBrightness.setBrightnessLevel(0.1)
           break;
         case 2: 
           setBalloonSize3(0)
+          await DeviceBrightness.setBrightnessLevel(0.2)
+
           break;
         case 3: 
           setBalloonSize4(0);
+          await DeviceBrightness.setBrightnessLevel(0.3)
+
           break;
         case 4:
           setBalloonSize5(0);
+          await DeviceBrightness.setBrightnessLevel(0.5)
+
           break;
         case 5: 
           setBalloonSize6(0);
+          await DeviceBrightness.setBrightnessLevel(0.7)
+
           break;
         case 6:
           setBalloonSize7(0);
+          await DeviceBrightness.setBrightnessLevel(1)
+
           break;
         case 7: 
           setBalloonSize8(0)

@@ -159,11 +159,7 @@ const styles = StyleSheet.create({
 
     transform: [{ translateY: -50 }],
   },
-  right3: {
-    top: 75, // Adjust as per the button size and image size
-    left: "95%",
-    transform: [{ translateX: -50 }],
-  },
+ 
 })
 
 export default App
