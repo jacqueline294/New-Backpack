@@ -11,6 +11,8 @@ const BalloonGame = ({onBalloonBurst = () => {}}) => {// added = () => {} a fall
   const [balloonSize4, setBalloonSize4] = useState(0);
   const [balloonSize5, setBalloonSize5] = useState(0);
   const [balloonSize6, setBalloonSize6] = useState(0);
+  const [balloonSize7, setBalloonSize7] = useState(0);
+  const [balloonSize8, setBalloonSize8] = useState(0);
 
   const [balloonOrder, setBalloonOrder] = useState(1);
 
@@ -78,64 +80,84 @@ const BalloonGame = ({onBalloonBurst = () => {}}) => {// added = () => {} a fall
         ])
       ).start(); */
 
-  useEffect(()=> {
-    if(balloonSize2 === 0) {
+  /* useEffect(()=> {
+    if(balloonSize2 === 0 && balloonBurst) {
       const interval = setInterval(()=> {
         setBalloonSize2(40);
       }, 5000)
       return ()=> clearInterval(interval);
     }
-  }, [balloonSize2])
+  }, [balloonSize2, balloonBurst])
 
   useEffect(()=> {
-    if(balloonSize3 === 0) {
+    if(balloonSize3 === 0 && balloonBurst) {
       const interval = setInterval(()=> {
         setBalloonSize3(50);
       }, 5000)
       return ()=> clearInterval(interval);
     }
-  }, [balloonSize3])
+  }, [balloonSize3, balloonBurst])
 
   useEffect(()=> {
-    if(balloonSize4 === 0) {
+    if(balloonSize4 === 0 && balloonBurst) {
       const interval = setInterval(()=> {
         setBalloonSize4(60);
       }, 5000)
       return ()=> clearInterval(interval);
     }
-  }, [balloonSize4])
+  }, [balloonSize4, balloonBurst])
 
   useEffect(()=> {
-    if(balloonSize5 === 0) {
+    if(balloonSize5 === 0 && balloonBurst) {
       const interval = setInterval(()=> {
         setBalloonSize5(70);
       }, 5000)
       return ()=> clearInterval(interval);
     }
-  }, [balloonSize5])
+  }, [balloonSize5, balloonBurst])
 
   useEffect(()=> {
-    if(balloonSize6 === 0) {
+    if(balloonSize6 === 0 && balloonBurst) {
       const interval = setInterval(()=> {
         setBalloonSize6(80);
       }, 5000)
       return ()=> clearInterval(interval);
     }
-  }, [balloonSize6])
+  }, [balloonSize6, balloonBurst])
+
+  useEffect(()=> {
+    if(balloonSize7 === 0 && balloonBurst) {
+      const interval = setInterval(()=> {
+        setBalloonSize7(90);
+      }, 5000)
+      return ()=> clearInterval(interval);
+    }
+  }, [balloonSize7, balloonBurst])
+
+  useEffect(()=> {
+    if(balloonSize8 === 0 && balloonBurst) {
+      const interval = setInterval(()=> {
+        setBalloonSize8(100);
+      }, 5000)
+      return ()=> clearInterval(interval);
+    }
+  }, [balloonSize8, balloonBurst]) */
 
   useEffect(()=> {
     if(balloonSize > 299) {
       setBalloonBurst(true);
       onBalloonBurst(true);
       setBalloonSize(0);
-      if(balloonBurst) {
+      
         
-        setBalloonSize2(40);
-        setBalloonSize3(50);
-        setBalloonSize4(60);
-        setBalloonSize5(70);
-        setBalloonSize6(80);
-      }
+      setBalloonSize2(40);
+      setBalloonSize3(50);
+      setBalloonSize4(60);
+      setBalloonSize5(70);
+      setBalloonSize6(80);
+      setBalloonSize7(90);
+      setBalloonSize8(100);
+      
       
       
     }
@@ -155,7 +177,7 @@ const BalloonGame = ({onBalloonBurst = () => {}}) => {// added = () => {} a fall
            if (rawValue > 26000 ) {
             console.log("soundlevel:" ,rawValue)
             setBalloonColour("lightblue")
-            setBalloonSize((prevSize) => Math.min(prevSize + 10, 300));
+            setBalloonSize((prevSize) => Math.min(prevSize + 100, 300));
              } else {
               setBalloonSize((prevSize) => Math.max(prevSize - 2, 50));
              } 
@@ -202,6 +224,12 @@ const BalloonGame = ({onBalloonBurst = () => {}}) => {// added = () => {} a fall
           break;
         case 5: 
           setBalloonSize6(0);
+          break;
+        case 6:
+          setBalloonSize7(0);
+          break;
+        case 7: 
+          setBalloonSize8(0)
           setBalloonOrder(0);
           break;
         default:
@@ -253,6 +281,18 @@ const BalloonGame = ({onBalloonBurst = () => {}}) => {// added = () => {} a fall
             onPress={()=>handleBalloonPop(5)}>
           </TouchableOpacity>
       </Animated.View>
+
+      <Animated.View style={[styles.balloon7, {width: balloonSize7, height: balloonSize7, transform: [{translateX: moveBalloon}]}]}>
+          <TouchableOpacity style={{flex: 1}}
+            onPress={()=>handleBalloonPop(6)}>
+          </TouchableOpacity>
+      </Animated.View>
+
+      <Animated.View style={[styles.balloon8, {width: balloonSize8, height: balloonSize8, transform: [{translateX: moveBalloon}]}]}>
+          <TouchableOpacity style={{flex: 1}}
+            onPress={()=>handleBalloonPop(7)}>
+          </TouchableOpacity>
+      </Animated.View>
       
 
       <View
@@ -261,7 +301,7 @@ const BalloonGame = ({onBalloonBurst = () => {}}) => {// added = () => {} a fall
           { width: balloonSize, height: balloonSize, backgroundColor: balloonColour },
         ]}
       ><Text style={[styles.text2, {width: balloonSize, height: balloonSize}]}>Blås!</Text></View>
-      {balloonBurst && (
+      {balloonSize8 === 0 && balloonBurst && (
         <Text style={styles.resetText} onPress={resetBalloon}>
           Tap here to reset the game.
         </Text>
@@ -313,7 +353,21 @@ const styles = StyleSheet.create({
   balloon6: {
     position: "absolute",
     top: 260,
-    right: 300,
+    right: 180,
+    backgroundColor: 'lightblue',
+    borderRadius: 150,
+  },
+  balloon7: {
+    position: "absolute",
+    top: 260,
+    right: 280,
+    backgroundColor: 'lightblue',
+    borderRadius: 150,
+  },
+  balloon8: {
+    position: "absolute",
+    top: 190,
+    right: 80,
     backgroundColor: 'lightblue',
     borderRadius: 150,
   },
@@ -330,6 +384,8 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   resetText: {
+    position: "absolute",
+    top: 200,
     marginTop: 20,
     fontSize: 18,
     color: 'blue',

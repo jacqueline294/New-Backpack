@@ -101,6 +101,10 @@ const ActivitiesScreen = () => {
       // Increase energy
 
       if(activity === "Andningsövningar" && balloonBurstCompleted) {
+        if(isCooldownActive("Andningsövningar")) {
+          console.log("kan ej energi, måste vänta")
+          return;
+        }
         setEnergy((prevEnergy) => {
         const newEnergy = prevEnergy + 10;
         return newEnergy > 100 ? 100 : newEnergy;
