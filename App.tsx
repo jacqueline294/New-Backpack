@@ -41,7 +41,8 @@ import MemoryMatch from './components/MemoryMatch';
 import BalloonGame from './components/BalloonGame';
 import UnblockMe from './components/UnblockMe';
 import TjugoFyrtioatta from './components/TjugoFyrtioatta';
-import BackgroundTimer from "react-native-background-timer"
+import BackgroundTimer from "react-native-background-timer";
+import EmoInvestigation from './components/EmoInvestigation'
 
 
 /* PushNotification.localNotification({
@@ -297,6 +298,7 @@ export default function App() {
       <Stack.Screen name="EmoGameQ3" component={EmoGameQ3} />
       <Stack.Screen name="EmoGameQ4" component={EmoGameQ4} />
       <Stack.Screen name="EmoGameQ5" component={EmoGameQ5} />
+      <Stack.Screen name="EmoInvestigation" component={EmoInvestigation} />
     </Stack.Navigator>
     </NavigationContainer>
 

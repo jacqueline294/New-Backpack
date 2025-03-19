@@ -60,10 +60,10 @@ const feelings = [
     { label: "NERVÖS", value: "😲"},
     { label: "BESVIKEN", value: "😤"},
     { label: "ENSAM", value: "😞"},
-    { label: "LUGN", value: "🧘‍♂️"},
+    { label: "LUGN", value: "😌"},
     { label: "NYFIKEN", value: "🤔"},
-    { label: "STOLT", value: "👑"},
-    { label: "PIRRIG", value: "🫣"},
+    { label: "STOLT", value: "💪"},
+    { label: "PIRRIG", value: "🤩"},
     { label: "TACKSAM", value: "🙏"},
     { label: "TRÖTT", value: "😴"},
 ];

@@ -7,6 +7,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const EmoSpace = () => {
   const [selectedDate, setSelectedDate] = useState<string>("");
+  const today = new Date().toISOString().split('T')[0];
   const [selectedEmotion, setSelectedEmotion] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [emotionData, setEmotionData] = useState<Record<string, string>>({});
@@ -55,9 +56,15 @@ const EmoSpace = () => {
     { label: "😌", value: "😌"},
     { label: "😠", value: "😠"},
     { label: "😢", value: "😢"},
+    { label: "I dont know", value: "dont_know"},
   ];
 
   const handleSaveEmotion = async () => {
+    if (selectedEmotion === "dont_know") {
+      // If "I don't know" is selected, navigate to another screen
+      navigation.navigate("EmoInvestigation");
+      return; // Exit early, do not save emotion
+    }
     if (selectedEmotion) {
       let newEmotionData;
       if (selectedTimeOfDay === "evening") {
@@ -105,22 +112,24 @@ const EmoSpace = () => {
       />
       {selectedDate && (
         <>
-          <View style={styles.buttonContainer}>
+        {today && selectedDate  == today && (  
+          <View style={styles.buttonContainer}>                      
             <Button
-              title="Idag känner jag mig"
+              title="Idag känner jag mig" 
               onPress={() => {
                 setSelectedTimeOfDay("morning");
                 setIsModalVisible(true);
               }}
             />
             <Button
-              title="Idag har jag känt mig"
+              title="idag har jag känt mig"
               onPress={() => {
                 setSelectedTimeOfDay("evening");
                 setIsModalVisible(true);
               }}
-            />
+            />          
           </View>
+        )}
         </>
       )}
       <Image
@@ -137,6 +146,12 @@ const EmoSpace = () => {
           onPress={() => navigation.navigate("EmoGame")}
         >
           <Text style={styles.buttonText}>KÄNSLO SPEL</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate("EmoInvestigation")}
+        >
+          <Text style={styles.buttonText}>KÄNSLO SPEL V2</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.button}
@@ -215,7 +230,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: 'white',
-    fontSize: 20,
+    fontSize: 15,
     textAlign: 'center'
   },
   saveButton: {
