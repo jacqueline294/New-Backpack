@@ -5,6 +5,9 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { Calendar, DateData } from "react-native-calendars";
 import { getUserId, loadActivities, saveActivities } from "./firebaseServices";
 
+import { doc, setDoc, getDoc } from "firebase/firestore";
+import { db } from "./firbaseConfig";
+
 // Define navigation stack types
 type RootStackParamList = {
   SignUp: undefined;
@@ -27,7 +30,7 @@ const ParentPage = () => {
       if (uid) {
         loadActivities(uid).then((userActivities) => {
           // Convert user activities to marked dates
-          const markedDates = Object.keys(userActivities).reduce((acc, date) => {
+          const markedDates = Object.keys(userActivities || {}).reduce((acc, date) => {
             acc[date] = { marked: true, dotColor: "blue" };
             return acc;
           }, {} as Record<string, { marked: boolean; dotColor: string }>);
@@ -39,12 +42,16 @@ const ParentPage = () => {
   }, []);
 
   // Handle selecting a date
-  const handleDayPress = (day: DateData) => {
+  const handleDayPress = async (day: DateData) => {
     setSelectedDate(day.dateString);
     if (userId) {
-      loadActivities(userId).then((userActivities) => {
-        setDailyActivities(userActivities[day.dateString] || []);
-      });
+      const docRef = doc(db, "parents", userId, "calendar", day.dateString);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        setDailyActivities(docSnap.data()?.activities || []);
+      } else {
+        setDailyActivities([]);
+      }
     }
   };
 
@@ -55,8 +62,8 @@ const ParentPage = () => {
     const updatedActivities = [...dailyActivities, newActivity];
     setDailyActivities(updatedActivities);
 
-    const allActivities = { ...activities, [selectedDate]: updatedActivities };
-    await saveActivities(userId, allActivities);
+    const docRef = doc(db, "parents", userId, "calendar", selectedDate);
+    await setDoc(docRef, { activities: updatedActivities }, { merge: true });
 
     setActivities({ ...activities, [selectedDate]: { marked: true, dotColor: "blue" } });
     setNewActivity("");
@@ -69,8 +76,8 @@ const ParentPage = () => {
     const updatedActivities = dailyActivities.filter((_, i) => i !== index);
     setDailyActivities(updatedActivities);
 
-    const allActivities = { ...activities, [selectedDate]: updatedActivities };
-    await saveActivities(userId, allActivities);
+    const docRef = doc(db, "parents", userId, "calendar", selectedDate);
+    await setDoc(docRef, { activities: updatedActivities }, { merge: true });
   };
 
   return (

@@ -1,142 +1,129 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, Button, Modal, TextInput, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
-import { Calendar, DateData } from 'react-native-calendars';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { doc, setDoc, getDoc } from 'firebase/firestore';
-import { onAuthStateChanged } from 'firebase/auth';
-import { auth, db } from './firbaseConfig';
+import React, { useState, useEffect } from "react";
+import { StyleSheet, View, Text, TouchableOpacity, FlatList, Button, ImageBackground, Modal } from "react-native";
+import { format, addDays, startOfWeek } from "date-fns";
+import { doc, getDoc, collection, getDocs } from "firebase/firestore";
+import { db } from "./firbaseConfig";
+import { blue100 } from "react-native-paper/lib/typescript/styles/themes/v2/colors";
 
+const bubbleBackground = require("../assets/bubbles3.png"); // Ensure you have a bubble-themed background in assets
 
-// Define types for navigation props
-interface CalendarScreenProps {
-  navigation: StackNavigationProp<any>;
-}
+const CalendarView: React.FC<{ parentId: string }> = ({ parentId }) => {
+  const [selectedDate, setSelectedDate] = useState<string>(format(new Date(), "yyyy-MM-dd"));
+  const [modalVisible, setModalVisible] = useState(false);
+  const [points, setPoints] = useState(0);
+  const [activities, setActivities] = useState<string[]>([]);
+  const [weekDays, setWeekDays] = useState<{ date: string; day: string }[]>([]);
+  const [markedDates, setMarkedDates] = useState<Record<string, { marked: boolean; dotColor: string }>>({});
+  const today = format(new Date(), "yyyy-MM-dd");
 
-// Define the structure of an activity (including time)
-interface Activity {
-  description: string;
-  time: string;
-}
-
-// Define type for storing activities
-interface Activities {
-  [key: string]: Activity[];
-}
-
-const CalendarScreen: React.FC<CalendarScreenProps> = ({ navigation }) => {
-  const [selectedDate, setSelectedDate] = useState<string>('');
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const [activity, setActivity] = useState<string>('');
-  const [time, setTime] = useState<string>('');
-  const [activities, setActivities] = useState<Activities>({});
-  const [userId, setUserId] = useState<string | null>(null);
-
-  // Monitor authentication state
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUserId(user.uid);
-        loadActivities(user.uid);
-      } else {
-        setUserId(null);
-      }
+    if (!parentId) return;
+    const fetchCalendar = async () => {
+      const calendarRef = collection(db, "parents", parentId, "calendar");
+      const querySnapshot = await getDocs(calendarRef);
+      let newMarkedDates: Record<string, { marked: boolean; dotColor: string }> = {};
+      querySnapshot.forEach((doc) => {
+        newMarkedDates[doc.id] = { marked: true, dotColor: "blue" };
+      });
+      setMarkedDates(newMarkedDates);
+    };
+    fetchCalendar();
+  }, [parentId]);
+
+  useEffect(() => {
+    const startOfWeekDate = startOfWeek(new Date(), { weekStartsOn: 1 });
+    const days = Array.from({ length: 7 }, (_, i) => {
+      const day = addDays(startOfWeekDate, i);
+      return { date: format(day, "yyyy-MM-dd"), day: format(day, "EEE") };
     });
-    return () => unsubscribe();
+    setWeekDays(days);
   }, []);
 
-  // Load activities from Firebase per user
-  const loadActivities = async (userId: string) => {
-    try {
-      const docRef = doc(db, 'activities', userId);
-      const docSnap = await getDoc(docRef);
-
-      if (docSnap.exists()) {
-        const data = docSnap.data();
-        setActivities(data.activities || {});
-        console.log('✅ Activities loaded successfully:', data);
-      } else {
-        console.log("ℹ️ No activities found in Firestore.");
-      }
-    } catch (error) {
-      console.error('❌ Error loading activities:', error);
-    }
-  };
-
-  // Save activities per user
-  const saveActivities = async (updatedActivities: Activities) => {
-    if (!userId) return;
-    try {
-      const docRef = doc(db, 'activities', userId);
-      await setDoc(docRef, { activities: updatedActivities }, { merge: true });
-      console.log('✅ Activities saved successfully!');
-    } catch (error) {
-      console.error('❌ Error saving activities:', error);
-    }
-  };
-
-  // Handle selecting a date
-  const handleDayPress = (day: DateData) => {
-    setSelectedDate(day.dateString);
+  const handleDayPress = async (date: string) => {
+    setSelectedDate(date);
     setModalVisible(true);
+    const docRef = doc(db, "parents", parentId, "calendar", date);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      setActivities(docSnap.data()?.activities || []);
+    } else {
+      setActivities([]);
+    }
   };
 
-  // Add a new activity with time
-  const addActivity = () => {
-    if (!userId || activity.trim() === '' || time.trim() === '') return;
-    const updatedActivities = {
-      ...activities,
-      [selectedDate]: [...(activities[selectedDate] || []), { description: activity, time }],
-    };
-    setActivities(updatedActivities);
-    saveActivities(updatedActivities);
-    setActivity('');
-    setTime('');
-    setModalVisible(false);
+  const handleActivityComplete = () => {
+    setPoints((prevPoints) => prevPoints + 5);
   };
 
   return (
-    <View style={styles.container}>
-      <Button title="Go to Dashboard" onPress={() => navigation.navigate('Dashboard')} />
-      <Calendar
-        onDayPress={handleDayPress}
-        markedDates={Object.keys(activities).reduce((acc, date) => {
-          acc[date] = { marked: true, dotColor: 'blue' };
-          return acc;
-        }, {} as Record<string, { marked: boolean; dotColor: string }>)}
-      />
+    <ImageBackground source={bubbleBackground} style={styles.background}>
+      <View style={styles.container}>
+        <Text style={styles.header}>Veckovy</Text>
+        <FlatList
+          horizontal
+          data={weekDays}
+          keyExtractor={(item) => item.date}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              style={[styles.bubble, selectedDate === item.date && styles.selectedBubble, item.date === today && styles.todayBubble]}
+              onPress={() => handleDayPress(item.date)}
+            >
+              <Text style={styles.bubbleText}>{item.day}</Text>
+              <Text style={styles.bubbleNumber}>{item.date.split("-")[2]}</Text>
+            </TouchableOpacity>
+          )}
+        />
 
-      <Modal visible={modalVisible} animationType="slide">
-        <View style={styles.modalContainer}>
-          <Text>Activities for {selectedDate}</Text>
-          <FlatList
-            data={activities[selectedDate] || []}
-            renderItem={({ item }) => <Text>{item.time} - {item.description}</Text>}
-            keyExtractor={(item, index) => index.toString()}
-          />
-          <TextInput
-            placeholder="Activity description"
-            value={activity}
-            onChangeText={setActivity}
-            style={styles.input}
-          />
-          <TextInput
-            placeholder="Time (e.g., 10:00 AM)"
-            value={time}
-            onChangeText={setTime}
-            style={styles.input}
-          />
-          <Button title="Add" onPress={addActivity} />
-          <Button title="Close" onPress={() => setModalVisible(false)} />
-        </View>
-      </Modal>
-    </View>
+        {/* Modal for Activities */}
+        <Modal visible={modalVisible} animationType="slide" transparent>
+          <View style={styles.modalContainer}>
+            <View style={styles.modalContent}>
+              <Text style={styles.modalHeader}>Dagens Aktiviteter</Text>
+              {activities.length > 0 ? (
+                <FlatList
+                  data={activities}
+                  renderItem={({ item, index }) => (
+                    <TouchableOpacity key={index} style={styles.activityBubble} onPress={handleActivityComplete}>
+                      <Text style={styles.activityText}>{item}</Text>
+                    </TouchableOpacity>
+                  )}
+                  keyExtractor={(item, index) => index.toString()}
+                />
+              ) : (
+                <Text style={styles.noActivitiesText}>Inga aktiviteter för denna dag</Text>
+              )}
+              <Button title="Stäng" onPress={() => setModalVisible(false)} />
+            </View>
+          </View>
+        </Modal>
+
+        <Text style={styles.pointsText}>Poäng: {points}</Text>
+      </View>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20 },
-  modalContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  input: { borderWidth: 1, width: 200, marginVertical: 10, padding: 5 },
+  background: { flex: 1, 
+    resizeMode: "stretch", 
+    justifyContent: "center" },
+  container: { padding: 16, 
+    alignItems: "center" },
+  header: { fontSize: 22, fontWeight: "bold", 
+    color: "gray",
+    marginBottom: 10 },
+  bubble: { padding: 20, margin: 6, borderRadius: 50, backgroundColor: "rgba(255, 255, 255, 0.7)", alignItems: "center", justifyContent: "center", width: 80, height: 80 },
+  selectedBubble: { backgroundColor: "rgba(173, 216, 230, 0.9)" },
+  todayBubble: { backgroundColor: "rgba(255, 165, 0, 0.9)" },
+  bubbleText: { fontSize: 18, fontWeight: "bold", color: "#0077b6" },
+  bubbleNumber: { fontSize: 22, fontWeight: "bold", color: "#023e8a" },
+  modalContainer: { flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "rgba(0,0,0,0.5)" },
+  modalContent: { backgroundColor: "#fff", padding: 20, borderRadius: 10, alignItems: "center" },
+  modalHeader: { fontSize: 20, fontWeight: "bold", marginBottom: 10 },
+  activityBubble: { padding: 15, borderRadius: 50, margin: 5, backgroundColor: "#5cb85c" },
+  activityText: { fontSize: 16, fontWeight: "bold", color: "#fff" },
+  noActivitiesText: { fontSize: 16, fontWeight: "bold", color: "#666", marginVertical: 10 },
+  pointsText: { fontSize: 18, fontWeight: "bold", color: "gray", marginTop: 10 },
 });
 
-export default CalendarScreen;
+export default CalendarView;
