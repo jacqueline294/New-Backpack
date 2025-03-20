@@ -135,58 +135,90 @@ const BlackJack = () => {
 
   const playerStand = () => {
     if (gameOver) return;
-
-
-    let dealerScore = calculateScore(dealerHand);
-
-
-    console.log("dealerScore: ", dealerScore)
+  
+  
+    // Local variables to track the dealer's hand and score
+    let localDealerHand = [...dealerHand];
+    let dealerScore = calculateScore(localDealerHand);
+    console.log("Initial dealerScore: ", dealerScore);
+  
+  
     const drawDealerCard = () => {
+      if (deck.length === 0) {
+        setMessage("No more cards left in the deck.");
+        setGameOver(true);
+        return;
+      }
+  
+  
+      // Draw a new card from the deck and add it to the local dealer hand
       const newCard = deck.pop()!;
-      setDealerHand(prev => [...prev, newCard]);
-
-
-      // Add animation for the new dealer card flip
-      setDealerCardFlips((prevFlips: any) => [...prevFlips, new Animated.Value(0)]);
-
-
-      // Trigger the card flip animation for the new dealer card
-      Animated.timing(dealerCardFlips[dealerCardFlips.length], {
-        toValue: 1,
-        duration: 500,
-        useNativeDriver: true,
-      }).start();
-
-
-      dealerScore = calculateScore(dealerHand);
-      console.log("dealerScore2: ", dealerScore)
+      localDealerHand.push(newCard);
+  
+  
+      // Calculate the dealer's score after the new card
+      dealerScore = calculateScore(localDealerHand);
+      console.log("New dealerScore after drawing a card: ", dealerScore);
+  
+  
+      // Once dealer's score is >= 17, stop drawing cards
+      if (dealerScore < 17) {
+        // Keep drawing if score is less than 17
+        drawDealerCard();
+      } else {
+        // Update the state once the dealer stops drawing cards
+        setDealerHand(localDealerHand);
+  
+  
+        // Now check the final results of the game
+        const playerScore = calculateScore(playerHand);
+  
+  
+        if (playerScore > 21) {
+          setMessage("Player busts! Dealer wins.");
+          setEnergy(prevEnergy => prevEnergy - 10);
+        } else if (dealerScore > 21 || playerScore > dealerScore) {
+          setMessage("Player wins!");
+          setEnergy(prevEnergy => prevEnergy + 5);
+        } else if (playerScore === dealerScore) {
+          setMessage("It's a tie!");
+        } else {
+          setMessage("Dealer wins!");
+          setEnergy(prevEnergy => prevEnergy - 10);
+        }
+  
+  
+        setGameOver(true);
+      }
     };
-    console.log("dealerScore3: ", dealerScore)
-
-
-    // Draw cards until the dealer's score is >= 17
-    while (dealerScore < 17) {
-      drawDealerCard();
-    }
-
-
-    const playerScore = calculateScore(playerHand);
-    if (playerScore > 21) {
-      setMessage('Player busts! Dealer wins.');
-    } else if (dealerScore > 21 || playerScore > dealerScore) {
-      setMessage('Player wins!');
-      setEnergy((prevEnergy: number) => prevEnergy + 5)
-    } else if (playerScore === dealerScore) {
-      setMessage('It\'s a tie!');
+  
+  
+    // Check if the dealer's score is already >= 17 before drawing any cards
+    if (dealerScore < 17) {
+      drawDealerCard(); // Start drawing cards for the dealer if needed
     } else {
-      setMessage('Dealer wins!');
-      setEnergy((prevEnergy: number) => prevEnergy - 10)
+      // If dealer's score is already 17 or greater, proceed with checking the game result
+      const playerScore = calculateScore(playerHand);
+  
+  
+      if (playerScore > 21) {
+        setMessage("Player busts! Dealer wins.");
+        setEnergy(prevEnergy => prevEnergy - 10);
+      } else if (dealerScore > 21 || playerScore > dealerScore) {
+        setMessage("Player wins!");
+        setEnergy(prevEnergy => prevEnergy + 5);
+      } else if (playerScore === dealerScore) {
+        setMessage("It's a tie!");
+      } else {
+        setMessage("Dealer wins!");
+        setEnergy(prevEnergy => prevEnergy - 10);
+      }
+  
+  
+      setGameOver(true);
     }
-
-
-    setGameOver(true);
   };
-
+  
 
   const checkGameStatus = () => {
     const playerScore = calculateScore(playerHand);
@@ -375,8 +407,8 @@ const styles = StyleSheet.create({
     marginTop: 200,
   },
   card: {
-    width: 100,
-    height: 150,
+    width: 50,
+    height: 100,
     margin: 5,
     justifyContent: 'center',
     alignItems: 'center',
