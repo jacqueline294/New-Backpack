@@ -44,6 +44,7 @@ import UnblockMe from './components/UnblockMe';
 import TjugoFyrtioatta from './components/TjugoFyrtioatta';
 import BackgroundTimer from "react-native-background-timer"
 import SimonSays from './components/SimonSays';
+import BlackJack from './components/BlackJack';
 
 
 /* PushNotification.localNotification({
@@ -295,6 +296,7 @@ export default function App() {
       <Stack.Screen name="UnblockMe" component={UnblockMe} />
       <Stack.Screen name="TjugoFyrtioatta" component={TjugoFyrtioatta} />
       <Stack.Screen name="SimonSays" component={SimonSays} />
+      <Stack.Screen name="Black" component={BlackJack} />
 
       <Stack.Screen name="Balloon" component={BalloonGame} />
 
