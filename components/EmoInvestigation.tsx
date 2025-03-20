@@ -10,15 +10,16 @@ const questions = {
           { text: "DEN HAR VARIT JÄTTEKUL", next: "BRA" },
           { text: "DET HAR VARIT JOBBIGT", next: "DÅLIG" },
           { text: "JAG VET INTE RIKTIGT", next: "VETINTE1" },
+          { text: "JAG VILL SPELLA MEMORY", next: "MemoryMatch" },
         ],
       },
     BRA: {
         text: "PLACEHOLDER",
         choices: [
-          { text: "ANSWER 1", next: "realName" },
-          { text: "ANSWER 2", next: "falseName" },
-          { text: "ANSWER 3", next: "noName" },
-          { text: "ANSWER 4 NAVIGATION", next: "noName" },
+          { text: "ANSWER 1", next: "answer1" },
+          { text: "ANSWER 2", next: "answer2" },
+          { text: "ANSWER 3", next: "answer3" },
+          { text: "ANSWER 4 NAVIGATION", next: "activity" },
         ],
       },
       
@@ -34,9 +35,13 @@ const EmoInvestigation = () => {
   
     // Function to handle when a choice is selected
     const handleChoice = (nextNode) => {
+      if (nextNode === "MemoryMatch") {
+        navigation.navigate("MemoryMatch");
+      } else {
       // Push the current node to history before transitioning
       setHistory([...history, currentNode]);
       setCurrentNode(nextNode);
+      }
     };
   
     // Function to handle going back to the previous dialogue node
@@ -49,15 +54,15 @@ const EmoInvestigation = () => {
     };
   
     // Get the current dialogue node
-    const currentDialogue = questions [currentNode];
+    const currentQuestion = questions [currentNode];
   
     return (
       <View style={styles.container}>        
         <ScrollView>
           {/* Displaying the dialogue text */}
-          <Text style={styles.dialogueText}>{currentDialogue.text}</Text>  
+          <Text style={styles.dialogueText}>{currentQuestion.text}</Text>  
           {/* Displaying the choices */}
-          {currentDialogue.choices.map((choice, index) => (
+          {currentQuestion.choices.map((choice, index) => (
             <TouchableOpacity key={index} style={styles.button}>
               <Button
               key={index}
@@ -72,7 +77,7 @@ const EmoInvestigation = () => {
               style={styles.button}
               onPress={() => navigation.navigate("EmoSpace")}
             >
-              <Text style={styles.buttonText}>TILLBAKA</Text>
+              <Text style={styles.button}>TILLBAKA</Text>
         </TouchableOpacity>
         {history.length > 0 && (
           <Button
@@ -109,7 +114,6 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   button: {
-    backgroundColor: 'purple',
     padding: 10,
     borderRadius: 5,
     justifyContent: 'flex-end',
@@ -153,6 +157,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#ccc",
     marginBottom: 10,
+  },
+  container: {
+    flex: 1,
+    padding: 16,
+    backgroundColor: "#f5f5f5",
   },
 });
 
