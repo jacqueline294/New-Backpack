@@ -16,6 +16,7 @@ interface Card {
 }
 
 const EMOJI_PAIRS = ["🐶", "🐱", "🐭", "🐹", "🐰", "🦊", "🐻", "🐼"]
+const EMOJI_PAIRS2 = ["🇨🇺", "🇧🇾", "🇰🇵", "🇸🇪", "🇸🇴", "🇺🇿", "🇦🇫", "🇷🇺"]
 
 const shuffleArray = (array: any[]) => {
   return array.sort(() => Math.random() - 0.5)
@@ -98,7 +99,7 @@ export default function MemoryMatch() {
 
       <FlatList
         data={cards}
-        numColumns={16}
+        numColumns={4}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <TouchableOpacity
@@ -145,7 +146,7 @@ const styles = StyleSheet.create({
   card: {
     flex: 1,
     aspectRatio: 1,
-    margin: 5,
+    margin: 10,
     backgroundColor: "#3498db",
     justifyContent: "center",
     alignItems: "center",

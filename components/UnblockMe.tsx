@@ -23,6 +23,8 @@ const UnblockMe = () => {
   const [blocks, setBlocks] = useState([...levels[currentLevel]])
   const [selectedBlock, setSelectedBlock] = useState<string | null>(null)
 
+  console.log("SelectedBlock", selectedBlock)
+
   const moveBlock = (
     id: string,
     direction: "left" | "right" | "up" | "down"
@@ -87,6 +89,11 @@ const UnblockMe = () => {
     setBlocks([...levels[currentLevel]])
   }
 
+  const onPress = (blockId) => {
+    setSelectedBlock(blockId)
+    console.log("button pressed with blockId: ", blockId)
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Unblock Me - Level {currentLevel + 1}</Text>
@@ -95,7 +102,8 @@ const UnblockMe = () => {
         {blocks.map((block) => (
           <TouchableOpacity
             key={block.id}
-            onPress={() => setSelectedBlock(block.id)}
+            /* onPress={() => onPress(block.id)} */
+            onPressIn={() => onPress(block.id)}
           >
             <View
               style={[

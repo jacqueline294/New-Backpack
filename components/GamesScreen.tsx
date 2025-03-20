@@ -9,6 +9,8 @@ type RootStackParamList = {
   UnblockMe: undefined
   TjugoFyrtioatta: undefined
   SimonSays: undefined
+  FyraiRad: undefined
+  Paintly: undefined
 }
 
 type Props = {
@@ -41,6 +43,14 @@ export default function GamesScreen({ navigation }: Props) {
       <Button
         title="Play SimonSays"
         onPress={() => navigation.navigate("SimonSays")}
+      />
+      <Button
+        title="Play FyraiRad"
+        onPress={() => navigation.navigate("FyraiRad")}
+      />
+      <Button
+        title="Play Paintlly"
+        onPress={() => navigation.navigate("Paintly")}
       />
     </View>
   )

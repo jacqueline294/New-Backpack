@@ -28,6 +28,8 @@ import MemoryMatch from "./components/MemoryMatch"
 import UnblockMe from "./components/UnblockMe"
 import TjugoFyrtioatta from "./components/TjugoFyrtioatta"
 import SimonSays from "./components/SimonSays"
+import FyraiRad from "./components/FyraiRad"
+import Paintly from "./components/Paintly"
 
 const Stack = createStackNavigator()
 
@@ -63,6 +65,8 @@ export default function App() {
             <Stack.Screen name="UnblockMe" component={UnblockMe} />
             <Stack.Screen name="TjugoFyrtioatta" component={TjugoFyrtioatta} />
             <Stack.Screen name="SimonSays" component={SimonSays} />
+            <Stack.Screen name="FyraiRad" component={FyraiRad} />
+            <Stack.Screen name="Paintly" component={Paintly} />
           </Stack.Navigator>
         </NavigationContainer>
       </GestureHandlerRootView>
