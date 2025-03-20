@@ -72,6 +72,8 @@ const BlackJack = () => {
   const [playerCardFlips, setPlayerCardFlips] = useState<any>([]);
   const [dealerCardFlips, setDealerCardFlips] = useState<any>([]);
 
+  const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
 
   const startGame = () => {
     const newDeck = generateDeck(); // Generate and shuffle a new deck
@@ -143,7 +145,7 @@ const BlackJack = () => {
     console.log("Initial dealerScore: ", dealerScore);
   
   
-    const drawDealerCard = () => {
+    const drawDealerCard = async () => {
       if (deck.length === 0) {
         setMessage("No more cards left in the deck.");
         setGameOver(true);
@@ -160,6 +162,9 @@ const BlackJack = () => {
       dealerScore = calculateScore(localDealerHand);
       console.log("New dealerScore after drawing a card: ", dealerScore);
   
+      setDealerHand(localDealerHand);
+
+      await delay(1000)
   
       // Once dealer's score is >= 17, stop drawing cards
       if (dealerScore < 17) {
