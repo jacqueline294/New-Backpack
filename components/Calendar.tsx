@@ -3,7 +3,6 @@ import { StyleSheet, View, Text, TouchableOpacity, FlatList, Button, ImageBackgr
 import { format, addDays, startOfWeek } from "date-fns";
 import { doc, getDoc, collection, getDocs } from "firebase/firestore";
 import { db } from "./firbaseConfig";
-import { blue100 } from "react-native-paper/lib/typescript/styles/themes/v2/colors";
 
 const bubbleBackground = require("../assets/bubbles3.png"); // Ensure you have a bubble-themed background in assets
 
