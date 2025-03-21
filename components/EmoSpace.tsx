@@ -136,22 +136,16 @@ const EmoSpace = () => {
         //source={{ uri: 'https://static.vecteezy.com/ti/gratis-vektor/t1/6828456-ljusa-smiley-ansikte-emoji-vektor-uttryck-gratis-vector.jpg' }}
         //style={styles.image}
       />
-      <Text style={{ textAlign: "center", fontSize: 150 }}>
+      <Text style={{ textAlign: "center", fontSize: 150, }}>
         {morningEmotionData[selectedDate] || "😶"}
         {emotionData[selectedDate] || "😶"}
       </Text>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate("EmoGame")}
-        >
-          <Text style={styles.buttonText}>KÄNSLO SPEL</Text>
-        </TouchableOpacity>
+      <View style={styles.menuButtonContainer}>
         <TouchableOpacity
           style={styles.button}
           onPress={() => navigation.navigate("EmoInvestigation")}
         >
-          <Text style={styles.buttonText}>KÄNSLO SPEL V2</Text>
+          <Text style={styles.buttonText}>KÄNSLO SPEL</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.button}
@@ -222,11 +216,10 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginBottom: 20,
   },
-  button: {
+  button: {    
     backgroundColor: 'purple',
     padding: 10,
     borderRadius: 5,
-    justifyContent: 'flex-end',
   },
   buttonText: {
     color: 'white',
@@ -257,6 +250,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     marginTop: 20,
+    marginBottom: 10,
+  },
+  menuButtonContainer: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
     marginBottom: 10,
   },
   picker: {

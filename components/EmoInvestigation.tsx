@@ -14,14 +14,43 @@ const questions = {
         ],
       },
     BRA: {
-        text: "PLACEHOLDER",
+        text: "KUL ATT HÖRA ATT DU MÅR BRA. VILL DU BERÄTTA VAD DET ÄR SOM GJORT ATT DET KÄNNS BRA",
         choices: [
-          { text: "ANSWER 1", next: "answer1" },
-          { text: "ANSWER 2", next: "answer2" },
-          { text: "ANSWER 3", next: "answer3" },
+          { text: "NÅGON HAR VARIT VÄLDIGT SNÄLL MOT MIG", next: "SNÄLL" },
+          { text: "DET HÄNDE EN VÄLDIGT ROLIG SAK IDAG", next: "ROLIG" },
+          { text: "JAG VET INTE RIKTIGT", next: "VETINTE2" },
           { text: "ANSWER 4 NAVIGATION", next: "activity" },
         ],
       },
+    DÅLIG: {
+      text: "DET VAR TRÅKIGT ATT HÖRA. VAD ÄR DET SOM HAR VARIT SÅ DÅLIGT?",
+      choices: [
+        { text: "NÅGON HAR VARIT DUM MOT MIG", next: "DUM" },
+        { text: "DET HAR HÄNT EN LEDSAM SAK", next: "LEDSEN" },
+        { text: "JAG VET INTE RIKIGT", next: "VETINTE3" },
+      ],
+    },
+    SNÄLL: {
+      text: "VAD KUL ATT HÖRA. VEM VAR DET? vET DU VARFÖR PERSONEN VAR SNÄLL?",
+      choices: [
+        { text: "DET VAR EN KOMPIS SOM VAR SNÄLL TILLBAKA FÖR VAD JAG GJORT", next: "PH" },
+        { text: "DET VAR EN KOMPIS MEN VET INTE VARFÖR", next: "PH" },
+        { text: "DET VAR EN I MIN FAMILJ SOM VAR SNÄLL TILLBAKA FÖR VAD JAG GJORT", next: "PH" },
+        { text: "DET VAR EN I MIN FAMILJ MEN VET INTE VARFÖR", next: "PH" },
+        { text: "DET VAR NÅGON ANNAN SOM VAR SNÄLL TILLBAKA", next: "PH" },
+        { text: "DET VAR NÅGON ANNAN MEN VET INTE VARFÖR", next: "PH" },
+        { text: "ANSWER 4 NAVIGATION", next: "activity" },
+      ],
+    },
+    ROLIG: {
+      text: "JIPPIE! VAD FÖR ROLIGT ÄR DET SOM HAR HÄNT?",
+      choices: [
+        { text: "DET HAR VARIT KALAS", next: "KALAS" },
+        { text: "HAR VARIT EN ROLIG SKOLAKTIVITET", next: "SKOLAKTIVITET" },
+        { text: "VARIT PÅ UTFLYKT MED KOMPISAR ELLER FAMILJ", next: "UTFLYKT" },
+      ],
+    },
+  
       
 }
 
@@ -64,11 +93,9 @@ const EmoInvestigation = () => {
           {/* Displaying the choices */}
           {currentQuestion.choices.map((choice, index) => (
             <TouchableOpacity key={index} style={styles.button}>
-              <Button
               key={index}
               title={choice.text}
               onPress={() => handleChoice(choice.next)}
-            />
             </TouchableOpacity>
             
           ))}
@@ -77,7 +104,7 @@ const EmoInvestigation = () => {
               style={styles.button}
               onPress={() => navigation.navigate("EmoSpace")}
             >
-              <Text style={styles.button}>TILLBAKA</Text>
+              <Text style={styles.backButton}>TILLBAKA TILL EMOSPACE</Text>
         </TouchableOpacity>
         {history.length > 0 && (
           <Button
@@ -86,9 +113,7 @@ const EmoInvestigation = () => {
           />
         )}
       </View>
-    );
-    
-
+    );  
 }
 
 const styles = StyleSheet.create({
@@ -96,6 +121,12 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     alignSelf: 'center',
+  },
+  dialogueText: {
+    fontSize: 25,
+  },
+  optionButton: {
+    height: 10,
   },
   modalContainer: {
     flex: 1,
@@ -117,6 +148,15 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 5,
     justifyContent: 'flex-end',
+    height: 0,
+  },
+  backButton: {
+    backgroundColor: 'blue',
+    padding: 10,
+    borderRadius: 5,
+    color: 'white',
+    fontSize: 15,
+    textAlign: 'center'
   },
   buttonText: {
     color: 'white',
