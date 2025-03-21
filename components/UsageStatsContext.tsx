@@ -39,7 +39,7 @@ export const UsageStatsProvider = ( {children} ) => {
 
             //console.log("usageDifference: " , usageDifference)
             //console.log("totalEnergyLoss: ", totalEnergyLoss)
-            setEnergy(prevEnergy => Math.max(1, prevEnergy - totalEnergyLoss));
+            setEnergy((prevEnergy: number) => Math.max(1, Math.min(100,  prevEnergy - totalEnergyLoss )));
 
             AsyncStorage.setItem("energy1", energy.toString())
 
