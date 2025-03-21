@@ -8,7 +8,7 @@ import {
 } from "react-native"
 import Svg, { Path, G } from "react-native-svg"
 
-const colors = ["red", "blue", "green", "yellow", "purple", "black"]
+const colors = ["red", "blue", "green", "yellow", "purple", "black", "white"]
 
 const images = [
   {
@@ -53,24 +53,53 @@ const App = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
   const [selectedColor, setSelectedColor] = useState("black")
   const [lines, setLines] = useState<{ color: string; points: string }[]>([])
+  const [isEraser, setIsEraser] = useState(false)
+  const [eraserSize, setEraserSize] = useState(5)
+
+  const SCALE_FACTOR = 100 / 300
 
   const startDrawing = (evt: any) => {
     const { locationX, locationY } = evt.nativeEvent
+    const x = locationX * SCALE_FACTOR
+    const y = locationY * SCALE_FACTOR
+
     setLines([
       ...lines,
-      { color: selectedColor, points: `${locationX},${locationY}` },
+      { color: isEraser ? "#f0f0f0" : selectedColor, points: `${x},${y}` },
     ])
   }
 
   const continueDrawing = (evt: any) => {
     const { locationX, locationY } = evt.nativeEvent
+    const x = locationX * SCALE_FACTOR
+    const y = locationY * SCALE_FACTOR
+
     setLines((prevLines) => {
+      if (prevLines.length === 0) return prevLines
       const newLines = [...prevLines]
-      if (newLines.length > 0) {
-        newLines[newLines.length - 1].points += ` ${locationX},${locationY}`
-      }
+      newLines[newLines.length - 1].points += ` ${x},${y}`
       return newLines
     })
+
+    if (isEraser) {
+      setLines((prevLines) => {
+        const newLines = [...prevLines]
+        const lastLine = newLines[newLines.length - 1]
+        const points = lastLine.points.split(" ")
+        const lastPoint = points[points.length - 1].split(",")
+        const lastX = parseFloat(lastPoint[0])
+        const lastY = parseFloat(lastPoint[1])
+
+        newLines.push({
+          color: "#f0f0f0",
+          points: `${lastX - eraserSize},${lastY - eraserSize} ${
+            lastX + eraserSize
+          },${lastY + eraserSize}`,
+        })
+
+        return newLines
+      })
+    }
   }
 
   return (
@@ -80,20 +109,23 @@ const App = () => {
           data={images}
           keyExtractor={(item) => item.id.toString()}
           numColumns={2}
+          contentContainerStyle={styles.listContainer}
           renderItem={({ item }) => (
             <TouchableOpacity
               style={styles.imageButton}
-              onPress={() => setSelectedImage(item.path)}
+              onPress={() => {
+                setSelectedImage(item.path)
+              }}
             >
               <Text style={styles.imageText}>{item.name}</Text>
             </TouchableOpacity>
           )}
         />
       ) : (
-        <View style={styles.canvas}>
+        <View style={styles.canvasContainer}>
           <Svg
-            width={300}
-            height={300}
+            width="100%"
+            height="60%"
             viewBox="0 0 100 100"
             onStartShouldSetResponder={() => true}
             onMoveShouldSetResponder={() => true}
@@ -101,44 +133,86 @@ const App = () => {
             onResponderMove={continueDrawing}
           >
             <G>
-              <Path
-                d={selectedImage}
-                fill="none"
-                stroke="black"
-                strokeWidth="2"
-              />
+              {/* Användarens linjer under figuren */}
               {lines.map((line, index) => (
                 <Path
                   key={index}
                   d={`M${line.points}`}
                   stroke={line.color}
-                  strokeWidth="3"
+                  strokeWidth="0.8"
                   fill="none"
                 />
               ))}
+              {/* Figuren ritas ovanpå linjerna */}
+              <Path
+                d={selectedImage}
+                fill="none"
+                stroke="black"
+                strokeWidth="0.5"
+              />
             </G>
           </Svg>
-          <View style={styles.colorPalette}>
-            {colors.map((color) => (
+
+          <View style={styles.controlsContainer}>
+            <View style={styles.colorPalette}>
+              {colors.map((color) => (
+                <TouchableOpacity
+                  key={color}
+                  style={[
+                    styles.colorButton,
+                    { backgroundColor: color },
+                    selectedColor === color && styles.selectedColor,
+                  ]}
+                  onPress={() => {
+                    setSelectedColor(color)
+                    setIsEraser(false)
+                  }}
+                />
+              ))}
               <TouchableOpacity
-                key={color}
-                style={[styles.colorButton, { backgroundColor: color }]}
-                onPress={() => setSelectedColor(color)}
-              />
-            ))}
+                style={[styles.eraserButton, isEraser && styles.selectedColor]}
+                onPress={() => setIsEraser(true)}
+              >
+                <Text style={styles.buttonText}>Suddgummi</Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.eraserSizeContainer}>
+              <TouchableOpacity
+                style={styles.sizeButton}
+                onPress={() => setEraserSize(5)}
+              >
+                <Text style={styles.buttonText}>Liten</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.sizeButton}
+                onPress={() => setEraserSize(10)}
+              >
+                <Text style={styles.buttonText}>Medium</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.sizeButton}
+                onPress={() => setEraserSize(20)}
+              >
+                <Text style={styles.buttonText}>Stor</Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.buttonRow}>
+              <TouchableOpacity
+                style={[styles.button, styles.resetButton]}
+                onPress={() => setLines([])}
+              >
+                <Text style={styles.buttonText}>Rensa</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.button, styles.backButton]}
+                onPress={() => setSelectedImage(null)}
+              >
+                <Text style={styles.buttonText}>Tillbaka</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-          <TouchableOpacity
-            style={styles.resetButton}
-            onPress={() => setLines([])}
-          >
-            <Text style={styles.resetText}>Rensa</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.backButton}
-            onPress={() => setSelectedImage(null)}
-          >
-            <Text style={styles.backText}>Tillbaka</Text>
-          </TouchableOpacity>
         </View>
       )}
     </View>
@@ -146,38 +220,73 @@ const App = () => {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#f0f0f0",
-  },
+  container: { flex: 1, backgroundColor: "#f0f0f0" },
+  listContainer: { padding: 20 },
   imageButton: {
-    padding: 20,
+    flex: 1,
     margin: 10,
+    padding: 20,
     backgroundColor: "#4CAF50",
     borderRadius: 10,
-    width: 150,
     alignItems: "center",
   },
-  imageText: { color: "#fff", fontSize: 18 },
-  canvas: { alignItems: "center", marginTop: 20 },
-  colorPalette: { flexDirection: "row", marginTop: 10 },
-  colorButton: { width: 40, height: 40, margin: 5, borderRadius: 20 },
-  resetButton: {
+  imageText: { color: "#fff", fontSize: 16, fontWeight: "500" },
+  canvasContainer: { flex: 1, padding: 20 },
+  controlsContainer: {
+    flex: 1,
+    justifyContent: "space-around",
+    paddingVertical: 20,
+  },
+  colorPalette: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "center",
+    gap: 10,
+  },
+  colorButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 25,
+    borderWidth: 2,
+    borderColor: "transparent",
+  },
+  selectedColor: {
+    borderColor: "#fff",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    elevation: 5,
+  },
+  eraserButton: {
+    padding: 10,
+    backgroundColor: "gray",
+    borderRadius: 10,
+    alignItems: "center",
+  },
+  eraserSizeContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    gap: 15,
     marginTop: 20,
-    padding: 10,
-    backgroundColor: "#FF5733",
-    borderRadius: 5,
   },
-  resetText: { color: "#fff", fontSize: 18 },
-  backButton: {
-    marginTop: 10,
+  sizeButton: {
+    backgroundColor: "#ddd",
     padding: 10,
-    backgroundColor: "#007BFF",
-    borderRadius: 5,
+    borderRadius: 10,
+    alignItems: "center",
   },
-  backText: { color: "#fff", fontSize: 18 },
+  buttonRow: { flexDirection: "row", justifyContent: "center", gap: 20 },
+  button: {
+    paddingVertical: 12,
+    paddingHorizontal: 25,
+    borderRadius: 25,
+    minWidth: 120,
+    alignItems: "center",
+  },
+  resetButton: { backgroundColor: "#FF5733" },
+  backButton: { backgroundColor: "#007BFF" },
+  buttonText: { color: "#fff", fontSize: 16, fontWeight: "600" },
 })
 
 export default App
