@@ -8,7 +8,7 @@ import { useUsageStats } from './UsageStatsContext';
 // Function to generate a deck of cards
 const generateDeck = () => {
   const suits = ['♠', '♣', '♦', '♥'];
-  const values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
+  const values = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
   let deck: string[] = [];
 
 
@@ -71,6 +71,7 @@ const BlackJack = () => {
   const [message, setMessage] = useState('');
   const [playerCardFlips, setPlayerCardFlips] = useState<any>([]);
   const [dealerCardFlips, setDealerCardFlips] = useState<any>([]);
+  const [stand, setStand] = useState(false);
 
   const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -92,10 +93,31 @@ const BlackJack = () => {
     setDealerCardFlips([new Animated.Value(0), new Animated.Value(0)]); // Dealer card flips
 
 
+    
     // Reset game state
     setGameOver(false);
     setMessage('');
+
+    
   };
+
+  useEffect(()=> {
+    //console.log("BlackJack?", playerHand.length)
+    if(calculateScore(playerHand) === 21 && playerHand.length < 3) {
+        setMessage("BlackJack!");
+       // setEnergy((prevEnergy: number) => prevEnergy + 20)
+        setGameOver(true);
+        setStand(false)
+    }
+    //return ()=> {setGameOver(true)};
+  }, [startGame]);
+
+  useEffect(()=> {
+    if(message === "BlackJack!") {
+        console.log("Gain 10 energy")
+        setEnergy((prevEnergy: number) => prevEnergy + 10)
+    }
+  }, [message])
 
 
   const playerHit = () => {
@@ -105,13 +127,15 @@ const BlackJack = () => {
     setPlayerHand(prev => [...prev, newCard!]);
 
 
-    let array = [];
+    /* let array = [];
     array.push(newCard)
-    playerHand.push(newCard);
+    playerHand.push(newCard); */
 
 
     if(calculateScore(playerHand) > 21) {
       setMessage('Player busts! Dealer wins.');
+      console.log("energy: ", energy)
+      setEnergy((prevEnergy: number) => prevEnergy - 10)
       setGameOver(true);
     }
 
@@ -137,6 +161,7 @@ const BlackJack = () => {
 
   const playerStand = () => {
     if (gameOver) return;
+    setStand(true);
   
   
     // Local variables to track the dealer's hand and score
@@ -194,6 +219,7 @@ const BlackJack = () => {
   
   
         setGameOver(true);
+        setStand(false);
       }
     };
   
@@ -221,6 +247,7 @@ const BlackJack = () => {
   
   
       setGameOver(true);
+      setStand(false);
     }
   };
   
@@ -230,8 +257,10 @@ const BlackJack = () => {
     console.log("playerScore", playerScore)
     if (playerScore > 21) {
       setMessage('Player busts! Dealer wins.');
+      console.log("energy: ", energy)
       setEnergy((prevEnergy: number) => prevEnergy - 10)
       setGameOver(true);
+      setStand(false);
     }
   };
 
@@ -264,6 +293,7 @@ const BlackJack = () => {
         setMessage('Dealer busts. Player wins!');
         setEnergy((prevEnergy: number) => prevEnergy + 5)
         setGameOver(true);
+        setStand(false);
     }
   }, [dealerHand])
 
@@ -290,6 +320,15 @@ const BlackJack = () => {
   }, []); // Empty dependency array ensures this effect runs only on mount/unmount
   
 
+  useEffect(()=> {
+    if(calculateScore(playerHand) > 21) {
+        setMessage("Player busts.");
+        setEnergy((prevEnergy: number) => prevEnergy - 10)
+        console.log("energy: ", energy)
+        setGameOver(true);
+        setStand(false);
+    }
+  }, [playerHand])
 
   return (
     <View style= {styles.energyBar}>
@@ -340,13 +379,15 @@ const BlackJack = () => {
             <Text style={styles.buttonText}>Start over</Text>
           </TouchableOpacity>
         ) : (
+            
           <>
-            <TouchableOpacity onPress={playerHit} style={styles.button}>
+          {stand ? (<><Text style={styles.message}>Player stands. Dealers turn</Text></>) : ( <><TouchableOpacity onPress={playerHit} style={styles.button}>
               <Text style={styles.buttonText}>Hit</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={playerStand} style={styles.button}>
               <Text style={styles.buttonText}>Stand</Text>
-            </TouchableOpacity>
+            </TouchableOpacity></>)}
+            
           </>
         )}
       </View>
@@ -357,72 +398,80 @@ const BlackJack = () => {
 
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    top: -30,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#f5f5f5',
-    padding: 20,
-    overflow: "visible"
-  },
-  energyBar: {
-    bottom: 90
-  },
-  header: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
-  cardText: {
-
-    fontSize: 20,
-    marginBottom: 10,
-  },
-  message: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginTop: 20,
-    color: 'red',
-  },
-  buttons: {
-    top: 140,
-    marginTop: 20,
-    width: 300,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-  },
-  button: {
-    backgroundColor: '#2196F3',
-    paddingVertical: 20, // Increase padding to give more space
-    paddingHorizontal: 30,
-    borderRadius: 5,
-    margin: 5,
-    justifyContent: 'center',
-    alignItems: 'center', // Ensure text is centered inside the button
-    height: 60, // Explicit height to ensure space for text
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 18,
-    //backgroundColor: 'yellow',
-  },
-  cardContainer: {
-    flexDirection: 'row',
-    marginTop: 200,
-  },
-  card: {
-    width: 50,
-    height: 100,
-    margin: 5,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    borderWidth: 1,
-    borderColor: '#000',
-    borderRadius: 10,
-  },
-});
+    container: {
+      top: -90,
+      flex: 1,
+      justifyContent: 'flex-start',  // Align everything to the top
+      alignItems: 'center',  // Center horizontally
+      backgroundColor: '#f5f5f5',
+      padding: 5,  // Padding around the edges
+      overflow: 'visible',
+    },
+    energyBar: {
+      position: 'absolute',
+      top: -90, // Adjust position if necessary
+      width: '100%',
+    },
+    header: {
+      fontSize: 28,  // Slightly smaller header for mobile
+      fontWeight: 'bold',
+      marginBottom: 15,
+      textAlign: 'center',  // Center header text
+    },
+    cardText: {
+      fontSize: 14,  // Moderate font size for better readability on mobile
+      marginBottom: 10,
+      textAlign: 'center',  // Center align text
+    },
+    message: {
+      fontSize: 20,
+      fontWeight: 'bold',
+      marginTop: 20,
+      color: 'red',
+      textAlign: 'center',  // Ensure message is centered
+    },
+    buttons: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      width: '80%',  // Buttons take up most of the screen width but with space on the sides
+      marginTop: 20,  // Space from other elements
+    },
+    button: {
+      backgroundColor: '#2196F3',
+      paddingVertical: 15,
+      paddingHorizontal: 20,
+      borderRadius: 5,
+      margin: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: 50,  // Ensure a consistent button height
+      flex: 1,  // Allow buttons to take equal width
+    },
+    buttonText: {
+      color: 'white',
+      fontSize: 18,
+      textAlign: 'center',  // Center the button text
+    },
+    cardContainer: {
+      flexDirection: 'row',
+      justifyContent: 'center',  // Center cards horizontally
+      marginTop: 10,
+      marginBottom: 10,  // Space below the cards
+      flexWrap: 'wrap',  // Allow cards to wrap onto a new line if needed
+    },
+    card: {
+      width: 60,  // Slightly larger cards for easier visibility
+      height: 100,
+      margin: 5,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: '#fff',
+      borderWidth: 1,
+      borderColor: '#000',
+      borderRadius: 10,
+    },
+  });
+  
 
 
 export default BlackJack;
