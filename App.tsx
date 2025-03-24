@@ -24,7 +24,7 @@ import RoomScreen from './components/RoomScreen';
 import { getFCMToken, requestUserPermission, setupPushNotification } from './components/PushNotificationService';
 import PushNotification, { Importance } from "react-native-push-notification";
 import messaging from "@react-native-firebase/messaging"
-import Calendar from './components/Calendar';
+import Calendar from './components/CalendarScreen';
 import Dashboard from './components/Dashboard';
 import ParentPage from './components/ParentPage';
 import EmoSpace from './components/EmoSpace';
