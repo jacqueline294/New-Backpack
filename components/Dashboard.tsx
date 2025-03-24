@@ -59,10 +59,6 @@ const App = () => {
       <TouchableOpacity style={[styles.button, styles.bottom2]}>
         <Button title="Main" onPress={() => navigation.navigate("Home")} />
       </TouchableOpacity>
-      <TouchableOpacity style={[styles.button, styles.bottom2]}>
-        <Button title="Main" onPress={() => navigation.navigate("Home")} />
-      </TouchableOpacity>
-
       <TouchableOpacity style={[styles.button, styles.left]}>
         <Button
           title="emo space"
@@ -85,10 +81,6 @@ const App = () => {
       </TouchableOpacity>
 
       <TouchableOpacity style={[styles.button, styles.right2]}>
-        <Button
-          title="Games"
-          onPress={() => navigation.navigate("GamesScreen")}
-        />
         <Button
           title="Games"
           onPress={() => navigation.navigate("GamesScreen")}
