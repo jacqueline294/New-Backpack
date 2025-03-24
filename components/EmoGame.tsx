@@ -1,9 +1,38 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 const EmoGame = () => {
   const navigation = useNavigation();  
+  const [blueEmotionData, setBlueEmotionData] = useState<Record<string, string>>({});
+  const [yellowEmotionData, setYellowEmotionData] = useState<Record<string, string>>({});
+  const [redEmotionData, setRedEmotionData] = useState<Record<string, string>>({});
+  const [greyEmotionData, setGreyEmotionData] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    const loadBlueEmotionData = async () => {
+        try {
+            const storedBlueEmotionData = await AsyncStorage.getItem('blueEmotionData');
+            if(storedBlueEmotionData) {
+                setBlueEmotionData(JSON.parse(storedEmotionData));
+            }
+        } catch (error) {
+            console.log("Failed to load emotion data from Asyncstorage", error);
+        }
+    };
+    const loadYellowEmotionData = async () => {
+        try {
+            const storedYellowEmotionData = await AsyncStorage.getItem('yellowEmotionData');
+            if(storedYellowEmotionData) {
+                setYellowEmotionData(JSON.parse(storedYellowEmotionData));
+            }
+        } catch (error) {
+            console.log("Failed to load emotion data from Asyncstorage", error);
+        }
+    };
+    loadBlueEmotionData();
+    loadYellowEmotionData();
+}, []);
 
   const [answers, setAnswers] = useState({
     q1: null,
@@ -23,37 +52,29 @@ const EmoGame = () => {
     { label: "Ledsen", value: "😢"},
 ];
 
+const feelings = [
+    { label: "GLAD", value: "😊"},
+    { label: "ARG", value: "😡"},
+    { label: "LEDSEN", value: "🥺"},
+    { label: "RÄDD", value: "😨"},
+    { label: "NERVÖS", value: "😲"},
+    { label: "BESVIKEN", value: "😤"},
+    { label: "ENSAM", value: "😞"},
+    { label: "LUGN", value: "🧘‍♂️"},
+    { label: "NYFIKEN", value: "🤔"},
+    { label: "STOLT", value: "👑"},
+    { label: "PIRRIG", value: "🫣"},
+    { label: "TACKSAM", value: "🙏"},
+    { label: "TRÖTT", value: "😴"},
+];
+
+ 
+
   const handleSubmit = () => {
     if(answers.q1 == true && answers.q2 == true && answers.q3 == true && answers.q4 == true && answers.q5 == true) {setFeelingResult (emotions[0].value);}
     if(answers.q1 == true && answers.q2 == true && answers.q3 == true && answers.q4 == true && answers.q5 == false) {setFeelingResult (emotions[1].value);}
     if(answers.q1 == true && answers.q2 == true && answers.q3 == true && answers.q4 == false && answers.q5 == true) {setFeelingResult (emotions[2].value);}
     if(answers.q1 == true && answers.q2 == true && answers.q3 == true && answers.q4 == false && answers.q5 == false) {setFeelingResult (emotions[3].value);}
-    if(answers.q1 == true && answers.q2 == true && answers.q3 == false && answers.q4 == true && answers.q5 == true) {setFeelingResult (emotions[4].value);}
-    if(answers.q1 == true && answers.q2 == true && answers.q3 == false && answers.q4 == true && answers.q5 == false) {setFeelingResult (emotions[0].value);}
-    if(answers.q1 == true && answers.q2 == true && answers.q3 == false && answers.q4 == false && answers.q5 == true) {setFeelingResult (emotions[1].value);}
-    if(answers.q1 == true && answers.q2 == true && answers.q3 == false && answers.q4 == false && answers.q5 == false) {setFeelingResult (emotions[2].value);}
-    if(answers.q1 == true && answers.q2 == false && answers.q3 == true && answers.q4 == true && answers.q5 == true) {setFeelingResult (emotions[3].value);}
-    if(answers.q1 == true && answers.q2 == false && answers.q3 == true && answers.q4 == true && answers.q5 == false) {setFeelingResult (emotions[4].value);}
-    if(answers.q1 == true && answers.q2 == false && answers.q3 == true && answers.q4 == false && answers.q5 == true) {setFeelingResult (emotions[0].value);}
-    if(answers.q1 == true && answers.q2 == false && answers.q3 == true && answers.q4 == false && answers.q5 == false) {setFeelingResult (emotions[1].value);}
-    if(answers.q1 == true && answers.q2 == false && answers.q3 == false && answers.q4 == true && answers.q5 == true) {setFeelingResult (emotions[2].value);}
-    if(answers.q1 == true && answers.q2 == false && answers.q3 == false && answers.q4 == true && answers.q5 == false) {setFeelingResult (emotions[3].value);}
-    if(answers.q1 == true && answers.q2 == false && answers.q3 == false && answers.q4 == false && answers.q5 == true) {setFeelingResult (emotions[4].value);}
-    if(answers.q1 == true && answers.q2 == false && answers.q3 == false && answers.q4 == false && answers.q5 == false) {setFeelingResult (emotions[0].value);}
-    if(answers.q1 == false && answers.q2 == true && answers.q3 == true && answers.q4 == true && answers.q5 == true) {setFeelingResult (emotions[1].value);}
-    if(answers.q1 == false && answers.q2 == true && answers.q3 == true && answers.q4 == true && answers.q5 == false) {setFeelingResult (emotions[2].value);}
-    if(answers.q1 == false && answers.q2 == true && answers.q3 == true && answers.q4 == false && answers.q5 == true) {setFeelingResult (emotions[3].value);}
-    if(answers.q1 == false && answers.q2 == true && answers.q3 == true && answers.q4 == false && answers.q5 == false) {setFeelingResult (emotions[4].value);}
-    if(answers.q1 == false && answers.q2 == true && answers.q3 == false && answers.q4 == true && answers.q5 == true) {setFeelingResult (emotions[0].value);}
-    if(answers.q1 == false && answers.q2 == true && answers.q3 == false && answers.q4 == true && answers.q5 == false) {setFeelingResult (emotions[1].value);}
-    if(answers.q1 == false && answers.q2 == true && answers.q3 == false && answers.q4 == false && answers.q5 == true) {setFeelingResult (emotions[2].value);}
-    if(answers.q1 == false && answers.q2 == true && answers.q3 == false && answers.q4 == false && answers.q5 == false) {setFeelingResult (emotions[3].value);}
-    if(answers.q1 == false && answers.q2 == false && answers.q3 == true && answers.q4 == true && answers.q5 == true) {setFeelingResult (emotions[4].value);}
-    if(answers.q1 == false && answers.q2 == false && answers.q3 == true && answers.q4 == true && answers.q5 == false) {setFeelingResult (emotions[0].value);}
-    if(answers.q1 == false && answers.q2 == false && answers.q3 == true && answers.q4 == false && answers.q5 == true) {setFeelingResult (emotions[1].value);}
-    if(answers.q1 == false && answers.q2 == false && answers.q3 == true && answers.q4 == false && answers.q5 == false) {setFeelingResult (emotions[2].value);}
-    if(answers.q1 == false && answers.q2 == false && answers.q3 == false && answers.q4 == true && answers.q5 == true) {setFeelingResult (emotions[3].value);}
-    if(answers.q1 == false && answers.q2 == false && answers.q3 == false && answers.q4 == true && answers.q5 == false) {setFeelingResult (emotions[4].value);}
     if(answers.q1 == false && answers.q2 == false && answers.q3 == false && answers.q4 == false && answers.q5 == true) {setFeelingResult (emotions[4].value);}
     if(answers.q1 == false && answers.q2 == false && answers.q3 == false && answers.q4 == false && answers.q5 == false) {setFeelingResult (emotions[1].value);}
     }
@@ -78,7 +99,7 @@ const EmoGame = () => {
   return (
     <View style={styles.container}>
       <Text style={{ textAlign: "left", fontSize: 20 }}>
-        - Har det varit roligt i skolan idag?
+        - ÄR DU SJÄLV OCH DET KÄNNS JOBBIGT?
       </Text>
       <View style={styles.answerContainer}>
         <TouchableOpacity
@@ -96,7 +117,7 @@ const EmoGame = () => {
       </View>
 
       <Text style={{ textAlign: "left", fontSize: 20 }}>
-        - Har du lärt dig spännande nya saker idag?
+        - HAR DU GJORT ROLIGA SAKER IDAG?
       </Text>
       <View style={styles.answerContainer}>
         <TouchableOpacity
@@ -114,7 +135,7 @@ const EmoGame = () => {
       </View>
 
       <Text style={{ textAlign: "left", fontSize: 20 }}>
-        - Har du ätit god mat idag?
+        - HAR NÅGON GJORT NÅGOT DUMT OCH DU VILL GÖRA NÅGOT TILLBAKA?
       </Text>
       <View style={styles.answerContainer}>
         <TouchableOpacity
@@ -132,7 +153,7 @@ const EmoGame = () => {
       </View>
 
       <Text style={{ textAlign: "left", fontSize: 20 }}>
-        - Har du bråkat idag?
+        - ÄR DU STRESSAD INFÖR NÅGOT DU SKA GÖRA?
       </Text>
       <View style={styles.answerContainer}>
         <TouchableOpacity
@@ -170,12 +191,12 @@ const EmoGame = () => {
       <View style={styles.answerContainer}>
         <TouchableOpacity
           style={styles.button}
-          onPress={ 
-            handleSubmit
+          onPress={() => navigation.navigate("EmoGameQ2")
           }
         >
-          <Text style={styles.buttonText}>JAG KÄNNER MIG</Text>
+          <Text style={styles.buttonText}>NÄSTA</Text>
         </TouchableOpacity>
+        
       </View>
         {/*<Text>
           Question 1: {renderAnswerText("q1")}{"\n"}        
@@ -187,8 +208,9 @@ const EmoGame = () => {
       <Text style={{ textAlign: "center", fontSize: 200 }}>
        {feelingResult }
       </Text>
-
+      
       <View style={styles.buttonContainer}>
+        
         <TouchableOpacity
           style={styles.button}
           onPress={() => navigation.navigate("EmoSpace")}
@@ -209,6 +231,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     justifyContent: 'flex-end',
     marginBottom: 10,
+    bottom: 50
   },
   answerContainer: {
     flexDirection: 'row',

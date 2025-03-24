@@ -3,12 +3,14 @@ import { Button, View, Text, StyleSheet } from "react-native";
 import SignUp from "./SignUp";
 import Dashboard from "./Dashboard";
 import { useNavigation } from "@react-navigation/native";
+import DialogueTree from "./DialogueTree";
 
 
 function TalkItOut({navigation}) {
     return (
                <View style={styles.container}>
                    <Text>Talk it out</Text>
+                   <DialogueTree></DialogueTree>
                    <View style={styles.buttonContainer}>
                    <View style={styles.hemKnapp}>
                                <Button

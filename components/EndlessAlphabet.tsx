@@ -160,4 +160,8 @@ const styles = StyleSheet.create({
   },
 })
 
+<<<<<<< HEAD
 export default AlphabetGame
+=======
+export default AlphabetGame
+>>>>>>> main
