@@ -44,6 +44,10 @@ export default function GamesScreen({ navigation }: Props) {
         title="BlackJack"
         onPress={() => navigation.navigate("Black")}
       />
+      <Button
+        title="Fit"
+        onPress={() => navigation.navigate("Fit")}
+      />
     </View>
   )
 }

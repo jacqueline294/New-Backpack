@@ -45,6 +45,7 @@ import TjugoFyrtioatta from './components/TjugoFyrtioatta';
 import BackgroundTimer from "react-native-background-timer"
 import SimonSays from './components/SimonSays';
 import BlackJack from './components/BlackJack';
+import Fit from './components/Fit';
 
 
 /* PushNotification.localNotification({
@@ -299,6 +300,7 @@ export default function App() {
       <Stack.Screen name="Black" component={BlackJack} />
 
       <Stack.Screen name="Balloon" component={BalloonGame} />
+      <Stack.Screen name="Fit" component={Fit} />
 
       <Stack.Screen name="EmoGameQ2" component={EmoGameQ2} />
       <Stack.Screen name="EmoGameQ3" component={EmoGameQ3} />
