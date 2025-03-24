@@ -5,6 +5,12 @@ import { StackNavigationProp } from "@react-navigation/stack"
 type RootStackParamList = {
   EndlessAlphabet: undefined
   BrainDots: undefined
+  MemoryMatch: undefined
+  UnblockMe: undefined
+  TjugoFyrtioatta: undefined
+  SimonSays: undefined
+  FyraiRad: undefined
+  Paintly: undefined
 }
 
 type Props = {
@@ -22,12 +28,10 @@ export default function GamesScreen({ navigation }: Props) {
         title="Play BrainDots"
         onPress={() => navigation.navigate("BrainDots")}
       />
-
       <Button
         title="Play MemoryMatch"
         onPress={() => navigation.navigate("MemoryMatch")}
       />
-
       <Button
         title="Play UnblockMe"
         onPress={() => navigation.navigate("UnblockMe")}
@@ -39,6 +43,14 @@ export default function GamesScreen({ navigation }: Props) {
       <Button
         title="Play SimonSays"
         onPress={() => navigation.navigate("SimonSays")}
+      />
+      <Button
+        title="Play FyraiRad"
+        onPress={() => navigation.navigate("FyraiRad")}
+      />
+      <Button
+        title="Play Paintly"
+        onPress={() => navigation.navigate("Paintly")}
       />
     </View>
   )

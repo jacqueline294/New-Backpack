@@ -6,6 +6,7 @@ import {
   Alert,
   Animated,
   StyleSheet,
+  Dimensions,
 } from "react-native"
 import { Audio } from "expo-av"
 
@@ -21,6 +22,9 @@ const sounds: Record<string, any> = {
   green: greenSound,
   yellow: yellowSound,
 }
+
+const { width, height } = Dimensions.get("window")
+const isSmallScreen = width < 375
 
 export default function SimonSays() {
   const [sequence, setSequence] = useState<string[]>([])
@@ -162,56 +166,53 @@ const styles = StyleSheet.create({
     backgroundColor: "#222",
   },
   simonBoard: {
-    width: 220,
-    height: 220,
-    borderRadius: 110,
+    width: isSmallScreen ? 220 : 240,
+    height: isSmallScreen ? 220 : 240,
+    borderRadius: isSmallScreen ? 110 : 120,
     backgroundColor: "black",
     justifyContent: "center",
     alignItems: "center",
-    flexWrap: "wrap",
     position: "relative",
+    marginBottom: 20,
   },
   button: {
-    width: 100,
-    height: 100,
+    width: isSmallScreen ? 85 : 100,
+    height: isSmallScreen ? 85 : 100,
     margin: 2,
     position: "absolute",
   },
-  red: { backgroundColor: "red", 
-    top: 0, 
-    left: 110, 
-    borderTopLeftRadius: 110 },
+  red: { backgroundColor: "red", top: 0, left: 0, borderTopLeftRadius: 120 },
   blue: {
     backgroundColor: "blue",
     top: 0,
-    right: -110,
-    borderTopRightRadius: 110,
+    right: 0,
+    borderTopRightRadius: 120,
   },
   green: {
     backgroundColor: "green",
     bottom: 0,
-    left: 110,
-    borderBottomLeftRadius: 110,
+    left: 0,
+    borderBottomLeftRadius: 120,
   },
   yellow: {
     backgroundColor: "yellow",
     bottom: 0,
-    right: -110,
-    borderBottomRightRadius: 110,
+    right: 0,
+    borderBottomRightRadius: 120,
   },
   centerButton: {
     position: "absolute",
-    width: 70,
-    height: 70,
+    width: isSmallScreen ? 70 : 80,
+    height: isSmallScreen ? 70 : 80,
     backgroundColor: "black",
-    borderRadius: 40,
+    borderRadius: 50,
     justifyContent: "center",
     alignItems: "center",
-    transform: [{ translateX: 10 }], // Flyttar knappen lite åt höger
+    transform: [{ translateX: 0 }],
   },
   centerText: {
     color: "white",
-    fontSize: 16,
+    fontSize: isSmallScreen ? 14 : 16,
     fontWeight: "bold",
   },
   resetButton: {
@@ -222,7 +223,7 @@ const styles = StyleSheet.create({
   },
   resetText: {
     color: "white",
-    fontSize: 16,
+    fontSize: isSmallScreen ? 14 : 16,
     fontWeight: "bold",
   },
 })

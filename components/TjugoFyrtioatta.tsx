@@ -1,18 +1,23 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { View, Text, StyleSheet, Alert, TouchableOpacity } from "react-native"
+import {
+  GestureHandlerRootView,
+  PanGestureHandler,
+} from "react-native-gesture-handler"
 
 const GRID_SIZE: number = 4
 const WINNING_TILE: number = 2048
 
 type Board = number[][]
+type Cell = { row: number; col: number }
 
 const generateEmptyBoard = (): Board =>
   Array(GRID_SIZE)
     .fill(null)
     .map(() => Array(GRID_SIZE).fill(0))
 
-const getRandomEmptyCell = (board: Board): { row: number; col: number } | null => {
-  let emptyCells: { row: number; col: number }[] = []
+const getRandomEmptyCell = (board: Board): Cell | null => {
+  let emptyCells: Cell[] = []
   board.forEach((row, rowIndex) => {
     row.forEach((cell, colIndex) => {
       if (cell === 0) emptyCells.push({ row: rowIndex, col: colIndex })
@@ -82,114 +87,50 @@ const checkWin = (board: Board): boolean => {
 
 export default function Game2048() {
   const [board, setBoard] = useState<Board>(addRandomTile(generateEmptyBoard()))
-  const [gameOver, setGameOver] = useState(false)
-  const [hasWon, setHasWon] = useState(false)
 
-  const handleMove = (direction: number) => {
-    if (gameOver || hasWon) return // Disable move if game is over or won
+  const handleSwipe = (direction: number) => {
     let newBoard = moveBoard(direction, board)
     if (JSON.stringify(newBoard) !== JSON.stringify(board)) {
       newBoard = addRandomTile(newBoard)
       setBoard(newBoard)
-      if (checkWin(newBoard)) {
-        setHasWon(true)
-        Alert.alert("Bra jobbat!", "Du nådde 2048!")
-      }
-      if (checkGameOver(newBoard)) {
-        setGameOver(true)
-        Alert.alert("Game Over", "Try again!")
-      }
+      if (checkWin(newBoard)) Alert.alert("Bra jobbat!", "Du nådde 2048!")
+      if (checkGameOver(newBoard)) Alert.alert("Game Over", "Try again!")
     }
   }
 
   const resetGame = () => {
     setBoard(addRandomTile(generateEmptyBoard()))
-    setGameOver(false)
-    setHasWon(false)
   }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.gameBoard}>
-        {board.map((row, rowIndex) => (
-          <View key={rowIndex} style={styles.row}>
-            {row.map((cell, colIndex) => (
-              <View
-                key={colIndex}
-                style={[styles.tile, { backgroundColor: getTileColor(cell) }]}
-              >
-                <Text style={styles.tileText}>{cell !== 0 ? cell : ""}</Text>
-              </View>
-            ))}
-          </View>
-        ))}
-      </View>
-
-      <View style={styles.controls}>
-        <View style={styles.row}>
-          <TouchableOpacity
-            style={styles.controlButton}
-            onPress={() => handleMove(3)} // Up
-          >
-            <Text style={styles.controlButtonText}>Up</Text>
-          </TouchableOpacity>
+    <GestureHandlerRootView style={styles.container}>
+      <PanGestureHandler
+        onGestureEvent={({ nativeEvent }) => {
+          const { translationX, translationY } = nativeEvent
+          if (Math.abs(translationX) > Math.abs(translationY)) {
+            handleSwipe(translationX > 0 ? 1 : 3)
+          } else {
+            handleSwipe(translationY > 0 ? 2 : 0)
+          }
+        }}
+      >
+        <View style={styles.gameBoard}>
+          {board.map((row, rowIndex) => (
+            <View key={rowIndex} style={styles.row}>
+              {row.map((cell, colIndex) => (
+                <View key={colIndex} style={styles.tile}>
+                  <Text style={styles.tileText}>{cell !== 0 ? cell : ""}</Text>
+                </View>
+              ))}
+            </View>
+          ))}
         </View>
-        <View style={styles.row}>
-          <TouchableOpacity
-            style={styles.controlButton}
-            onPress={() => handleMove(0)} // Left
-          >
-            <Text style={styles.controlButtonText}>Left</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.controlButton}
-            onPress={() => handleMove(1)} // Down
-          >
-            <Text style={styles.controlButtonText}>Down</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.controlButton}
-            onPress={() => handleMove(2)} // Right
-          >
-            <Text style={styles.controlButtonText}>Right</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-
+      </PanGestureHandler>
       <TouchableOpacity style={styles.resetButton} onPress={resetGame}>
         <Text style={styles.buttonText}>Återställ</Text>
       </TouchableOpacity>
-    </View>
+    </GestureHandlerRootView>
   )
-}
-
-const getTileColor = (value: number) => {
-  switch (value) {
-    case 2:
-      return "#eee4da"
-    case 4:
-      return "#ede0c8"
-    case 8:
-      return "#f2b179"
-    case 16:
-      return "#f59563"
-    case 32:
-      return "#f67c5f"
-    case 64:
-      return "#f65e3b"
-    case 128:
-      return "#edcf72"
-    case 256:
-      return "#edcc61"
-    case 512:
-      return "#edc850"
-    case 1024:
-      return "#edc53f"
-    case 2048:
-      return "#edc22e"
-    default:
-      return "#ccc0b3"
-  }
 }
 
 const styles = StyleSheet.create({
@@ -199,56 +140,23 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#faf8ef",
   },
-  gameBoard: {
-    width: GRID_SIZE * 80, 
-    height: GRID_SIZE * 80,
-    backgroundColor: "#bbada0",
-    padding: 10,
-    borderRadius: 10,
-  },
-  row: {
-    flexDirection: "row",
-  },
+  gameBoard: { backgroundColor: "#bbada0", padding: 10, borderRadius: 10 },
+  row: { flexDirection: "row" },
   tile: {
     width: 70,
     height: 70,
     margin: 5,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "#eee4da",
     borderRadius: 5,
   },
-  tileText: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "#776e65",
-  },
-  controls: {
-    marginTop: 20,
-    alignItems: "center",
-  },
-  controlButton: {
-    backgroundColor: "#8f7a66",
-    padding: 10,
-    margin: 5,
-    borderRadius: 5,
-  },
-  controlButtonText: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "white",
-  },
+  tileText: { fontSize: 24, fontWeight: "bold" },
   resetButton: {
     marginTop: 20,
     padding: 10,
     backgroundColor: "#8f7a66",
     borderRadius: 5,
   },
-  buttonText: {
-    color: "white",
-    fontSize: 18,
-    fontWeight: "bold",
-  },
+  buttonText: { color: "white", fontSize: 18, fontWeight: "bold" },
 })
-
-
-

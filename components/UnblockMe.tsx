@@ -91,7 +91,7 @@ const UnblockMe = () => {
 
   const onPress = (blockId) => {
     setSelectedBlock(blockId)
-    console.log("button pressed with blockId: ", blockId);
+    console.log("button pressed with blockId: ", blockId)
   }
 
   return (
@@ -103,7 +103,7 @@ const UnblockMe = () => {
           <TouchableOpacity
             key={block.id}
             /* onPress={() => onPress(block.id)} */
-            onPressIn={()=> onPress(block.id)}
+            onPressIn={() => onPress(block.id)}
           >
             <View
               style={[

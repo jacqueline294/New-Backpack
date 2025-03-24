@@ -55,7 +55,7 @@ const BrainDotsGame = () => {
     y: height * 0.5,
   })
   const [lineBodies, setLineBodies] = useState<Matter.Body[]>([])
-  const [collisionDetected, setCollisionDetected] = useState(false)  // Track collision status
+  const [collisionDetected, setCollisionDetected] = useState(false) // Track collision status
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -66,12 +66,12 @@ const BrainDotsGame = () => {
       const collisionResult = Matter.SAT.collides(ballA, ballB)
       if (collisionResult && collisionResult.collided && !collisionDetected) {
         alert("Bra jobbat! Bollarna har mötts! 🎉")
-        setCollisionDetected(true)  // Set the flag to prevent further alerts
+        setCollisionDetected(true) // Set the flag to prevent further alerts
       }
     }, 1000 / 60)
 
     return () => clearInterval(interval)
-  }, [collisionDetected])  // Add collisionDetected as dependency
+  }, [collisionDetected]) // Add collisionDetected as dependency
 
   const handleTouch = (event: GestureResponderEvent) => {
     const { locationX, locationY } = event.nativeEvent
@@ -109,7 +109,7 @@ const BrainDotsGame = () => {
     setPath("")
     Matter.Body.setPosition(ballA, { x: width * 0.3, y: height * 0.5 })
     Matter.Body.setPosition(ballB, { x: width * 0.7, y: height * 0.5 })
-    setCollisionDetected(false)  // Reset collision detection state
+    setCollisionDetected(false) // Reset collision detection state
 
     lineBodies.forEach((body) => Matter.World.remove(world, body))
     setLineBodies([])
@@ -130,10 +130,24 @@ const BrainDotsGame = () => {
       {/* Render balls using View and absolute positioning */}
       <View style={styles.ballsContainer}>
         <View
-          style={[styles.ball, { left: ballAPosition.x - 20, top: ballAPosition.y - 20, backgroundColor: "blue" }]}
+          style={[
+            styles.ball,
+            {
+              left: ballAPosition.x - 20,
+              top: ballAPosition.y - 20,
+              backgroundColor: "blue",
+            },
+          ]}
         />
         <View
-          style={[styles.ball, { left: ballBPosition.x - 20, top: ballBPosition.y - 20, backgroundColor: "red" }]}
+          style={[
+            styles.ball,
+            {
+              left: ballBPosition.x - 20,
+              top: ballBPosition.y - 20,
+              backgroundColor: "red",
+            },
+          ]}
         />
       </View>
 
@@ -150,7 +164,14 @@ const styles = StyleSheet.create({
   svgCanvas: { position: "absolute", width: "100%", height: "100%" },
   ballsContainer: { position: "absolute", width: "100%", height: "100%" },
   ball: { position: "absolute", width: 40, height: 40, borderRadius: 20 },
-  button: { position: "absolute", bottom: 30, alignSelf: "center", padding: 10, backgroundColor: "blue", borderRadius: 5 },
+  button: {
+    position: "absolute",
+    bottom: 30,
+    alignSelf: "center",
+    padding: 10,
+    backgroundColor: "blue",
+    borderRadius: 5,
+  },
   buttonText: { color: "white", fontSize: 18 },
 })
 
