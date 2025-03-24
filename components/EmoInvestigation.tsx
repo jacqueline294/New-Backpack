@@ -1,6 +1,8 @@
 import React, { useEffect, useState, SetStateAction } from "react";
-import { Button, View, Text, StyleSheet, TouchableOpacity, ScrollView, Touchable,  } from "react-native";
+import { Button, View, Text, StyleSheet, TouchableOpacity, ScrollView, Touchable, Image, } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import EnergyBar from "./EnergyBar";
+import { useUsageStats } from "./UsageStatsContext";
 
 
 const questions = {
@@ -9,8 +11,8 @@ const questions = {
         choices: [
           { text: "DEN HAR VARIT JÄTTEKUL", next: "BRA" },
           { text: "DET HAR VARIT JOBBIGT", next: "DÅLIG" },
-          { text: "JAG VET INTE RIKTIGT", next: "VETINTE1" },
-          { text: "JAG VILL SPELLA MEMORY", next: "MemoryMatch" },
+          { text: "JAG VET INTE RIKTIGT(VETINTE1)", next: "PH" },
+          { text: "JAG VILL SPELA MEMORY", next: "MemoryMatch" },
         ],
       },
     BRA: {
@@ -18,8 +20,8 @@ const questions = {
         choices: [
           { text: "NÅGON HAR VARIT VÄLDIGT SNÄLL MOT MIG", next: "SNÄLL" },
           { text: "DET HÄNDE EN VÄLDIGT ROLIG SAK IDAG", next: "ROLIG" },
-          { text: "JAG VET INTE RIKTIGT", next: "VETINTE2" },
-          { text: "ANSWER 4 NAVIGATION", next: "activity" },
+          { text: "JAG VET INTE RIKTIGT(VETINTE2)", next: "PH" },
+          { text: "JAG VILL SPELA ENDLESS ALPHABET", next: "EndlessAlphabet" },
         ],
       },
     DÅLIG: {
@@ -27,11 +29,11 @@ const questions = {
       choices: [
         { text: "NÅGON HAR VARIT DUM MOT MIG", next: "DUM" },
         { text: "DET HAR HÄNT EN LEDSAM SAK", next: "LEDSEN" },
-        { text: "JAG VET INTE RIKIGT", next: "VETINTE3" },
+        { text: "JAG VET INTE RIKIGT(VETINTE3)", next: "PH" },
       ],
     },
     SNÄLL: {
-      text: "VAD KUL ATT HÖRA. VEM VAR DET? vET DU VARFÖR PERSONEN VAR SNÄLL?",
+      text: "VAD KUL ATT HÖRA. VEM VAR DET? VET DU VARFÖR PERSONEN VAR SNÄLL?",
       choices: [
         { text: "DET VAR EN KOMPIS SOM VAR SNÄLL TILLBAKA FÖR VAD JAG GJORT", next: "PH" },
         { text: "DET VAR EN KOMPIS MEN VET INTE VARFÖR", next: "PH" },
@@ -45,19 +47,46 @@ const questions = {
     ROLIG: {
       text: "JIPPIE! VAD FÖR ROLIGT ÄR DET SOM HAR HÄNT?",
       choices: [
-        { text: "DET HAR VARIT KALAS", next: "KALAS" },
-        { text: "HAR VARIT EN ROLIG SKOLAKTIVITET", next: "SKOLAKTIVITET" },
-        { text: "VARIT PÅ UTFLYKT MED KOMPISAR ELLER FAMILJ", next: "UTFLYKT" },
+        { text: "DET HAR VARIT KALAS(KALAS)", next: "PH" },
+        { text: "HAR VARIT EN ROLIG SKOLAKTIVITET(SKOLAKTIVITET)", next: "PH" },
+        { text: "VARIT PÅ UTFLYKT MED KOMPISAR ELLER FAMILJ(UTFLYKT)", next: "PH" },
       ],
+    }, 
+    DUM: {
+      text: "DET VAR INTE KUL ATT HÖRA. VAD HAR HÄNT?",
+      choices: [
+        { text: "VARIT I BRÅK MED NÅGON", next: "BRÅK" },
+        { text: "NÅGON ELLER NÅGRA HAR VARIT TASKIGA(RETNING)", next: "PH" },
+      ]
     },
-  
-      
+    LEDSEN: {
+      text: "DET VAR INTE KUL ATT HÖRA. VAD HAR HÄNT?",
+      choices: [
+        { text: "NÅGON HAR VARIT TASKIG MOT MIG.(TASKIG)", next: "PH" },
+        { text: "DET HAR SKETT EN OLYCKA(OLYCKA)", next: "PH" },
+      ]
+    },
+    PH: {
+      text: "Woops, du har kommit till en sida som är work in progress. Dags att börja om.",
+      choices: [
+        { text: "Tillbaka", next: "START"},
+      ]
+    },
+    BRÅK: {
+      text: "DET VAR TRÅKIGT ATT HÖRA. MEN DÅ KANSKE DU KÄNNER DIG ARG ELLER LEDSEN?",
+      choices: [
+        { text: "ARG", next: "EmoSpace"},
+        { text: "LEDSEN", next: "EmoSpace"},
+        { text: "GÖR OM", next: "START"},
+      ]
+    },
 }
-
 
 const EmoInvestigation = () => {
     const navigation = useNavigation();
-
+    const Emmo = "https://cdn.discordapp.com/attachments/1336699609501929482/1351198619306430535/image.png?ex=67de1e86&is=67dccd06&hm=632fd45b6bafe1b97e7f97f7eb3965d55541a62591a071c5e97dd89d0d73ae05&";
+    const Energy = useUsageStats().energy;
+    const setEnergy =useUsageStats().setEnergy; //to make energy effected by something 1
     // State to track the current dialogue node
     const [currentNode, setCurrentNode] = useState('START');
     const [history, setHistory] = useState([]); // To store the history of dialogues
@@ -67,9 +96,17 @@ const EmoInvestigation = () => {
       if (nextNode === "MemoryMatch") {
         navigation.navigate("MemoryMatch");
       } else {
+        if (nextNode === "EndlessAlphabet") {
+          navigation.navigate("EndlessAlphabet");
+        } else {
+          if (nextNode === "EmoSpace") {
+            navigation.navigate("EmoSpace");
+          } else {
       // Push the current node to history before transitioning
       setHistory([...history, currentNode]);
       setCurrentNode(nextNode);
+          }
+        }
       }
     };
   
@@ -86,25 +123,37 @@ const EmoInvestigation = () => {
     const currentQuestion = questions [currentNode];
   
     return (
+      
       <View style={styles.container}>        
         <ScrollView>
-          {/* Displaying the dialogue text */}
-          <Text style={styles.dialogueText}>{currentQuestion.text}</Text>  
-          {/* Displaying the choices */}
+          <Text style={styles.dialogueText}>{currentQuestion.text}</Text> 
+          <Image 
+        source={{ uri: Emmo }} 
+        style={styles.image}
+      />
+      <TouchableOpacity style={[styles.button, styles.button]}>
+          <EnergyBar value={Energy}/>
+      </TouchableOpacity>
           {currentQuestion.choices.map((choice, index) => (
-            <TouchableOpacity key={index} style={styles.button}>
-              key={index}
-              title={choice.text}
-              onPress={() => handleChoice(choice.next)}
+            <TouchableOpacity key={index} onPress={() => handleChoice(choice.next)}>
+              <Text style={styles.optionButton}>{choice.text}</Text>              
             </TouchableOpacity>
             
           ))}
+
+          {currentNode === "BRÅK" && (
+                    <Text style={{ textAlign: "center", fontSize: 150, }}>
+                            {"😠"}
+                            {"😢"}
+                          </Text>
+                )}
+
         </ScrollView>
         <TouchableOpacity
               style={styles.button}
               onPress={() => navigation.navigate("EmoSpace")}
             >
-              <Text style={styles.backButton}>TILLBAKA TILL EMOSPACE</Text>
+              <Text style={styles.optionButton}>TILLBAKA TILL EMOSPACE</Text>
         </TouchableOpacity>
         {history.length > 0 && (
           <Button
@@ -118,15 +167,23 @@ const EmoInvestigation = () => {
 
 const styles = StyleSheet.create({
   image: {
-    width: 200,
+    width: 300,
     height: 200,
     alignSelf: 'center',
   },
   dialogueText: {
-    fontSize: 25,
+    fontSize: 15,
   },
   optionButton: {
-    height: 10,
+    padding: 1,
+    borderRadius: 5,
+    justifyContent: 'flex-end',
+    backgroundColor: '#2296f3',
+    color: 'white',
+    height: 25,
+    fontSize: 15,
+    margin: 5,
+    textAlign: 'center',
   },
   modalContainer: {
     flex: 1,
@@ -201,7 +258,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "#fffc8a",
   },
 });
 
