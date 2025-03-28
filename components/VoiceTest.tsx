@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, Button, StyleSheet, PermissionsAndroid, Alert } from 'react-native';
 import Vosk from 'react-native-vosk';
+//https://github.com/riderodd/react-native-vosk?tab=readme-ov-file
 
 const VoiceTest = () => {
   const [isListening, setIsListening] = useState(false);
@@ -34,7 +35,8 @@ const VoiceTest = () => {
   // Load model and setup listeners
   const initModel = async () => {
     try {
-      await voskRef.current.loadModel('vosk-model-small-en-us-0.15');
+      // Additional models: https://alphacephei.com/vosk/models
+      await voskRef.current.loadModel('vosk-model-small-en-us-0.15'); // path: "android/app/src/main/assets/models/vosk-model-small-en-us-0.15"?
       setModelLoaded(true);
       console.log('Model loaded successfully');
     } catch (error) {
@@ -58,7 +60,7 @@ const VoiceTest = () => {
 
     try {
       const options = {
-        grammar: ['left', 'right', 'down', 'upp', 'fuck', 'my', 'life', '[unk]'], // Your custom commands
+        grammar: ['left', 'right', 'down', 'upp', 'fuck', 'my', 'life', "trump", "max", "sergej", "natasha", "haidar", "soviet", "soyuz", "net", "da", "irma", "kalle", "back", "pack", "bla", "emo", "hey", "rossiya", "luna", "zvezda", "flag", "bok", "you", "no", "me", '[unk]'], // Your custom commands
       };
 
       await voskRef.current.start(options);
