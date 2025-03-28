@@ -46,6 +46,9 @@ import BackgroundTimer from "react-native-background-timer"
 import SimonSays from './components/SimonSays';
 import BlackJack from './components/BlackJack';
 import Fit from './components/Fit';
+import VoiceTest from './components/VoiceTest';
+import { SpeechRecognitionRootView } from 'react-native-voicebox-speech-rec';
+
 
 
 /* PushNotification.localNotification({
@@ -224,6 +227,7 @@ export default function App() {
           soundName: "default",
           vibrate: true,
           channelId: "default-channel-id",
+          bigPictureUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvnbGXAzowHiN-JrPfFC0hmWh_B3FRhA7tgA&s",
         });
         setSent(true);
       }
@@ -264,56 +268,62 @@ export default function App() {
   /* headerLeft: () => null removes the back button, headerShown: false removes the entire header  */
   return (
     <UsageStatsProvider>
-    <SafeAreaProvider>
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        {/* <View style={styles.container}>
+      <SafeAreaProvider>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          {/* <View style={styles.container}>
       <Text>Open up App.tsx to start working on your app!</Text>
       <StatusBar style="auto" />
     </View> */}
-
-
-    <NavigationContainer>
-    <Stack.Navigator initialRouteName="Home">
-      <Stack.Screen name="Home" component={HomeScreen} />
-      <Stack.Screen name="TestPg" component={TestPage} />
-      <Stack.Screen name="SignUp" component={SignUp} />
-      <Stack.Screen name="Login" component={Login} />
-      <Stack.Screen name="ChooseRole" component={ChooseRole} />
-      <Stack.Screen name="Loading" component={Loading} />
-      <Stack.Screen name="MainPage" component={MainPage} />
-      <Stack.Screen name="Dashboard" component={Dashboard} />
-      <Stack.Screen name="Calendar" component={Calendar} /> 
-      <Stack.Screen name="ParentPage" component={ParentPage} />
-      <Stack.Screen name="EmoSpace" component={EmoSpace} />
-      <Stack.Screen name="EmoGame" component={EmoGame} />
-      <Stack.Screen name="TalkItOut" component={TalkItOut} />
-      <Stack.Screen name="Stats" component={AppUsageStats} />
-      <Stack.Screen name="Room" component={RoomScreen} />
-      <Stack.Screen name="Activities" component={ActivitiesScreen} />
-      <Stack.Screen name="GamesScreen" component={GamesScreen} />
-      <Stack.Screen name="EndlessAlphabet" component={EndlessAlphabet} />
-      <Stack.Screen name="BrainDots" component={BrainDotsGame} />
-      <Stack.Screen name="MemoryMatch" component={MemoryMatch} />
-      <Stack.Screen name="UnblockMe" component={UnblockMe} />
-      <Stack.Screen name="TjugoFyrtioatta" component={TjugoFyrtioatta} />
-      <Stack.Screen name="SimonSays" component={SimonSays} />
-      <Stack.Screen name="Black" component={BlackJack} />
-
-      <Stack.Screen name="Balloon" component={BalloonGame} />
-      <Stack.Screen name="Fit" component={Fit} />
-
-      <Stack.Screen name="EmoGameQ2" component={EmoGameQ2} />
-      <Stack.Screen name="EmoGameQ3" component={EmoGameQ3} />
-      <Stack.Screen name="EmoGameQ4" component={EmoGameQ4} />
-      <Stack.Screen name="EmoGameQ5" component={EmoGameQ5} />
-    </Stack.Navigator>
-    </NavigationContainer>
+          {/* <SpeechRecognitionRootView>
+      <VoiceTest/>
+    </SpeechRecognitionRootView> */}
 
     
 
-      </GestureHandlerRootView>
-      
-    </SafeAreaProvider>
+
+          <NavigationContainer>
+            <Stack.Navigator initialRouteName="Home">
+              <Stack.Screen name="Home" component={HomeScreen} />
+              <Stack.Screen name="TestPg" component={TestPage} />
+              <Stack.Screen name="SignUp" component={SignUp} />
+              <Stack.Screen name="Login" component={Login} />
+              <Stack.Screen name="ChooseRole" component={ChooseRole} />
+              <Stack.Screen name="Loading" component={Loading} />
+              <Stack.Screen name="MainPage" component={MainPage} />
+              <Stack.Screen name="Dashboard" component={Dashboard} />
+              <Stack.Screen name="Calendar" component={Calendar} />
+              <Stack.Screen name="ParentPage" component={ParentPage} />
+              <Stack.Screen name="EmoSpace" component={EmoSpace} />
+              <Stack.Screen name="EmoGame" component={EmoGame} />
+              <Stack.Screen name="TalkItOut" component={TalkItOut} />
+              <Stack.Screen name="Stats" component={AppUsageStats} />
+              <Stack.Screen name="Room" component={RoomScreen} />
+              <Stack.Screen name="Activities" component={ActivitiesScreen} />
+              <Stack.Screen name="GamesScreen" component={GamesScreen} />
+              <Stack.Screen name="EndlessAlphabet" component={EndlessAlphabet} />
+              <Stack.Screen name="BrainDots" component={BrainDotsGame} />
+              <Stack.Screen name="MemoryMatch" component={MemoryMatch} />
+              <Stack.Screen name="UnblockMe" component={UnblockMe} />
+              <Stack.Screen name="TjugoFyrtioatta" component={TjugoFyrtioatta} />
+              <Stack.Screen name="SimonSays" component={SimonSays} />
+              <Stack.Screen name="Black" component={BlackJack} />
+
+              <Stack.Screen name="Balloon" component={BalloonGame} />
+              <Stack.Screen name="Fit" component={Fit} />
+              <Stack.Screen name="Voice" component={VoiceTest} />
+
+              <Stack.Screen name="EmoGameQ2" component={EmoGameQ2} />
+              <Stack.Screen name="EmoGameQ3" component={EmoGameQ3} />
+              <Stack.Screen name="EmoGameQ4" component={EmoGameQ4} />
+              <Stack.Screen name="EmoGameQ5" component={EmoGameQ5} />
+            </Stack.Navigator>
+          </NavigationContainer>
+
+
+
+        </GestureHandlerRootView>
+
+      </SafeAreaProvider>
     </UsageStatsProvider>
 
   );

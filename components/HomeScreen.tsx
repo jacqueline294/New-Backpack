@@ -57,6 +57,7 @@ function HomeScreen({ navigation }: Props) {
         Room
       </Button>
 
+
       <ScrollView>
        {/*  <EnergyBar value={usageStats && usageStats[0] ? 100 - usageStats[0].totalTimeInForeground / 1000 : 100}></EnergyBar>
          */}

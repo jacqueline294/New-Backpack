@@ -23,6 +23,11 @@ const config = getDefaultConfig(__dirname);
 config.resolver.assetExts.push("glb");
 config.resolver.assetExts.push("obj");
 config.resolver.assetExts.push("gltf");
-config.resolver.assetExts.push("fbx");
+config.resolver.assetExts.push("md");
+config.resolver.assetExts.push("txt");
+config.resolver.assetExts.push("onnx");
+config.resolver.assetExts.push("dat");
+config.resolver.assetExts.push("conf");
+config.resolver.assetExts.push("uuid");
 
 module.exports = mergeConfig(getDefaultConfig(__dirname), config);
